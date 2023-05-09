@@ -2,7 +2,21 @@ import React, { useEffect, useRef } from 'react';
 
 import { createChart, ColorType  } from 'lightweight-charts';
 
+// import { ExampleQueryDocument, ExampleQueryQuery, execute } from '../../.graphclient/index.js'
+import graph, { ExampleQueryQuery } from '../../.graphclient/index.js'
+const { ExampleQueryDocument, execute } = graph
+
+
 export const Chart = (props) => {
+	const [gData, setData] = React.useState<ExampleQueryQuery>()
+	console.log("📜 LOG > Chart > gData:", gData);
+
+	useEffect(() => {
+    execute(ExampleQueryDocument, {}).then((result) => {
+      setData(result?.data)
+    })
+  }, [setData])
+
   const data = [
     { time: '2018-12-22', value: 32.51 },
     { time: '2018-12-23', value: 31.11 },
