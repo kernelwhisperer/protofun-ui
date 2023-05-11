@@ -1,12 +1,9 @@
 sources:
-  - name: uniswapv2
+
+  - name: eth_blocks
     handler:
       graphql:
-        endpoint: https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2
-  - name: compoundv2
-    handler:
-      graphql:
-        endpoint: https://api.thegraph.com/subgraphs/name/graphprotocol/compound-v2
+        endpoint: https://gateway.thegraph.com/api/2760f1cc7d18310012284ffc4be34ebc/subgraphs/id/3WFXNz46rk4iuVgsBybcGtxMa4cbHkBLfuSjUvvqs2MD
 
 documents:
-  - ./src/example-query.gql
+  - ./src/fetch-blocks.gql

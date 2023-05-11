@@ -3,20 +3,14 @@ import React, { useEffect, useRef } from 'react';
 import { createChart, ColorType  } from 'lightweight-charts';
 
 // import { ExampleQueryDocument, ExampleQueryQuery, execute } from '../../.graphclient/index.js'
-import graph, { ExampleQueryQuery } from '../../.graphclient/index.js'
-const { ExampleQueryDocument, execute } = graph
+import graph from '../../.graphclient/index.js'
+const { FetchBlocksDocument, execute } = graph
 
+const result = await execute(FetchBlocksDocument, {})
+console.log("📜 LOG > result:", result);
 
-export const Chart = (props) => {
-	const [gData, setData] = React.useState<ExampleQueryQuery>()
-	console.log("📜 LOG > Chart > gData:", gData);
-
-	useEffect(() => {
-    execute(ExampleQueryDocument, {}).then((result) => {
-      setData(result?.data)
-    })
-  }, [setData])
-
+export const Chart = () => {
+	console.log("📜 LOG > result:", result);
   const data = [
     { time: '2018-12-22', value: 32.51 },
     { time: '2018-12-23', value: 31.11 },
@@ -37,16 +31,13 @@ export const Chart = (props) => {
 			areaTopColor = '#2962FF',
 			areaBottomColor = 'rgba(41, 98, 255, 0.28)',
 		} = {},
-	} = props;
+	} = {};
 
 	const chartContainerRef = useRef();
+	console.log("📜 LOG > render ");
 
 	useEffect(
 		() => {
-			const handleResize = () => {
-				chart.applyOptions({ width: chartContainerRef.current.clientWidth });
-			};
-
 			const chart = createChart(chartContainerRef.current, {
 				layout: {
 					background: { type: ColorType.Solid, color: backgroundColor },
@@ -56,15 +47,13 @@ export const Chart = (props) => {
 				height: 300,
 			});
 			chart.timeScale().fitContent();
-
+			
 			const newSeries = chart.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor });
+			// const barSeries = chart.addBarSeries({ upColor: '#26a69a', downColor: '#ef5350' });
 			newSeries.setData(data);
 
-			window.addEventListener('resize', handleResize);
 
 			return () => {
-				window.removeEventListener('resize', handleResize);
-
 				chart.remove();
 			};
 		},
