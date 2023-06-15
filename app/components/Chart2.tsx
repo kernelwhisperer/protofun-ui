@@ -2,15 +2,8 @@ import React, { useEffect, useRef } from 'react';
 
 import { createChart, ColorType  } from 'lightweight-charts';
 
-// import { ExampleQueryDocument, ExampleQueryQuery, execute } from '../../.graphclient/index.js'
-import graph from '../../.graphclient/index.js'
-const { FetchBlocksDocument, execute } = graph
-
-const result = await execute(FetchBlocksDocument, {})
-console.log("📜 LOG > result:", result);
 
 export const Chart = () => {
-	console.log("📜 LOG > result:", result);
   const data = [
     { time: '2018-12-22', value: 32.51 },
     { time: '2018-12-23', value: 31.11 },

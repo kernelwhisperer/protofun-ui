@@ -7,4 +7,4 @@ sources:
         # https://gateway.thegraph.com/api/2760f1cc7d18310012284ffc4be34ebc/subgraphs/id/3WFXNz46rk4iuVgsBybcGtxMa4cbHkBLfuSjUvvqs2MD
 
 documents:
-  - ./src/fetch-blocks.gql
+  - ./app/fetch-blocks.gql
