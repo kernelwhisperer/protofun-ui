@@ -3,7 +3,8 @@ sources:
   - name: eth_blocks
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/2760f1cc7d18310012284ffc4be34ebc/subgraphs/id/3WFXNz46rk4iuVgsBybcGtxMa4cbHkBLfuSjUvvqs2MD
+        endpoint: http://127.0.0.1:8000/subgraphs/name/protofun_block_meta
+        # https://gateway.thegraph.com/api/2760f1cc7d18310012284ffc4be34ebc/subgraphs/id/3WFXNz46rk4iuVgsBybcGtxMa4cbHkBLfuSjUvvqs2MD
 
 documents:
   - ./src/fetch-blocks.gql

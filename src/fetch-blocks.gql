@@ -1,8 +1,11 @@
 query FetchBlocks {
-  blocks(first: 20, orderBy: timestamp) {
+  blockMetas(first: 20, orderBy: number, orderDirection: desc) {
     id
     number
     timestamp
-    gasUsed
+    # gasUsed
+    gas_used
+    base_fee_per_gas
+    hash
   }
 }
