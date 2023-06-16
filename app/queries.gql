@@ -1,0 +1,78 @@
+query SubBlocks @live(interval: 12000) {
+  blocks(first: 200, orderBy: number, orderDirection: desc) {
+    id
+    number
+    timestamp
+    gasUsed
+    baseFeePerGas
+    txns {
+      id
+    }
+    minGasPrice
+    maxGasPrice
+    gasFees
+    burnedFees
+    minerTips
+  }
+}
+
+query FetchBlocks {
+  blocks(first: 200, orderBy: number, orderDirection: desc) {
+    id
+    number
+    timestamp
+    gasUsed
+    baseFeePerGas
+    # txns
+    minGasPrice
+    maxGasPrice
+    gasFees
+    burnedFees
+    minerTips
+  }
+}
+
+query FetchBlock($id: ID!) {
+  block(id: $id) {
+    id
+    number
+    timestamp
+    gasUsed
+    baseFeePerGas
+    # txns
+    minGasPrice
+    maxGasPrice
+    gasFees
+    burnedFees
+    minerTips
+  }
+}
+
+query Txns {
+  txns(
+    where: {
+      block: "0x56c1ec3f16c917d68c94f5136ba39df9585c6d1e920d5aa45e26549b30fdb4f9"
+    }
+  ) {
+    id
+    gasFee
+    blockNumber
+    minerTip
+  }
+}
+
+query Txn {
+  txn(
+    id: "0x7cc561e4f860fc33ccae5795562d65b988e02829f3be28d32345e53274e93b21"
+  ) {
+    id
+    blockNumber
+    gasUsed
+    gasPrice
+    gasFee
+    txnType
+    maxPriorityFeePerGas
+    burnedFee
+    minerTip
+  }
+}

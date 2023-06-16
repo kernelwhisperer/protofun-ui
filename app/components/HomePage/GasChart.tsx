@@ -3,11 +3,11 @@
 import { Box } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { BlockMeta, getBuiltGraphSDK } from "../../../.graphclient";
+import { Block, getBuiltGraphSDK } from "../../../.graphclient";
 import { Chart } from "../Chart";
 
 interface GasChartProps {
-  data: BlockMeta[];
+  data: Omit<Block, "txns">[];
 }
 
 export function GasChart(props: GasChartProps) {
@@ -19,7 +19,7 @@ export function GasChart(props: GasChartProps) {
     const result = await sdk.SubBlocks();
     for await (const update of result) {
       console.log("📜 LOG > sub result", update);
-      setData(update.blockMetas.reverse());
+      setData(update.blocks.reverse());
     }
   }, [setData]);
 
@@ -37,7 +37,7 @@ export function GasChart(props: GasChartProps) {
 
           return {
             time: unix / 1000,
-            value: parseInt(x.base_fee_per_gas) / 1e9,
+            value: parseInt(x.baseFeePerGas) / 1e9,
           };
         })}
       />

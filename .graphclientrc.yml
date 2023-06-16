@@ -5,7 +5,7 @@ sources:
         endpoint: http://127.0.0.1:8000/subgraphs/name/protofun_block_meta
 
 documents:
-  - ./app/fetch-blocks.gql
+  - ./app/queries.gql
 
 plugins:
   - pollingLive:

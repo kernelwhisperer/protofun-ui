@@ -10,7 +10,7 @@ export default async function HomePage() {
 
   return (
     <PageWrapper>
-      <GasChart data={result.blockMetas.reverse()} />
+      <GasChart data={result.blocks.reverse()} />
     </PageWrapper>
   );
 }
