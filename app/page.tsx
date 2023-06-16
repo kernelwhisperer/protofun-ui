@@ -1,11 +1,16 @@
 import React from "react";
 
-import { execute, FetchBlocksDocument } from "../.graphclient";
+import { getBuiltGraphSDK } from "../.graphclient";
+import { GasChart } from "./components/HomePage/GasChart";
 import { PageWrapper } from "./components/RootLayout/PageWrapper";
 
 export default async function HomePage() {
-  const result = await execute(FetchBlocksDocument, {});
-  console.log("📜 LOG > result:", result);
+  const sdk = getBuiltGraphSDK();
+  const result = await sdk.FetchBlocks();
 
-  return <PageWrapper>hello world</PageWrapper>;
+  return (
+    <PageWrapper>
+      <GasChart data={result.blockMetas.reverse()} />
+    </PageWrapper>
+  );
 }

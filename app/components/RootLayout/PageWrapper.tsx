@@ -7,7 +7,7 @@ export function PageWrapper(props: HTMLMotionProps<"div">) {
   return (
     <Box
       component={motion.div}
-      sx={{ width: "100%" }}
+      sx={{ paddingX: 2, width: "100%" }}
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
