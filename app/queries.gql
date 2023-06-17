@@ -1,13 +1,29 @@
-query SubBlocks @live(interval: 12000) {
-  blocks(first: 200, orderBy: number, orderDirection: desc) {
+# query SubBlocks @live(interval: 12000) {
+#   blocks(first: 200, orderBy: number, orderDirection: desc) {
+#     id
+#     number
+#     timestamp
+#     gasUsed
+#     baseFeePerGas
+#     txns {
+#       id
+#     }
+#     minGasPrice
+#     maxGasPrice
+#     gasFees
+#     burnedFees
+#     minerTips
+#   }
+# }
+
+query FetchBlocks {
+  blocks(first: 1000, orderBy: timestamp, where: { timestamp_gt: 1686993623 }) {
     id
     number
     timestamp
     gasUsed
     baseFeePerGas
-    txns {
-      id
-    }
+    # txns
     minGasPrice
     maxGasPrice
     gasFees
@@ -16,8 +32,8 @@ query SubBlocks @live(interval: 12000) {
   }
 }
 
-query FetchBlocks {
-  blocks(first: 1000, orderBy: timestamp, where: { timestamp_gt: 1686993623 }) {
+query FetchBlocksSince($since: BigInt!) {
+  blocks(first: 1000, orderBy: timestamp, where: { timestamp_gt: $since }) {
     id
     number
     timestamp

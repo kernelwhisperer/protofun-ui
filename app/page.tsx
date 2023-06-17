@@ -10,7 +10,7 @@ export default async function HomePage() {
 
   return (
     <PageWrapper>
-      <GasChart data={result.blocks} />
+      <GasChart initialData={result.blocks} />
     </PageWrapper>
   );
 }
