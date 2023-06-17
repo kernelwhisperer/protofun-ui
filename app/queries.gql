@@ -17,7 +17,7 @@ query SubBlocks @live(interval: 12000) {
 }
 
 query FetchBlocks {
-  blocks(first: 200, orderBy: number, orderDirection: desc) {
+  blocks(first: 1000, orderBy: timestamp, where: { timestamp_gt: 1686993623 }) {
     id
     number
     timestamp
@@ -34,6 +34,22 @@ query FetchBlocks {
 
 query FetchBlock($id: ID!) {
   block(id: $id) {
+    id
+    number
+    timestamp
+    gasUsed
+    baseFeePerGas
+    # txns
+    minGasPrice
+    maxGasPrice
+    gasFees
+    burnedFees
+    minerTips
+  }
+}
+
+query FetchBlockByNumber($number: BigInt!) {
+  blocks(where: { number: $number }) {
     id
     number
     timestamp

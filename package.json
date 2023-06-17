@@ -9,6 +9,7 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "codegen": "graphclient build",
+    "codegen:watch": "nodemon -w ./app/queries.gql -x 'yarn codegen'",
     "graphiql": "graphclient serve-dev"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-unused-imports": "^2.0.0",
     "next": "^13.4.5",
+    "nodemon": "^2.0.22",
     "prettier": "^2.5.1",
     "typescript": "^5.1.3",
     "vitest": "^0.32.1"
