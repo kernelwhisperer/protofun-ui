@@ -16,8 +16,8 @@
 #   }
 # }
 
-query FetchBlocks {
-  blocks(first: 1000, orderBy: timestamp, where: { timestamp_gt: 1686993623 }) {
+query FetchLastBlocks {
+  blocks(first: 300, orderBy: timestamp, orderDirection: desc) {
     id
     number
     timestamp

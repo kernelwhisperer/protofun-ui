@@ -5,6 +5,9 @@ import {
   // Scalars as TGScalars
 } from "../../.graphclient";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export function noop() {}
+
 // TODO
 // declare module "../../.graphclient" {
 //   export type Scalars = TGScalars & {
@@ -17,14 +20,15 @@ import {
 
 export type SimpleBlock = Omit<Block, "txns">;
 
-export function formatNumber(number: number) {
+export function formatNumber(number: number, digits = 2) {
   return new Intl.NumberFormat([], {
-    maximumFractionDigits: 2,
+    maximumFractionDigits: digits,
+    // minimumFractionDigits: digits,
     notation: "compact",
   }).format(number);
 }
 
-const timezoneOffset = new Date().getTimezoneOffset() * 60;
+export const timezoneOffset = new Date().getTimezoneOffset() * 60;
 
 export function mapBlockToLineData(block: SimpleBlock): LineData {
   return {

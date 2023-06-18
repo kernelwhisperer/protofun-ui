@@ -28,6 +28,6 @@ export function useNewBlocksSub(
     tryFetch,
     // Delay in milliseconds or null to stop it
     // 12 * 1000
-    5 * 1000 // TODO
+    1000 // TODO
   );
 }

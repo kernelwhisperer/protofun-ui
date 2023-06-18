@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
@@ -19,9 +19,17 @@ export function Header() {
       marginBottom={3}
       marginTop={1}
     >
-      <Link href="/">
+      <Button
+        href="/"
+        LinkComponent={Link}
+        sx={{
+          borderRadius: 8,
+          padding: 1,
+          textTransform: "none",
+        }}
+      >
         <Logo />
-      </Link>
+      </Button>
       <Settings />
     </Stack>
   );

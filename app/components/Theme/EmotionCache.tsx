@@ -10,11 +10,7 @@ import { CacheProvider as DefaultCacheProvider } from "@emotion/react";
 import { useServerInsertedHTML } from "next/navigation";
 import * as React from "react";
 
-const globalStyles = `
-  html {
-    overflow-y: scroll;
-  }  
-`;
+import { globalStyles } from "./theme";
 
 export type NextAppDirEmotionCacheProviderProps = {
   /** By default <CacheProvider /> from 'import { CacheProvider } from "@emotion/react"' */

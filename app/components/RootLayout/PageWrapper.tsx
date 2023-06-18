@@ -8,11 +8,11 @@ export function PageWrapper(props: HTMLMotionProps<"div">) {
     <Box
       component={motion.div}
       sx={{ paddingX: 2, width: "100%" }}
-      initial={{ opacity: 0, y: 80 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -80 }}
+      exit={{ opacity: 0, y: -16 }}
       transition={{
-        duration: 0.3,
+        duration: 0.25,
         // damping: 20,
         // stiffness: 160,
         // type: "spring",
