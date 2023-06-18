@@ -35,11 +35,10 @@ export function GasChart(props: GasChartProps) {
 
   const handleNewBlock = useCallback(
     (data: SimpleBlock) => {
-      setLegendTimestamp(data.timestamp);
       setItem(data);
       lineSeries.current?.update(mapBlockToLineData(data));
     },
-    [setItem, setLegendTimestamp]
+    [setItem]
   );
 
   useNewBlocksSub(
@@ -115,26 +114,20 @@ export function GasChart(props: GasChartProps) {
     //   visible: true,
     // });
 
-    const updateLegend = (param: MouseEventParams) => {
-      let time;
-
+    const updateLegend = ({ time, point }: MouseEventParams) => {
       const validCrosshairPoint = !(
-        !param.time ||
-        !param.point?.x ||
-        !param.point?.y ||
-        param.point.x < 0 ||
-        param.point.y < 0
+        !time ||
+        !point?.x ||
+        !point?.y ||
+        point.x < 0 ||
+        point.y < 0
       );
 
       if (validCrosshairPoint) {
-        time = param.time as number;
+        setLegendTimestamp(String((time as number) + timezoneOffset));
       } else {
-        const lastBar = lineSeries.current?.dataByIndex(Infinity, -1);
-        time = lastBar?.time as number;
+        setLegendTimestamp(undefined);
       }
-
-      // time is in the same format that you supplied to the setData method
-      setLegendTimestamp(String(time + timezoneOffset));
     };
 
     chart.subscribeCrosshairMove(updateLegend);

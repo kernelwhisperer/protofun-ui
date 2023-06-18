@@ -9,7 +9,7 @@ import React, {
 import { noop } from "../utils/client-utils";
 
 export type LegendAPI = {
-  setTimestamp: (block: string) => void;
+  setTimestamp: (timestamp?: string) => void;
   timestamp?: string;
 };
 
@@ -18,12 +18,12 @@ const LegendContext = createContext<LegendAPI>({
 });
 
 type LegendProviderProps = PropsWithChildren<{
-  initialValue: string;
+  initialValue?: string;
 }>;
 
 export const LegendProvider = (props: LegendProviderProps) => {
   const { initialValue, children } = props;
-  const [timestamp, setTimestamp] = useState<string>(initialValue);
+  const [timestamp, setTimestamp] = useState<string | undefined>(initialValue);
 
   return (
     <LegendContext.Provider value={{ setTimestamp, timestamp }}>

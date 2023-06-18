@@ -7,14 +7,17 @@ import React, {
   useRef,
 } from "react";
 
-import { SimpleBlock } from "../utils/client-utils";
+import { noop, SimpleBlock } from "../utils/client-utils";
 
 export type BlockMapAPI = {
-  getItem: (timestamp: string) => SimpleBlock;
+  getItem: (timestamp?: string) => SimpleBlock | void;
   setItem: (block: SimpleBlock) => void;
 };
 
-const BlockMapContext = createContext<BlockMapAPI | null>(null);
+const BlockMapContext = createContext<BlockMapAPI>({
+  getItem: noop,
+  setItem: noop,
+});
 
 export type BlockMap = Record<string, SimpleBlock>;
 
@@ -27,7 +30,8 @@ export const BlockMapProvider = (props: BlockMapProviderProps) => {
   const blockMap = useRef<BlockMap>(initialValue);
 
   const getItem = useCallback(
-    (index: string) => blockMap.current[index],
+    (timestamp?: string) =>
+      timestamp ? blockMap.current[timestamp] : undefined,
     [blockMap]
   );
 

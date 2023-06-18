@@ -18,11 +18,10 @@ export function GasPage(props: GasPageProps) {
     acc[curr.timestamp] = curr;
     return acc;
   }, {} as BlockMap);
-  const newestBlock = initialData[initialData.length - 1];
 
   return (
     <BlockMapProvider initialValue={blockMap}>
-      <LegendProvider initialValue={newestBlock.timestamp}>
+      <LegendProvider>
         <Stack gap={1}>
           <Typography variant="subtitle1">Ethereum</Typography>
           <Typography variant="h4">Historical gas prices</Typography>

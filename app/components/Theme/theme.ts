@@ -11,8 +11,8 @@ declare module "@mui/material/styles" {
 
 const RETRO_GREY = "rgb(31, 34, 42)";
 // const RETRO_GREY = "rgb(57, 65, 73)";
-const RETRO_BEIGE = "rgb(225, 216, 205)";
-// const RETRO_BEIGE = "rgb(200, 187, 155)";
+const RETRO_BEIGE_1 = "rgb(225, 216, 205)";
+const RETRO_BEIGE_2 = "rgb(200, 187, 155)";
 
 export const globalStyles = `
   html {
@@ -43,7 +43,7 @@ export const globalStyles = `
   }
 
   html[data-mui-color-scheme="dark"] ::-webkit-scrollbar-thumb {
-    background-color: ${RETRO_BEIGE};
+    background-color: ${RETRO_BEIGE_1};
   }
 `;
 
@@ -52,10 +52,10 @@ export const theme = extendTheme({
     dark: {
       palette: {
         Avatar: {
-          defaultBg: RETRO_BEIGE,
+          defaultBg: RETRO_BEIGE_1,
         },
         TableCell: {
-          border: alpha(RETRO_BEIGE, 0.33),
+          border: alpha(RETRO_BEIGE_1, 0.33),
         },
         background: {
           default: RETRO_GREY,
@@ -63,14 +63,14 @@ export const theme = extendTheme({
         },
         mode: "dark",
         primary: {
-          main: RETRO_BEIGE,
+          main: RETRO_BEIGE_1,
         },
         secondary: {
-          main: alpha(RETRO_BEIGE, 0.2),
+          main: alpha(RETRO_BEIGE_1, 0.2),
         },
         text: {
-          primary: RETRO_BEIGE,
-          secondary: darken(RETRO_BEIGE, 0.25),
+          primary: RETRO_BEIGE_1,
+          secondary: darken(RETRO_BEIGE_1, 0.25),
         },
       },
     },
@@ -84,8 +84,8 @@ export const theme = extendTheme({
           border: alpha(RETRO_GREY, 0.33),
         },
         background: {
-          default: RETRO_BEIGE,
-          glass: alpha(RETRO_BEIGE, 0.75),
+          default: RETRO_BEIGE_2,
+          glass: alpha(RETRO_BEIGE_2, 0.75),
         },
         primary: {
           main: RETRO_GREY,
