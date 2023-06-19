@@ -8,7 +8,8 @@ import { useBlockMap } from "../../hooks/useBlockMapContext";
 import { useLegend } from "../../hooks/useLegendContext";
 import { useNewBlocksSub } from "../../hooks/useNewBlocksSub";
 import {
-  mapBlockToLineData,
+  createBlockMapper,
+  mapBlockToCandleData,
   SimpleBlock,
   timezoneOffset,
 } from "../../utils/client-utils";
@@ -18,31 +19,47 @@ interface GasChartProps {
   initialData: SimpleBlock[];
 }
 
+const mapBlockToBaseGasFee = createBlockMapper("baseFeePerGas", 1e9);
+// const mapBlockToBurnedFees = createBlockMapper("burnedFees", 1e18);
+
 export function GasChart(props: GasChartProps) {
   const { initialData } = props;
 
-  const data = useMemo(
-    () => initialData.map(mapBlockToLineData),
+  const rightSeriesData = useMemo(
+    () => initialData.map(mapBlockToBaseGasFee),
+    [initialData]
+  );
+
+  // const leftSeriesData = useMemo(
+  //   () => initialData.map(mapBlockToBurnedFees),
+  //   [initialData]
+  // );
+
+  const leftSeriesData = useMemo(
+    () => initialData.map(mapBlockToCandleData),
     [initialData]
   );
 
   const theme = useTheme();
 
   const containerRef = useRef<HTMLElement>();
-  const lineSeries = useRef<ISeriesApi<"Line">>();
+  const rightSeries = useRef<ISeriesApi<"Line">>();
+  const leftSeries = useRef<ISeriesApi<"Candlestick">>();
+
   const { setTimestamp: setLegendTimestamp } = useLegend();
   const { setItem } = useBlockMap();
 
   const handleNewBlock = useCallback(
     (data: SimpleBlock) => {
       setItem(data);
-      lineSeries.current?.update(mapBlockToLineData(data));
+      rightSeries.current?.update(mapBlockToBaseGasFee(data));
+      leftSeries.current?.update(mapBlockToCandleData);
     },
     [setItem]
   );
 
   useNewBlocksSub(
-    initialData[initialData.length - 1].timestamp,
+    initialData[initialData.length - 1]?.timestamp,
     handleNewBlock
   );
 
@@ -56,12 +73,13 @@ export function GasChart(props: GasChartProps) {
       });
     };
     const lineColor = theme.palette.primary.main;
+    // const secondaryColor = theme.palette.secondary.main;
     const textColor = theme.palette.text.primary;
     const borderColor = theme.palette.secondary.main;
 
     const chart = createChart(containerRef.current, {
       crosshair: {
-        mode: 0,
+        // mode: 0,
       },
       grid: {
         horzLines: {
@@ -92,25 +110,42 @@ export function GasChart(props: GasChartProps) {
     });
     // chart.timeScale().fitContent();
 
-    lineSeries.current = chart.addLineSeries({
+    // leftSeries.current = chart.addCandlestickSeries({
+    //   borderDownColor: "white",
+    //   borderUpColor: "black",
+    //   downColor: "white",
+    //   upColor: "black",
+    //   wickDownColor: "white",
+    //   wickUpColor: "black",
+    // });
+    // leftSeries.current.setData(leftSeriesData);
+
+    rightSeries.current = chart.addLineSeries({
       color: lineColor,
     });
-    lineSeries.current.setData(data);
+    rightSeries.current.setData(rightSeriesData);
+
+    // leftSeries.current = chart.addLineSeries({
+    //   color: secondaryColor,
+    //   priceScaleId: "left",
+    // });
+    // leftSeries.current.setData(leftSeriesData);
 
     chart.priceScale("right").applyOptions({
-      // mode: 1, // LOG
+      // LOG
       // autoScale: true,
       // borderColor,
       borderVisible: false,
+      mode: 1, // LOG scale
     });
-
-    // const secondLine = chart.addLineSeries({
-    //   color: lineColor,
-    // });
-    // secondLine.setData(data.map((x) => ({ time: x.time, value: x.value - 5 })));
-    // chart.priceScale("right2").applyOptions({
-    //   // mode: 1, // LOG
-    //   // autoScale: false,
+    // chart.priceScale("left").applyOptions({
+    //   mode: 1,
+    //   // borderColor,
+    //   // borderVisible: true,
+    //   textColor: secondaryColor,
+    //   // LOG
+    //   // autoScale: true,
+    //   ticksVisible: true, // LOG scale
     //   visible: true,
     // });
 
@@ -139,7 +174,13 @@ export function GasChart(props: GasChartProps) {
 
       chart.remove();
     };
-  }, [data, theme, setLegendTimestamp, containerRef]);
+  }, [
+    rightSeriesData,
+    // leftSeriesData,
+    theme,
+    setLegendTimestamp,
+    containerRef,
+  ]);
 
   return <Box ref={containerRef} />;
 }

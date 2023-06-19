@@ -1,4 +1,4 @@
-import { LineData, UTCTimestamp } from "lightweight-charts";
+import { CandlestickData, LineData, UTCTimestamp } from "lightweight-charts";
 
 import {
   Block,
@@ -30,9 +30,28 @@ export function formatNumber(number: number, digits = 2) {
 
 export const timezoneOffset = new Date().getTimezoneOffset() * 60;
 
+export function createBlockMapper(value: keyof SimpleBlock, precision: number) {
+  return function customMapper(block: SimpleBlock): LineData {
+    return {
+      time: (parseInt(block.timestamp) - timezoneOffset) as UTCTimestamp,
+      value: parseInt(block[value]) / precision,
+    };
+  };
+}
+
 export function mapBlockToLineData(block: SimpleBlock): LineData {
   return {
     time: (parseInt(block.timestamp) - timezoneOffset) as UTCTimestamp,
     value: parseInt(block.baseFeePerGas) / 1e9,
+  };
+}
+
+export function mapBlockToCandleData(block: SimpleBlock): CandlestickData {
+  return {
+    close: parseInt(block.lastGasPrice) / 1e9,
+    high: parseInt(block.maxGasPrice) / 1e9,
+    low: parseInt(block.minGasPrice) / 1e9,
+    open: parseInt(block.firstGasPrice) / 1e9,
+    time: (parseInt(block.timestamp) - timezoneOffset) as UTCTimestamp,
   };
 }

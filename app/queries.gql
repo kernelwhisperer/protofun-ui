@@ -1,104 +1,54 @@
-# query SubBlocks @live(interval: 12000) {
-#   blocks(first: 200, orderBy: number, orderDirection: desc) {
-#     id
-#     number
-#     timestamp
-#     gasUsed
-#     baseFeePerGas
-#     txns {
-#       id
-#     }
-#     minGasPrice
-#     maxGasPrice
-#     gasFees
-#     burnedFees
-#     minerTips
-#   }
-# }
-
-query FetchLastBlocks {
-  blocks(first: 300, orderBy: timestamp, orderDirection: desc) {
+fragment FullBlock on Block {
     id
     number
     timestamp
     gasUsed
     baseFeePerGas
-    # txns
+    txnCount
     minGasPrice
     maxGasPrice
+    firstGasPrice
+    lastGasPrice
     gasFees
     burnedFees
     minerTips
+}
+
+# query SubBlocks @live(interval: 12000) {
+#   blocks(first: 200, orderBy: number, orderDirection: desc) {
+#     ...FullBlock
+#   }
+# }
+ 
+query FetchLastBlocks {
+  blocks(first: 300, orderBy: timestamp, orderDirection: desc) {
+    ...FullBlock
   }
 }
 
 query FetchBlocksSince($since: BigInt!) {
   blocks(first: 1000, orderBy: timestamp, where: { timestamp_gt: $since }) {
-    id
-    number
-    timestamp
-    gasUsed
-    baseFeePerGas
-    # txns
-    minGasPrice
-    maxGasPrice
-    gasFees
-    burnedFees
-    minerTips
+    ...FullBlock
   }
 }
 
 query FetchBlock($id: ID!) {
   block(id: $id) {
-    id
-    number
-    timestamp
-    gasUsed
-    baseFeePerGas
-    # txns
-    minGasPrice
-    maxGasPrice
-    gasFees
-    burnedFees
-    minerTips
+    ...FullBlock
   }
 }
 
 query FetchBlockByNumber($number: BigInt!) {
   blocks(where: { number: $number }) {
+    ...FullBlock
+  }
+}
+
+fragment FullTxn on Txn {
     id
-    number
+    blockNumber
+    index
     timestamp
-    gasUsed
-    baseFeePerGas
-    # txns
-    minGasPrice
-    maxGasPrice
-    gasFees
-    burnedFees
-    minerTips
-  }
-}
-
-query Txns {
-  txns(
-    where: {
-      block: "0x56c1ec3f16c917d68c94f5136ba39df9585c6d1e920d5aa45e26549b30fdb4f9"
-    }
-  ) {
-    id
-    gasFee
-    blockNumber
-    minerTip
-  }
-}
-
-query Txn {
-  txn(
-    id: "0x7cc561e4f860fc33ccae5795562d65b988e02829f3be28d32345e53274e93b21"
-  ) {
-    id
-    blockNumber
     gasUsed
     gasPrice
     gasFee
@@ -106,5 +56,19 @@ query Txn {
     maxPriorityFeePerGas
     burnedFee
     minerTip
+}
+ 
+
+query TxnsByBlock($number: BigInt!) {
+  txns(first: 1000, orderBy: index, orderDirection: asc, where: { blockNumber: $number }) {
+    ...FullTxn
+  }
+}
+
+query Txn {
+  txn(
+    id: "0x7cc561e4f860fc33ccae5795562d65b988e02829f3be28d32345e53274e93b21"
+  ) {
+    ...FullTxn
   }
 }
