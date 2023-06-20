@@ -70,7 +70,7 @@ export function GasPage(props: GasPageProps) {
             variants={variants}
             variant="h4"
             fontFamily={RobotoSerifFF}
-            gutterBottom
+            sx={{ paddingBottom: 3 }}
           >
             Historical gas prices
           </Typography>

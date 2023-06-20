@@ -1,12 +1,15 @@
-import { Box } from "@mui/material";
+import { Box, BoxProps, useTheme } from "@mui/material";
 import { HTMLMotionProps, motion, Target } from "framer-motion";
 import React from "react";
 
-const Blob = ({ sx, initial, ...rest }: HTMLMotionProps<"div">) => (
+const Blob = ({
+  sx,
+  initial,
+  ...rest
+}: HTMLMotionProps<"div"> & Pick<BoxProps, "sx">) => (
   <motion.div
     initial={{
       filter: "blur(40px) url(#noiseFilter) blur(5px)",
-      // opacity: 0.33,
       opacity: 0.2,
       padding: "40px",
       position: "absolute",
@@ -26,11 +29,11 @@ const Blob = ({ sx, initial, ...rest }: HTMLMotionProps<"div">) => (
 );
 
 export function Blobs() {
+  const { palette } = useTheme();
   return (
     <Box
       sx={{
         margin: "auto",
-        opacity: 0.5,
         position: "absolute",
         right: -100,
         top: -200,
@@ -39,7 +42,7 @@ export function Blobs() {
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{
-        opacity: 1,
+        opacity: palette.mode === "dark" ? 0.5 : 1,
       }}
       transition={{
         duration: 2,
@@ -59,7 +62,6 @@ export function Blobs() {
           top: 200,
         }}
         animate={{
-          opacity: [1, 1],
           right: [150, 200, 250, 150],
           top: [200, 300, 100, 200],
         }}
