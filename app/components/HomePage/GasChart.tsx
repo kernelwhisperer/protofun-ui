@@ -1,6 +1,6 @@
 "use client";
 
-import { alpha, Box, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { createChart, ISeriesApi, MouseEventParams } from "lightweight-charts";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
@@ -15,7 +15,7 @@ import {
 } from "../../utils/client-utils";
 import { RobotoMonoFF } from "../Theme/fonts";
 
-interface GasChartProps {
+export interface GasChartProps {
   initialData: SimpleBlock[];
 }
 
@@ -75,7 +75,7 @@ export function GasChart(props: GasChartProps) {
     const lineColor = theme.palette.primary.main;
     const secondaryColor = theme.palette.secondary.main;
     const textColor = theme.palette.text.primary;
-    const borderColor = alpha(theme.palette.primary.main, 0.2);
+    const borderColor = theme.palette.divider;
 
     const chart = createChart(containerRef.current, {
       crosshair: {

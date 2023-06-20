@@ -1,25 +1,70 @@
 "use client";
 
-import { Button, Stack } from "@mui/material";
+import {
+  AppBar,
+  AppBarProps,
+  Button,
+  Container,
+  Stack,
+  Toolbar,
+  useScrollTrigger,
+} from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
 import { Logo } from "./Logo";
 import { Settings } from "./Settings";
 
+function StyledAppBar(props: AppBarProps) {
+  const shouldElevate = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 16,
+  });
+
+  return (
+    <AppBar
+      position="sticky"
+      color="transparent"
+      elevation={0}
+      sx={(theme) => ({
+        border: "none",
+        borderBottom: "1px solid transparent",
+        boxShadow: "none",
+        transition: theme.transitions.create("background"),
+        ...(shouldElevate
+          ? {
+              "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
+                {
+                  backdropFilter: "blur(12px)",
+                  background: theme.palette.background.glass,
+                },
+              borderColor: theme.palette.divider,
+            }
+          : {}),
+      })}
+      {...props}
+    />
+  );
+}
+
 export function Header() {
   return (
-    <Stack
-      gap={1}
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      width="100%"
-      paddingX={2}
-      marginBottom={3}
-      marginTop={1}
-    >
-      {/* <Box
+    <StyledAppBar>
+      <Toolbar disableGutters>
+        <Container
+          maxWidth="lg"
+          sx={{ padding: { sm: 0 }, position: "relative" }}
+        >
+          <Stack
+            gap={1}
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+            paddingX={2}
+            marginY={1}
+          >
+            {/* <Box
         sx={{
           filter: "blur(40px) url(#noiseFilter) blur(1px)",
           left: 0,
@@ -41,18 +86,21 @@ export function Header() {
           }}
         />
       </Box> */}
-      <Button
-        href="/"
-        LinkComponent={Link}
-        sx={{
-          borderRadius: 8,
-          padding: 1,
-          textTransform: "none",
-        }}
-      >
-        <Logo />
-      </Button>
-      <Settings />
-    </Stack>
+            <Button
+              href="/"
+              LinkComponent={Link}
+              sx={{
+                borderRadius: 8,
+                padding: 1,
+                textTransform: "none",
+              }}
+            >
+              <Logo />
+            </Button>
+            <Settings />
+          </Stack>
+        </Container>
+      </Toolbar>
+    </StyledAppBar>
   );
 }

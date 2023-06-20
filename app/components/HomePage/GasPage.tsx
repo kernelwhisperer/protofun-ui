@@ -1,33 +1,39 @@
 "use client";
-import { Paper, Stack, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import { KeyboardBackspaceOutlined } from "@mui/icons-material";
+import { Button, Stack, Typography } from "@mui/material";
+import { motion, Variants } from "framer-motion";
 import React from "react";
 
 import { BlockMap, BlockMapProvider } from "../../hooks/useBlockMapContext";
 import { LegendProvider } from "../../hooks/useLegendContext";
 import { SimpleBlock } from "../../utils/client-utils";
 import { RobotoSerifFF } from "../Theme/fonts";
-import { ChartLegend } from "./ChartLegend";
-import { GasChart } from "./GasChart";
+import { ChartGroup } from "./ChartGroup";
 
 interface GasPageProps {
   initialData: SimpleBlock[];
 }
 
-const variants = {
+const variants: Variants = {
   closed: {
     opacity: 0,
     transition: {
-      duration: 0.25,
-      ease: "easeInOut",
+      // duration: 0.25,
+      // ease: "easeInOut",
+      damping: 40,
+      stiffness: 240,
+      type: "spring",
     },
     y: 50,
   },
   open: {
     opacity: 1,
     transition: {
-      duration: 0.25,
-      ease: "easeInOut",
+      // duration: 0.25,
+      // ease: "easeInOut",
+      damping: 40,
+      stiffness: 240,
+      type: "spring",
     },
     y: 0,
   },
@@ -45,30 +51,34 @@ export function GasPage(props: GasPageProps) {
       <LegendProvider>
         <Stack
           alignItems={"flex-start"}
-          gap={1}
+          gap={0}
           component={motion.div}
           initial={"closed"}
-          animate={true ? "open" : "closed"}
+          animate={"open"}
           variants={{
             closed: {
-              transition: { staggerChildren: 0.05, staggerDirection: -1 },
+              // transition: { staggerChildren: 0.05, staggerDirection: -1 },
             },
             open: {
-              transition: { staggerChildren: 0.1 },
+              transition: { staggerChildren: 0.15 },
             },
           }}
           transition={{ duration: 5 }}
         >
-          <Typography
-            component={motion.div}
-            variants={variants}
-            variant="subtitle1"
-          >
-            Ethereum
-          </Typography>
+          <motion.div variants={variants}>
+            <Button
+              size="small"
+              sx={{ borderRadius: 16, paddingLeft: 1, paddingRight: 2 }}
+              startIcon={<KeyboardBackspaceOutlined />}
+            >
+              Ethereum
+            </Button>
+          </motion.div>
           <motion.div
             variants={variants}
             style={{
+              marginBottom: 32,
+              marginTop: 16,
               position: "relative",
             }}
           >
@@ -76,7 +86,6 @@ export function GasPage(props: GasPageProps) {
               variant="h4"
               fontWeight={500}
               fontFamily={RobotoSerifFF}
-              sx={{}}
             >
               Historical gas prices
             </Typography>
@@ -103,21 +112,9 @@ export function GasPage(props: GasPageProps) {
               }}
             ></motion.div>
           </motion.div>
-          <Paper
-            component={motion.div}
-            variants={variants}
-            elevation={0}
-            sx={{
-              marginTop: 3,
-              paddingLeft: 0.5,
-              paddingTop: 0.5,
-              position: "relative",
-              width: "100%",
-            }}
-          >
-            <ChartLegend />
-            <GasChart initialData={initialData} />
-          </Paper>
+          <motion.div style={{ width: "100%" }} variants={variants}>
+            <ChartGroup initialData={initialData} />
+          </motion.div>
         </Stack>
       </LegendProvider>
     </BlockMapProvider>

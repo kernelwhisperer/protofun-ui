@@ -128,6 +128,15 @@ export const theme = extendTheme({
     },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderColor: "var(--mui-palette-primary-main)",
+          borderRadius: 0,
+          textTransform: "none",
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -135,8 +144,8 @@ export const theme = extendTheme({
           //   {
           //     backdropFilter: "blur(100px)",
           //   },
-          // background: "transparent",
-          backgroundColor: "var(--mui-palette-background-glass)",
+          background: "transparent",
+          // backgroundColor: "var(--mui-palette-background-glass)",
           border: "1px solid",
           borderColor: "var(--mui-palette-primary-main)",
           borderRadius: 0,

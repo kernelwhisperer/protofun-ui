@@ -10,6 +10,7 @@ import { Header } from "./Header";
 export function App({ children }: { children: React.ReactNode }) {
   return (
     <ThemeRegistry>
+      <Header />
       <Container
         maxWidth="lg"
         sx={{ padding: { sm: 0 }, position: "relative" }}
@@ -22,7 +23,6 @@ export function App({ children }: { children: React.ReactNode }) {
             flexDirection: "column",
           }}
         >
-          <Header />
           {/* <Breadcrumbs
             separator={<NavigateNext fontSize="small" />}
             aria-label="breadcrumb"
