@@ -4,12 +4,17 @@ import { Box, Container } from "@mui/material";
 import React from "react";
 
 import ThemeRegistry from "../Theme/ThemeRegistry";
+import { Blobs } from "./Blobs";
 import { Header } from "./Header";
 
 export function App({ children }: { children: React.ReactNode }) {
   return (
     <ThemeRegistry>
-      <Container maxWidth="lg" sx={{ padding: { sm: 0 } }}>
+      <Container
+        maxWidth="lg"
+        sx={{ padding: { sm: 0 }, position: "relative" }}
+      >
+        <Blobs />
         <Box
           sx={{
             alignItems: "flex-start",
@@ -50,6 +55,22 @@ export function App({ children }: { children: React.ReactNode }) {
           </AnimatePresence> */}
           {children}
         </Box>
+        <svg>
+          <filter id="noiseFilter">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.6"
+              stitchTiles="stitch"
+            />
+            <feColorMatrix
+              in="colorNoise"
+              type="matrix"
+              values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"
+            />
+            <feComposite operator="in" in2="SourceGraphic" result="monoNoise" />
+            <feBlend in="SourceGraphic" in2="monoNoise" mode="screen" />
+          </filter>
+        </svg>
       </Container>
     </ThemeRegistry>
   );

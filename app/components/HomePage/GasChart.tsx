@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, useTheme } from "@mui/material";
+import { alpha, Box, useTheme } from "@mui/material";
 import { createChart, ISeriesApi, MouseEventParams } from "lightweight-charts";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
@@ -53,7 +53,7 @@ export function GasChart(props: GasChartProps) {
     (data: SimpleBlock) => {
       setItem(data);
       rightSeries.current?.update(mapBlockToBaseGasFee(data));
-      leftSeries.current?.update(mapBlockToCandleData);
+      leftSeries.current?.update(mapBlockToCandleData(data));
     },
     [setItem]
   );
@@ -73,13 +73,19 @@ export function GasChart(props: GasChartProps) {
       });
     };
     const lineColor = theme.palette.primary.main;
-    // const secondaryColor = theme.palette.secondary.main;
+    const secondaryColor = theme.palette.secondary.main;
     const textColor = theme.palette.text.primary;
-    const borderColor = theme.palette.secondary.main;
+    const borderColor = alpha(theme.palette.primary.main, 0.2);
 
     const chart = createChart(containerRef.current, {
       crosshair: {
         // mode: 0,
+        horzLine: {
+          labelBackgroundColor: secondaryColor,
+        },
+        vertLine: {
+          labelBackgroundColor: secondaryColor,
+        },
       },
       grid: {
         horzLines: {
@@ -89,7 +95,7 @@ export function GasChart(props: GasChartProps) {
           color: borderColor,
         },
       },
-      height: 400,
+      height: 500,
       layout: {
         background: { color: "transparent" },
         fontFamily: RobotoMonoFF,
@@ -122,6 +128,7 @@ export function GasChart(props: GasChartProps) {
 
     rightSeries.current = chart.addLineSeries({
       color: lineColor,
+      lineType: 2,
     });
     rightSeries.current.setData(rightSeriesData);
 
