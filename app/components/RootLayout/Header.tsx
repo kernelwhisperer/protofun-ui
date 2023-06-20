@@ -20,7 +20,6 @@ export function Header() {
       marginTop={1}
     >
       {/* <Box
-        id="hey"
         sx={{
           filter: "blur(40px) url(#noiseFilter) blur(1px)",
           left: 0,

@@ -10,7 +10,7 @@ const Blob = ({
   <motion.div
     initial={{
       filter: "blur(40px) url(#noiseFilter) blur(5px)",
-      opacity: 0.2,
+      opacity: 0.5,
       padding: "40px",
       position: "absolute",
       zIndex: -1,
@@ -35,14 +35,14 @@ export function Blobs() {
       sx={{
         margin: "auto",
         position: "absolute",
-        right: -100,
-        top: -200,
+        right: 50,
+        top: -50,
         width: "300px",
       }}
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{
-        opacity: palette.mode === "dark" ? 0.5 : 1,
+        opacity: palette.mode === "dark" ? 0.33 : 1,
       }}
       transition={{
         duration: 2,

@@ -55,7 +55,14 @@ export function App({ children }: { children: React.ReactNode }) {
           </AnimatePresence> */}
           {children}
         </Box>
-        <svg>
+        <svg
+          style={{
+            opacity: 0,
+            pointerEvents: "none",
+            position: "absolute",
+            top: 0,
+          }}
+        >
           <filter id="noiseFilter">
             <feTurbulence
               type="fractalNoise"

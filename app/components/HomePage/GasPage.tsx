@@ -44,6 +44,7 @@ export function GasPage(props: GasPageProps) {
     <BlockMapProvider initialValue={blockMap}>
       <LegendProvider>
         <Stack
+          alignItems={"flex-start"}
           gap={1}
           component={motion.div}
           initial={"closed"}
@@ -65,20 +66,54 @@ export function GasPage(props: GasPageProps) {
           >
             Ethereum
           </Typography>
-          <Typography
-            component={motion.div}
+          <motion.div
             variants={variants}
-            variant="h4"
-            fontFamily={RobotoSerifFF}
-            sx={{ paddingBottom: 3 }}
+            style={{
+              position: "relative",
+            }}
           >
-            Historical gas prices
-          </Typography>
+            <Typography
+              variant="h4"
+              fontWeight={500}
+              fontFamily={RobotoSerifFF}
+              sx={{}}
+            >
+              Historical gas prices
+            </Typography>
+            <motion.div
+              style={{
+                background: "var(--mui-palette-secondary-main)",
+                bottom: 0,
+                content: '""',
+                height: 16,
+                left: 0,
+                opacity: 1,
+                position: "absolute",
+                transform: "skew(-12deg) translateX(12px)",
+                zIndex: -1,
+              }}
+              animate={{
+                marginLeft: [0, 0, 360],
+                width: [0, 360, 0],
+              }}
+              transition={{
+                delay: 0.25,
+                duration: 1,
+                ease: "easeInOut",
+              }}
+            ></motion.div>
+          </motion.div>
           <Paper
             component={motion.div}
             variants={variants}
             elevation={0}
-            sx={{ paddingLeft: 0.5, paddingTop: 0.5, position: "relative" }}
+            sx={{
+              marginTop: 3,
+              paddingLeft: 0.5,
+              paddingTop: 0.5,
+              position: "relative",
+              width: "100%",
+            }}
           >
             <ChartLegend />
             <GasChart initialData={initialData} />

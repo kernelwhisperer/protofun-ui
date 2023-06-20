@@ -1,4 +1,4 @@
-import { alpha, darken } from "@mui/material";
+import { alpha } from "@mui/material";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 import { RobotoFlexFF } from "./fonts";
@@ -18,9 +18,9 @@ const RETRO_GREY_AF = "rgb(48, 51, 59)";
 
 const RETRO_BEIGE_1 = "rgb(200, 187, 155)";
 const RETRO_BEIGE_1_AF = "rgb(209, 200, 178)";
-const RETRO_YELLOW = "rgb(238, 187, 95)";
+// const RETRO_YELLOW = "rgb(238, 187, 95)";
 
-const RETRO_BEIGE_2 = "rgb(225, 216, 205)";
+const RETRO_BEIGE_2 = "rgb(236, 225, 211)";
 const RETRO_PURPLE = "rgb(184, 119, 182)";
 
 export const globalStyles = `
@@ -45,6 +45,11 @@ export const globalStyles = `
     opacity: 15%;
   }
   
+  ::selection {
+    color: white;
+    background: var(--mui-palette-secondary-main);
+  }
+
   html {
     scrollbar-width: thin;
   }
@@ -93,11 +98,10 @@ export const theme = extendTheme({
           main: RETRO_BEIGE_2,
         },
         secondary: {
-          main: RETRO_YELLOW,
+          main: "#008080",
         },
         text: {
           primary: RETRO_BEIGE_2,
-          secondary: darken(RETRO_BEIGE_2, 0.25),
         },
       },
     },

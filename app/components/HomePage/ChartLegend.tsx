@@ -5,7 +5,7 @@ import React from "react";
 
 import { useBlockMap } from "../../hooks/useBlockMapContext";
 import { useLegend } from "../../hooks/useLegendContext";
-import { formatNumber } from "../../utils/client-utils";
+import { formatBigInt, formatNumber } from "../../utils/client-utils";
 import { RobotoMonoFF } from "../Theme/fonts";
 
 const LegendLabel = ({ sx, ...rest }: TypographyProps) => (
@@ -52,7 +52,7 @@ export function ChartLegend() {
         >
           <Stack direction="row">
             <LegendLabel>Block number </LegendLabel>
-            <LegendValue>{block.number}</LegendValue>
+            <LegendValue>{formatBigInt(block.number)}</LegendValue>
           </Stack>
           {/* <LegendText>
         {new Intl.DateTimeFormat(window.navigator.language, {

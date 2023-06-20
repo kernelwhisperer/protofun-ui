@@ -21,11 +21,15 @@ export function noop() {}
 export type SimpleBlock = Omit<Block, "txns">;
 
 export function formatNumber(number: number, digits = 2) {
-  return new Intl.NumberFormat([], {
+  return new Intl.NumberFormat(undefined, {
     maximumFractionDigits: digits,
     // minimumFractionDigits: digits,
     notation: "compact",
   }).format(number);
+}
+
+export function formatBigInt(number: number) {
+  return new Intl.NumberFormat().format(number);
 }
 
 export const timezoneOffset = new Date().getTimezoneOffset() * 60;
