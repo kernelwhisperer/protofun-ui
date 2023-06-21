@@ -7,6 +7,13 @@ const nextConfig = {
   },
   reactStrictMode: false,
   swcMinify: true,
+  webpack: (config) =>
+    Object.assign({}, config, {
+      ignoreWarnings: [
+        // https://github.com/graphprotocol/graph-client/issues/480
+        { module: /graphql-mesh\/utils\/esm\/defaultImportFn.js/ },
+      ],
+    }),
 };
 
 module.exports = nextConfig;
