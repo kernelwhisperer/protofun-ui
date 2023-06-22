@@ -1,16 +1,19 @@
 import React from "react";
 
-import { getBuiltGraphSDK } from "../.graphclient";
 import { GasPage } from "./components/HomePage/GasPage";
 import { PageWrapper } from "./components/RootLayout/PageWrapper";
+import { getLatestBlocks } from "./utils/block-utils";
+import { getLatestCandles } from "./utils/candle-utils";
 
 export default async function HomePage() {
-  const sdk = getBuiltGraphSDK();
-  const { blocks } = await sdk.FetchLastBlocks();
+  const [candles, blocks] = await Promise.all([
+    getLatestCandles("Minute"),
+    getLatestBlocks(),
+  ]);
 
   return (
     <PageWrapper>
-      <GasPage initialData={blocks.reverse()} />
+      <GasPage blocks={blocks} candles={candles} />
     </PageWrapper>
   );
 }

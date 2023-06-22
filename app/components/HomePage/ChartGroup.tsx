@@ -1,33 +1,51 @@
-import { Button, ButtonGroup, Paper, Stack } from "@mui/material";
-import React from "react";
+import { Paper, Stack } from "@mui/material";
+import { useStore } from "@nanostores/react";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
 
-import { ChartLegend } from "./ChartLegend";
-import { GasChart, GasChartProps } from "./GasChart";
+import { $timeframe } from "../../stores/home-page";
+import { Progress } from "../RootLayout/Progress";
+import { BlockChart } from "./BlockChart";
+import { CandleChart } from "./CandleChart";
+import { ChartActionBar } from "./ChartActionBar";
 
-export function ChartGroup(props: GasChartProps) {
-  const { initialData } = props;
+export function ChartGroup() {
+  console.log("📜 LOG > ChartGroup > render");
+  const [loading, setLoading] = useState(false);
+
+  const timeframe = useStore($timeframe);
 
   return (
     <Stack gap={1}>
-      <ButtonGroup variant="outlined" size="small">
-        <Button>Block</Button>
-        <Button>1m</Button>
-        <Button>1h</Button>
-        <Button>D</Button>
-        <Button>W</Button>
-        <Button>M</Button>
-      </ButtonGroup>
+      <ChartActionBar />
       <Paper
         elevation={0}
         sx={{
+          height: "500px",
           paddingLeft: 0.5,
           paddingTop: 0.5,
           position: "relative",
         }}
       >
-        <ChartLegend />
-        {/* <Skeleton variant="rectangular" width={"100%"} height={500} /> */}
-        <GasChart initialData={initialData} />
+        <Progress loading={loading} />
+        <motion.div
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+          animate={loading ? "loading" : "ready"}
+          variants={{
+            loading: {
+              opacity: 0.5,
+            },
+            ready: {
+              opacity: 1,
+            },
+          }}
+        >
+          {timeframe === "Block" && <BlockChart />}
+          {timeframe !== "Block" && <CandleChart />}
+        </motion.div>
       </Paper>
     </Stack>
   );

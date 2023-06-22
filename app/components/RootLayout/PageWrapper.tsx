@@ -1,9 +1,11 @@
 "use client";
 import { Box } from "@mui/material";
 import { HTMLMotionProps, motion } from "framer-motion";
-import React from "react";
+import React, { ReactNode } from "react";
 
-export function PageWrapper(props: Omit<HTMLMotionProps<"div">, "children">) {
+export function PageWrapper(
+  props: HTMLMotionProps<"div"> & { children?: ReactNode }
+) {
   return (
     <Box
       component={motion.div}

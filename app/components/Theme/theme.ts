@@ -12,6 +12,7 @@ declare module "@mui/material/styles" {
   // }
 }
 
+// https://colorhunt.co/palette/ff6d60f7d060f3e99f98d8aa
 const RETRO_GREY = "rgb(31, 34, 42)";
 const RETRO_GREY_AF = "rgb(48, 51, 59)";
 // const RETRO_GREY = "rgb(57, 65, 73)";
@@ -61,7 +62,7 @@ export const globalStyles = `
 
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-thumb {
-    // border-radius: 2px;
+    border-radius: 2px;
     width: 10px;
   }
 
@@ -102,11 +103,11 @@ export const theme = extendTheme({
         },
         text: {
           primary: RETRO_BEIGE_2,
+          secondary: RETRO_GREY,
         },
       },
     },
     light: {
-      // https://colorhunt.co/palette/ff6d60f7d060f3e99f98d8aa
       palette: {
         TableCell: {
           border: alpha(RETRO_GREY, 0.33),
@@ -123,6 +124,7 @@ export const theme = extendTheme({
         },
         text: {
           primary: RETRO_GREY,
+          secondary: RETRO_BEIGE_1,
         },
       },
     },
@@ -131,6 +133,20 @@ export const theme = extendTheme({
     MuiButton: {
       styleOverrides: {
         root: {
+          // TODO: this is elegant, but broken
+          // "&.active": {
+          //   background: (
+          //     theme.palette[ownerState.color as keyof Palette] as PaletteColor
+          //   ).main,
+          //   color: theme.palette.getContrastText(
+          //     (theme.palette[ownerState.color as keyof Palette] as PaletteColor)
+          //       .main
+          //   ),
+          // },
+          "&.active": {
+            background: "var(--mui-palette-primary-main)",
+            color: "var(--mui-palette-text-secondary)",
+          },
           borderColor: "var(--mui-palette-primary-main)",
           borderRadius: 0,
           textTransform: "none",
@@ -158,24 +174,3 @@ export const theme = extendTheme({
     fontFamily: RobotoFlexFF,
   },
 });
-
-// components: {
-//   MuiButton: {
-//     styleOverrides: {
-//       root: {
-//         background: "rgb(255,255,255, 0.15)",
-//         textTransform: "none",
-//       },
-//     },
-//   },
-// },
-// components: {
-//   MuiButton: {
-//     styleOverrides: {
-//       root: {
-//         background: "rgb(0,0,0, 0.05)",
-//         textTransform: "none",
-//       },
-//     },
-//   },
-// },

@@ -1,10 +1,11 @@
 import { Stack, Typography, TypographyProps } from "@mui/material";
+import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
-import { useBlockMap } from "../../hooks/useBlockMapContext";
-import { useLegend } from "../../hooks/useLegendContext";
+import { $blockMap } from "../../stores/block-data";
+import { $legendTimestamp } from "../../stores/home-page";
 import { formatBigInt, formatNumber } from "../../utils/client-utils";
 import { RobotoMonoFF } from "../Theme/fonts";
 
@@ -24,11 +25,12 @@ const LegendValue = (props: TypographyProps) => (
   <LegendLabel fontFamily={RobotoMonoFF} sx={{ paddingLeft: 0 }} {...props} />
 );
 
-export function ChartLegend() {
-  const { timestamp } = useLegend();
-  const { getItem } = useBlockMap();
+export function BlockChartLegend() {
+  console.log("📜 LOG > ChartLegend render");
 
-  const block = getItem(timestamp);
+  const timestamp = useStore($legendTimestamp);
+  const block = $blockMap.get()[timestamp];
+
   // const blockDate = new Date(parseInt(timestamp || "0") * 1000);
 
   return (
@@ -50,9 +52,11 @@ export function ChartLegend() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
         >
-          <Stack direction="row">
-            <LegendLabel>Block number </LegendLabel>
-            <LegendValue>{formatBigInt(block.number)}</LegendValue>
+          <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
+            <LegendLabel variant="body2">Block number </LegendLabel>
+            <LegendValue variant="body2">
+              {formatBigInt(block.number)}
+            </LegendValue>
           </Stack>
           {/* <LegendText>
         {new Intl.DateTimeFormat(window.navigator.language, {
@@ -67,20 +71,6 @@ export function ChartLegend() {
               {formatNumber(
                 new Decimal(block.baseFeePerGas).div(1e9).toNumber()
               )}{" "}
-              Gwei
-            </LegendValue>
-          </Stack>
-          <Stack direction="row">
-            <LegendLabel>Max gas price </LegendLabel>
-            <LegendValue>
-              {formatNumber(new Decimal(block.maxGasPrice).div(1e9).toNumber())}{" "}
-              Gwei
-            </LegendValue>
-          </Stack>
-          <Stack direction="row">
-            <LegendLabel>Min gas price </LegendLabel>
-            <LegendValue>
-              {formatNumber(new Decimal(block.minGasPrice).div(1e9).toNumber())}{" "}
               Gwei
             </LegendValue>
           </Stack>

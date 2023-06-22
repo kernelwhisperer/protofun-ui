@@ -21,7 +21,7 @@ fragment FullBlock on Block {
 # }
  
 query FetchLastBlocks {
-  blocks(first: 300, orderBy: timestamp, orderDirection: desc) {
+  blocks(first: 1000, orderBy: timestamp, orderDirection: desc) {
     ...FullBlock
   }
 }

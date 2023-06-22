@@ -36,7 +36,7 @@ export function Blobs() {
         margin: "auto",
         position: "absolute",
         right: 50,
-        top: -50,
+        top: -300,
         width: "300px",
       }}
       component={motion.div}

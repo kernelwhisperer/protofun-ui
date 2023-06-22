@@ -1,8 +1,8 @@
 import { useCallback, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
-import { getBuiltGraphSDK } from "../../.graphclient";
-import { SimpleBlock } from "../utils/client-utils";
+import { SimpleBlock } from "../utils/block-utils";
+import { sdk } from "../utils/client-utils";
 
 export function useNewBlocksSub(
   initialTimestamp: string,
@@ -12,8 +12,7 @@ export function useNewBlocksSub(
 
   const tryFetch = useCallback(async () => {
     console.log("📜 LOG > useLatestBlocks > since", lastTimestamp.current);
-    const sdk = getBuiltGraphSDK();
-    const { blocks } = await sdk.FetchBlocksSince({
+    const { candle: blocks } = await sdk.FetchBlocksSince({
       since: lastTimestamp.current,
     });
     console.log("📜 LOG > useLatestBlocks > response", blocks);
