@@ -7,49 +7,34 @@ import { TZ_OFFSET } from "./client-utils";
 const getEntityId = (timeframe: Timeframe) =>
   `baseFeePerGas${timeframe}Candles`;
 
-export async function getLatestCandles(
-  timeframe: Timeframe
-): Promise<Candle[]> {
-  const entityId = getEntityId(timeframe);
-  return execute(
-    `
-  query FetchLatest {
-    ${entityId}(first: 1000, orderBy: timestamp, orderDirection: desc) {
-      timestamp
-      open
-      high
-      low
-      close
-    }
+const fetchLatestQuery = (entityId: string) => `
+query FetchLatest($since: BigInt!) {
+  ${entityId}(first: 1000, orderBy: timestamp, orderDirection: desc, where: { timestamp_gte: $since }) {
+    timestamp
+    open
+    high
+    low
+    close
   }
-  `,
-    {}
-  ).then((res) => res.data[entityId].reverse());
 }
+`;
 
-export async function getCandlesSince(
+export async function queryCandles(
   timeframe: Timeframe,
   since: string
 ): Promise<Candle[]> {
   const entityId = getEntityId(timeframe);
-  return (
-    execute(
-      `
-  query FetchLatest($since: BigInt!) {
-    ${entityId}(first: 1000, orderBy: timestamp, orderDirection: desc, where: { timestamp_gte: $since }) {
-      timestamp
-      open
-      high
-      low
-      close
+  const response = await execute(fetchLatestQuery(entityId), { since });
+
+  if (response.errors) {
+    let errorMessage = response.errors.map((x) => x.message).join("\n");
+    if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
+      errorMessage = "Indexer offline.";
     }
+    throw new Error(errorMessage);
   }
-  `,
-      { since }
-    )
-      // .then(console.log);
-      .then((x) => x.data[entityId].reverse())
-  );
+
+  return response.data[entityId].reverse();
 }
 
 export function createCandleMapper(precision: number) {

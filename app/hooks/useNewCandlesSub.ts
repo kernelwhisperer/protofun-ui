@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
 import { $timeframe } from "../stores/home-page";
-import { Candle, getCandlesSince } from "../utils/candle-utils";
+import { Candle, queryCandles } from "../utils/candle-utils";
 
 export function useNewCandlesSub(
   initialTimestamp: string,
@@ -17,7 +17,7 @@ export function useNewCandlesSub(
   const tryFetch = useCallback(async () => {
     console.log("📜 LOG > useLatestCandles > since", lastTimestamp.current);
     const timeframe = $timeframe.get();
-    const candle = await getCandlesSince(timeframe, lastTimestamp.current);
+    const candle = await queryCandles(timeframe, lastTimestamp.current);
     console.log("📜 LOG > useLatestCandles > response", candle);
 
     if (timeframe !== $timeframe.get()) {

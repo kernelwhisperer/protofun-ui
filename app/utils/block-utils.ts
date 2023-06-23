@@ -15,9 +15,17 @@ import { sdk, TZ_OFFSET } from "./client-utils";
 
 export type SimpleBlock = Omit<Block, "txns">;
 
-export async function getLatestBlocks() {
-  const { blocks } = await sdk.FetchLastBlocks();
-  return blocks.reverse();
+export async function queryBlocks() {
+  try {
+    const res = await sdk.FetchLastBlocks();
+    return res.blocks.reverse();
+  } catch (error) {
+    let errorMessage = (error as Error).message;
+    if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
+      errorMessage = "Indexer offline.";
+    }
+    throw new Error(errorMessage);
+  }
 }
 
 export function createBlockMapper(value: keyof SimpleBlock, precision: number) {
