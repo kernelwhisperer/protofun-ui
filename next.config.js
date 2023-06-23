@@ -16,19 +16,16 @@ const nextConfig = {
     }),
 };
 
-module.exports = nextConfig;
-
-// Injected content via Sentry wizard below
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(
-  module.exports,
+  nextConfig,
   {
     org: "coldpizza",
 
     project: "protofun",
+
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
     // Suppresses source map uploading logs during build

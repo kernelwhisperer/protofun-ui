@@ -1,4 +1,5 @@
-import * as Sentry from "@sentry/nextjs";
+"use client";
+
 import Head from "next/head";
 import React from "react";
 
@@ -12,10 +13,8 @@ export default function Home() {
 
       <main
         style={{
-          alignItems: "center",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
           minHeight: "100vh",
         }}
       >
@@ -48,21 +47,9 @@ export default function Home() {
             padding: "12px",
           }}
           onClick={async () => {
-            const transaction = Sentry.startTransaction({
-              name: "Example Frontend Transaction",
-            });
-
-            Sentry.configureScope((scope) => {
-              scope.setSpan(transaction);
-            });
-
-            try {
-              const res = await fetch("/api/sentry-example-api");
-              if (!res.ok) {
-                throw new Error("Sentry Example Frontend Error");
-              }
-            } finally {
-              transaction.finish();
+            const res = await fetch("/api/sentry-example-api");
+            if (!res.ok) {
+              throw new Error("Sentry Example Frontend Error");
             }
           }}
         >

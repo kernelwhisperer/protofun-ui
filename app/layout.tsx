@@ -12,10 +12,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const appVer = (process.env.APP_VER as string).replaceAll('"', "");
+  const gitHash = process.env.GIT_HASH as string;
+
   return (
     <html lang="en">
       <body>
-        <App>{children}</App>
+        <App appVer={appVer} gitHash={gitHash}>
+          {children}
+        </App>
       </body>
     </html>
   );
