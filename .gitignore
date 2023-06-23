@@ -42,3 +42,6 @@ pnpm-debug.log*
 next-env.d.ts
 
 .graphclient
+
+# Sentry Auth Token
+.sentryclirc

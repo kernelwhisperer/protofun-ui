@@ -25,6 +25,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
     "@nanostores/react": "^0.7.1",
+    "@sentry/nextjs": "^7.56.0",
     "bufferutil": "^4.0.7",
     "decimal.js": "^10.4.3",
     "encoding": "^0.1.13",
