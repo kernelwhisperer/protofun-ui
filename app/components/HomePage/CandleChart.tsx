@@ -26,7 +26,7 @@ import {
   Candle,
   createCandleMapper,
   createLineMapper,
-  getLatestCandles,
+  queryCandles,
 } from "../../utils/candle-utils";
 import { TZ_OFFSET } from "../../utils/client-utils";
 import { Chart } from "../Chart";
@@ -50,7 +50,7 @@ export function CandleChart() {
     console.log("📜 LOG > CandleChart > fetching");
 
     // setLoading(true); TODO
-    getLatestCandles(timeframe)
+    queryCandles(timeframe)
       .then((data) => {
         if (timeframe === "Hour") {
           $hourCandles.set(data);

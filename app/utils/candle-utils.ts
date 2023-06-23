@@ -21,7 +21,7 @@ query FetchLatest($since: BigInt!) {
 
 export async function queryCandles(
   timeframe: Timeframe,
-  since: string
+  since = "0"
 ): Promise<Candle[]> {
   const entityId = getEntityId(timeframe);
   const response = await execute(fetchLatestQuery(entityId), { since });

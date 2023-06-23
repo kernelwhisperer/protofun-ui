@@ -7,7 +7,7 @@ import { queryCandles } from "./utils/candle-utils";
 
 export default async function HomePage() {
   const [candles, blocks] = await Promise.all([
-    queryCandles("Minute", "0"),
+    queryCandles("Minute"),
     queryBlocks(),
   ]);
 
