@@ -45,6 +45,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
 
       tunnel: "/monitoring?o=4505410061795328&p=4505410080931840",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
