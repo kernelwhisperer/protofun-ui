@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-// Injected content via Sentry wizard below
-
-import { withSentryConfig } from "@sentry/nextjs";
-
 const nextConfig = {
   modularizeImports: {
     "@mui/icons-material": {
@@ -21,6 +17,11 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+// Injected content via Sentry wizard below
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(
   module.exports,
