@@ -1,5 +1,6 @@
 import { useTheme } from "@mui/material";
 import { useStore } from "@nanostores/react";
+import { captureException } from "@sentry/nextjs";
 import {
   IChartApi,
   ISeriesApi,
@@ -76,7 +77,9 @@ export function CandleChart() {
         $loading.set(false);
       })
       .catch((error) => {
-        setError(`Error: ${error.message}`);
+        console.error(error);
+        captureException(error);
+        setError(`${error.name}: ${error.message}`);
         $loading.set(false);
       });
   }, [timeframe, data]);

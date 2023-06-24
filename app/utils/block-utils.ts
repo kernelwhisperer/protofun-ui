@@ -1,8 +1,8 @@
-import { captureException } from "@sentry/nextjs";
 import { LineData, UTCTimestamp } from "lightweight-charts";
 
 import { Block } from "../../.graphclient";
 import { sdk, TZ_OFFSET } from "./client-utils";
+import { IndexerError } from "./errors";
 
 // TODO
 // declare module "../../.graphclient" {
@@ -16,22 +16,17 @@ import { sdk, TZ_OFFSET } from "./client-utils";
 
 export type SimpleBlock = Omit<Block, "txns">;
 
-export async function queryBlocks(suppressError = false) {
+export async function queryBlocks() {
   try {
     const res = await sdk.FetchLastBlocks();
     return res.blocks.reverse();
   } catch (error) {
     let errorMessage = (error as Error).message;
     if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
-      errorMessage = "Indexer offline.";
+      errorMessage = "Connection failed";
     }
 
-    if (suppressError) {
-      captureException(new Error(errorMessage));
-      return [];
-    }
-
-    throw new Error(errorMessage);
+    throw new IndexerError(errorMessage);
   }
 }
 

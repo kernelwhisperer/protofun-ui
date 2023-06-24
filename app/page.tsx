@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/nextjs";
 import React from "react";
 
 import { GasPage } from "./components/HomePage/GasPage";
@@ -7,8 +8,16 @@ import { queryCandles } from "./utils/candle-utils";
 
 export default async function HomePage() {
   const [candles, blocks] = await Promise.all([
-    queryCandles("Minute", undefined, true),
-    queryBlocks(true),
+    queryCandles("Minute").catch((error) => {
+      console.error(error);
+      captureException(error);
+      return [];
+    }),
+    queryBlocks().catch((error) => {
+      console.error(error);
+      captureException(error);
+      return [];
+    }),
   ]);
 
   return (

@@ -8,7 +8,10 @@ Sentry.init({
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
 
-  dsn: "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
+  dsn:
+    process.env.NODE_ENV === "development"
+      ? ""
+      : "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
 
   release: process.env.GIT_HASH,
   // Adjust this value in production, or use tracesSampler for greater control

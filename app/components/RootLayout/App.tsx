@@ -22,14 +22,17 @@ export function App({ children, appVer, gitHash }: AppProps) {
       // Setting this option to true will print useful information to the console while you're setting up Sentry.
       debug: false,
 
-      dsn: "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
+      dsn:
+        process.env.NODE_ENV === "development"
+          ? ""
+          : "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
 
       // You can remove this option if you're not planning to use the Sentry Session Replay feature:
       integrations: [
         new Sentry.Replay({
-          blockAllMedia: true,
+          // blockAllMedia: true,
           // Additional Replay configuration goes in here, for example:
-          maskAllText: true,
+          // maskAllText: true,
         }),
       ],
       release: gitHash,

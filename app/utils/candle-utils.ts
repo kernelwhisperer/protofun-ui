@@ -1,9 +1,9 @@
-import { captureException } from "@sentry/nextjs";
 import { CandlestickData, LineData, UTCTimestamp } from "lightweight-charts";
 
 import { execute } from "../../.graphclient";
 import { Timeframe } from "../stores/home-page";
 import { TZ_OFFSET } from "./client-utils";
+import { IndexerError } from "./errors";
 
 const getEntityId = (timeframe: Timeframe) =>
   `baseFeePerGas${timeframe}Candles`;
@@ -22,8 +22,7 @@ query FetchLatest($since: BigInt!) {
 
 export async function queryCandles(
   timeframe: Timeframe,
-  since = "0",
-  suppressError = false
+  since = "0"
 ): Promise<Candle[]> {
   const entityId = getEntityId(timeframe);
   const response = await execute(fetchLatestQuery(entityId), { since });
@@ -34,15 +33,10 @@ export async function queryCandles(
       errorMessage.includes("ECONNREFUSED 127.0.0.1:8000") ||
       errorMessage.includes("Failed to fetch")
     ) {
-      errorMessage = "Indexer offline.";
+      errorMessage = "Connection failed";
     }
 
-    if (suppressError) {
-      captureException(new Error(errorMessage));
-      return [];
-    }
-
-    throw new Error(errorMessage);
+    throw new IndexerError(errorMessage);
   }
 
   return response.data[entityId].reverse();
