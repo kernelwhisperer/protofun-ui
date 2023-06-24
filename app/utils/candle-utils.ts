@@ -21,18 +21,27 @@ query FetchLatest($since: BigInt!) {
 
 export async function queryCandles(
   timeframe: Timeframe,
-  since = "0"
+  since = "0",
+  suppressError = false
 ): Promise<Candle[]> {
   const entityId = getEntityId(timeframe);
   const response = await execute(fetchLatestQuery(entityId), { since });
 
   if (response.errors) {
     let errorMessage = response.errors.map((x) => x.message).join("\n");
-    if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
+    if (
+      errorMessage.includes("ECONNREFUSED 127.0.0.1:8000") ||
+      errorMessage.includes("Failed to fetch")
+    ) {
       errorMessage = "Indexer offline.";
     }
-    console.error(Error(errorMessage));
-    return [];
+
+    if (suppressError) {
+      console.error(new Error(errorMessage));
+      return [];
+    }
+
+    throw new Error(errorMessage);
   }
 
   return response.data[entityId].reverse();

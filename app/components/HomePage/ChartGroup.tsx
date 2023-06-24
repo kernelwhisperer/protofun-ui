@@ -1,19 +1,19 @@
 import { Paper, Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React from "react";
 
-import { $timeframe } from "../../stores/home-page";
-import { Progress } from "../RootLayout/Progress";
+import { $loading, $timeframe } from "../../stores/home-page";
+import { Progress } from "../Progress";
 import { BlockChart } from "./BlockChart";
 import { CandleChart } from "./CandleChart";
 import { ChartActionBar } from "./ChartActionBar";
 
 export function ChartGroup() {
   console.log("📜 LOG > ChartGroup > render");
-  const [loading, setLoading] = useState(false);
 
   const timeframe = useStore($timeframe);
+  const loading = useStore($loading);
 
   return (
     <Stack gap={1}>

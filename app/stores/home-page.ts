@@ -17,3 +17,4 @@ export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Normal);
 
 export const $legendTimestamp = atom<string>("");
+export const $loading = atom<boolean>(false);

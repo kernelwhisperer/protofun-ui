@@ -6,7 +6,8 @@ import { Candle, queryCandles } from "../utils/candle-utils";
 
 export function useNewCandlesSub(
   initialTimestamp: string,
-  handleNewCandle: (candle: Candle) => void
+  handleNewCandle: (candle: Candle) => void,
+  active: boolean
 ) {
   const lastTimestamp = useRef<string>(initialTimestamp);
 
@@ -37,6 +38,6 @@ export function useNewCandlesSub(
     tryFetch,
     // Delay in milliseconds or null to stop it
     // 12 * 1000
-    5 * 1000 // TODO
+    active ? 5 * 1000 : null // TODO
   );
 }

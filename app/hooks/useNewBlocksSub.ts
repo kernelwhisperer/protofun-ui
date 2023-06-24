@@ -6,7 +6,8 @@ import { sdk } from "../utils/client-utils";
 
 export function useNewBlocksSub(
   initialTimestamp: string,
-  onNewBlock: (block: SimpleBlock) => void
+  onNewBlock: (block: SimpleBlock) => void,
+  active: boolean
 ) {
   const lastTimestamp = useRef<string>(initialTimestamp);
 
@@ -27,6 +28,6 @@ export function useNewBlocksSub(
     tryFetch,
     // Delay in milliseconds or null to stop it
     // 12 * 1000
-    5 * 1000 // TODO
+    active ? 5 * 1000 : null // TODO
   );
 }

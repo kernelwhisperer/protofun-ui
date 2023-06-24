@@ -15,7 +15,7 @@ import { sdk, TZ_OFFSET } from "./client-utils";
 
 export type SimpleBlock = Omit<Block, "txns">;
 
-export async function queryBlocks() {
+export async function queryBlocks(suppressError = false) {
   try {
     const res = await sdk.FetchLastBlocks();
     return res.blocks.reverse();
@@ -24,8 +24,13 @@ export async function queryBlocks() {
     if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
       errorMessage = "Indexer offline.";
     }
-    console.error(Error(errorMessage));
-    return [];
+
+    if (suppressError) {
+      console.error(new Error(errorMessage));
+      return [];
+    }
+
+    throw new Error(errorMessage);
   }
 }
 

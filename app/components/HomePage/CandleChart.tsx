@@ -6,7 +6,13 @@ import {
   MouseEventParams,
   Time,
 } from "lightweight-charts";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { useNewCandlesSub } from "../../hooks/useNewCandlesSub";
 import {
@@ -18,6 +24,7 @@ import {
 } from "../../stores/candle-data";
 import {
   $legendTimestamp,
+  $loading,
   $scaleMode,
   $seriesType,
   $timeframe,
@@ -30,6 +37,7 @@ import {
 } from "../../utils/candle-utils";
 import { TZ_OFFSET } from "../../utils/client-utils";
 import { Chart } from "../Chart";
+import { ErrorOverlay } from "../ErrorOverlay";
 import { CandleChartLegend } from "./CandleChartLegend";
 
 const mapCandleToCandleData = createCandleMapper(1e9);
@@ -45,11 +53,14 @@ export function CandleChart() {
   const data = useStore(timeframe === "Minute" ? $minCandles : $hourCandles);
   const seriesType = useStore($seriesType);
 
+  const [error, setError] = useState<string>("");
+
   useEffect(() => {
     if (data.length) return;
     console.log("📜 LOG > CandleChart > fetching");
 
-    // setLoading(true); TODO
+    $loading.set(true);
+    setError("");
     queryCandles(timeframe)
       .then((data) => {
         if (timeframe === "Hour") {
@@ -62,7 +73,11 @@ export function CandleChart() {
         }
       })
       .then(() => {
-        // setLoading(false);
+        $loading.set(false);
+      })
+      .catch((error) => {
+        setError(`Error: ${error.message}`);
+        $loading.set(false);
       });
   }, [timeframe, data]);
 
@@ -96,63 +111,66 @@ export function CandleChart() {
     mainSeries.current?.update(mapCandleToCandleData(candle));
   }, []);
 
-  useNewCandlesSub(data[data.length - 1]?.timestamp, handleNewCandle);
+  useNewCandlesSub(data[data.length - 1]?.timestamp, handleNewCandle, !error);
 
   return (
     <>
+      <ErrorOverlay errorMessage={error} />
       <CandleChartLegend />
-      <Chart
-        chartRef={chartRef}
-        onReady={() => {
-          console.log(
-            "📜 LOG > CandleChart render chart ready",
-            mainSeriesData.length,
-            !!mainSeries.current
-          );
-          if (seriesType === "Candlestick") {
-            mainSeries.current = chartRef.current?.addCandlestickSeries({
-              borderDownColor: "#EB6666", // TODO
-              borderUpColor: "#5e9a77",
-              downColor: "#EB6666",
-              upColor: "#5e9a77",
-              wickDownColor: "#EB6666",
-              wickUpColor: "#5e9a77",
-            });
-          } else {
-            const primaryColor = theme.palette.primary.main;
-            mainSeries.current = chartRef.current?.addLineSeries({
-              color: primaryColor,
-              lineType: 2,
-            });
-          }
-
-          mainSeries.current?.setData(mainSeriesData);
-          chartRef.current?.priceScale("right").applyOptions({
-            mode: $scaleMode.get(),
-          });
-
-          const updateLegend = ({ time, point }: MouseEventParams) => {
-            const validCrosshairPoint = !(
-              !time ||
-              !point?.x ||
-              !point?.y ||
-              point.x < 0 ||
-              point.y < 0
+      {!!data.length && (
+        <Chart
+          chartRef={chartRef}
+          onReady={() => {
+            console.log(
+              "📜 LOG > CandleChart render chart ready",
+              mainSeriesData.length,
+              !!mainSeries.current
             );
-
-            if (!validCrosshairPoint) {
-              const lastBar = mainSeries.current?.dataByIndex(Infinity, -1);
-              time = lastBar?.time as Time;
+            if (seriesType === "Candlestick") {
+              mainSeries.current = chartRef.current?.addCandlestickSeries({
+                borderDownColor: "#EB6666", // TODO
+                borderUpColor: "#5e9a77",
+                downColor: "#EB6666",
+                upColor: "#5e9a77",
+                wickDownColor: "#EB6666",
+                wickUpColor: "#5e9a77",
+              });
+            } else {
+              const primaryColor = theme.palette.primary.main;
+              mainSeries.current = chartRef.current?.addLineSeries({
+                color: primaryColor,
+                lineType: 2,
+              });
             }
 
-            $legendTimestamp.set(String((time as number) + TZ_OFFSET));
-          };
+            mainSeries.current?.setData(mainSeriesData);
+            chartRef.current?.priceScale("right").applyOptions({
+              mode: $scaleMode.get(),
+            });
 
-          chartRef.current?.subscribeCrosshairMove(updateLegend);
+            const updateLegend = ({ time, point }: MouseEventParams) => {
+              const validCrosshairPoint = !(
+                !time ||
+                !point?.x ||
+                !point?.y ||
+                point.x < 0 ||
+                point.y < 0
+              );
 
-          // chartRef.current?.timeScale().fitContent();
-        }}
-      />
+              if (!validCrosshairPoint) {
+                const lastBar = mainSeries.current?.dataByIndex(Infinity, -1);
+                time = lastBar?.time as Time;
+              }
+
+              $legendTimestamp.set(String((time as number) + TZ_OFFSET));
+            };
+
+            chartRef.current?.subscribeCrosshairMove(updateLegend);
+
+            // chartRef.current?.timeScale().fitContent();
+          }}
+        />
+      )}
     </>
   );
 }
