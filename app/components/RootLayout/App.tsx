@@ -32,7 +32,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
           maskAllText: true,
         }),
       ],
-      release: `${appVer}@${gitHash}`,
+      release: gitHash,
 
       replaysOnErrorSampleRate: 1.0,
 
