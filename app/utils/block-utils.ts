@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/nextjs";
 import { LineData, UTCTimestamp } from "lightweight-charts";
 
 import { Block } from "../../.graphclient";
@@ -26,7 +27,7 @@ export async function queryBlocks(suppressError = false) {
     }
 
     if (suppressError) {
-      console.error(new Error(errorMessage));
+      captureException(new Error(errorMessage));
       return [];
     }
 

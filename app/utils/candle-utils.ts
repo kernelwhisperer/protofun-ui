@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/nextjs";
 import { CandlestickData, LineData, UTCTimestamp } from "lightweight-charts";
 
 import { execute } from "../../.graphclient";
@@ -37,7 +38,7 @@ export async function queryCandles(
     }
 
     if (suppressError) {
-      console.error(new Error(errorMessage));
+      captureException(new Error(errorMessage));
       return [];
     }
 
