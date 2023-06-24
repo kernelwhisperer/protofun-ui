@@ -3,8 +3,8 @@ import React from "react";
 import { App } from "./components/RootLayout/App";
 
 export const metadata = {
-  description: "Protocol fundamentals visualized",
-  title: "Protocol fundamentals",
+  description: "On-chain data visualized",
+  title: "Protocol Fundamentals",
 };
 
 export default function RootLayout({
@@ -17,6 +17,19 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.svg" />
+        {/* <link
+          href="favicon-light.png"
+          rel="icon"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          href="favicon-dark.png"
+          rel="icon"
+          media="(prefers-color-scheme: dark)"
+        /> */}
+      </head>
       <body>
         <App appVer={appVer} gitHash={gitHash}>
           {children}

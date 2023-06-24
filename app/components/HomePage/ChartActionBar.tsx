@@ -17,7 +17,12 @@ export function ChartActionBar() {
   const scaleMode = useStore($scaleMode);
 
   return (
-    <Stack direction="row" gap={1} justifyContent="space-between">
+    <Stack
+      direction="row"
+      gap={1}
+      justifyContent="space-between"
+      flexWrap="wrap"
+    >
       <ButtonGroup
         variant="outlined"
         size="small"
