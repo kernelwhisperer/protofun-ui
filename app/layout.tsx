@@ -19,6 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" />
+        {/* TODO */}
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
         {/* <link
           href="favicon-light.png"
           rel="icon"
