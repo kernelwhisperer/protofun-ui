@@ -111,7 +111,7 @@ export function CandleChart() {
           );
           if (seriesType === "Candlestick") {
             mainSeries.current = chartRef.current?.addCandlestickSeries({
-              borderDownColor: "#EB6666",
+              borderDownColor: "#EB6666", // TODO
               borderUpColor: "#5e9a77",
               downColor: "#EB6666",
               upColor: "#5e9a77",
