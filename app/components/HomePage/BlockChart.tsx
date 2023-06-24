@@ -19,7 +19,7 @@ import { BlockChartLegend } from "./BlockChartLegend";
 const mapBlockToLine = createBlockMapper("baseFeePerGas", 1e9);
 
 export function BlockChart() {
-  console.log("📜 LOG > BlockChart render");
+  // console.log("📜 LOG > BlockChart render");
   const theme = useTheme();
   const chartRef = useRef<IChartApi>();
   const mainSeries = useRef<ISeriesApi<"Line">>();
@@ -56,11 +56,11 @@ export function BlockChart() {
         <Chart
           chartRef={chartRef}
           onReady={() => {
-            console.log(
-              "📜 LOG > BlockChart render chart ready",
-              mainSeriesData.length,
-              !!mainSeries.current
-            );
+            // console.log(
+            //   "📜 LOG > BlockChart render chart ready",
+            //   mainSeriesData.length,
+            //   !!mainSeries.current
+            // );
 
             const primaryColor = theme.palette.primary.main;
             mainSeries.current = chartRef.current?.addLineSeries({

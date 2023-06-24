@@ -47,7 +47,7 @@ export interface GasPageProps {
 
 export function GasPage(props: GasPageProps) {
   const { blocks, candles } = props;
-  console.log("📜 LOG > GasPage render");
+  // console.log("📜 LOG > GasPage render");
 
   const blockMap = blocks.reduce((acc, curr) => {
     acc[curr.timestamp] = curr;

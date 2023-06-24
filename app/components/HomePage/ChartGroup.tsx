@@ -10,7 +10,7 @@ import { CandleChart } from "./CandleChart";
 import { ChartActionBar } from "./ChartActionBar";
 
 export function ChartGroup() {
-  console.log("📜 LOG > ChartGroup > render");
+  // console.log("📜 LOG > ChartGroup > render");
 
   const timeframe = useStore($timeframe);
   const loading = useStore($loading);

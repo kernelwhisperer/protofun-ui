@@ -44,7 +44,7 @@ const mapCandleToCandleData = createCandleMapper(1e9);
 const mapCandleToLineData = createLineMapper(1e9);
 
 export function CandleChart() {
-  console.log("📜 LOG > CandleChart render");
+  // console.log("📜 LOG > CandleChart render");
   const theme = useTheme();
   const chartRef = useRef<IChartApi>();
   const mainSeries = useRef<ISeriesApi<"Candlestick" | "Line">>();
@@ -57,7 +57,7 @@ export function CandleChart() {
 
   useEffect(() => {
     if (data.length) return;
-    console.log("📜 LOG > CandleChart > fetching");
+    // console.log("📜 LOG > CandleChart > fetching");
 
     $loading.set(true);
     setError("");

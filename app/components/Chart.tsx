@@ -19,7 +19,7 @@ export function Chart(props: ChartProps) {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    console.log("📜 LOG > Chart > render");
+    // console.log("📜 LOG > Chart > render");
 
     const handleResize = () => {
       chartRef.current?.applyOptions({

@@ -30,7 +30,7 @@ const LegendValue = (props: TypographyProps) => (
 );
 
 export function CandleChartLegend() {
-  console.log("📜 LOG > ChartLegend render");
+  // console.log("📜 LOG > ChartLegend render");
 
   const seriesType = useStore($seriesType);
   const timestamp = useStore($legendTimestamp);

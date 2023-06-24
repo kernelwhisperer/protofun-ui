@@ -26,7 +26,7 @@ const LegendValue = (props: TypographyProps) => (
 );
 
 export function BlockChartLegend() {
-  console.log("📜 LOG > ChartLegend render");
+  // console.log("📜 LOG > ChartLegend render");
 
   const timestamp = useStore($legendTimestamp);
   const block = $blockMap.get()[timestamp];
