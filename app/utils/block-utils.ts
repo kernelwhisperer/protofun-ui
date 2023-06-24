@@ -24,7 +24,8 @@ export async function queryBlocks() {
     if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
       errorMessage = "Indexer offline.";
     }
-    throw new Error(errorMessage);
+    console.error(Error(errorMessage));
+    return [];
   }
 }
 

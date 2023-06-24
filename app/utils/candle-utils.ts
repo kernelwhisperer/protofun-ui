@@ -31,7 +31,8 @@ export async function queryCandles(
     if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
       errorMessage = "Indexer offline.";
     }
-    throw new Error(errorMessage);
+    console.error(Error(errorMessage));
+    return [];
   }
 
   return response.data[entityId].reverse();
