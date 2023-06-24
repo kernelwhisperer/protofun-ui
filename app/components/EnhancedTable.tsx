@@ -224,7 +224,7 @@ export default function EnhancedTable<T extends BaseObject>(
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
+      setSelected(newSelected as any);
       return;
     }
     setSelected([]);
