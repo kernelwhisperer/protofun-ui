@@ -22,7 +22,7 @@ export async function queryBlocks() {
     return res.blocks.reverse();
   } catch (error) {
     let errorMessage = (error as Error).message;
-    if (errorMessage.includes("ECONNREFUSED api.protocol.fun")) {
+    if (errorMessage.includes("ECONNREFUSED")) {
       errorMessage = "Connection failed";
     }
 

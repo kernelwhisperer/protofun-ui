@@ -1955,7 +1955,7 @@ const protofunBlockMetaTransforms = [];
 const additionalTypeDefs = [] as any[];
 const protofunBlockMetaHandler = new GraphqlHandler({
               name: "protofun_block_meta",
-              config: {"endpoint":"http://api.protocol.fun/subgraphs/name/protofun_block_meta"},
+              config: {"endpoint":"https://api.protocol.fun/subgraphs/name/protofun_block_meta"},
               baseDir,
               cache,
               pubsub,

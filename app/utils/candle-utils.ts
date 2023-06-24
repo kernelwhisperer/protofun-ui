@@ -30,7 +30,7 @@ export async function queryCandles(
   if (response.errors) {
     let errorMessage = response.errors.map((x) => x.message).join("\n");
     if (
-      errorMessage.includes("ECONNREFUSED api.protocol.fun") ||
+      errorMessage.includes("ECONNREFUSED") ||
       errorMessage.includes("Failed to fetch")
     ) {
       errorMessage = "Connection failed";

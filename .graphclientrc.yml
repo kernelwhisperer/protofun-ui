@@ -2,7 +2,7 @@ sources:
   - name: protofun_block_meta
     handler:
       graphql:
-        endpoint: http://api.protocol.fun/subgraphs/name/protofun_block_meta
+        endpoint: https://api.protocol.fun/subgraphs/name/protofun_block_meta
 
 documents:
   - ./app/queries.gql
