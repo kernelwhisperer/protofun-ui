@@ -22,7 +22,7 @@ export async function queryBlocks() {
     return res.blocks.reverse();
   } catch (error) {
     let errorMessage = (error as Error).message;
-    if (errorMessage.includes("ECONNREFUSED 127.0.0.1:8000")) {
+    if (errorMessage.includes("ECONNREFUSED api.protocol.fun")) {
       errorMessage = "Connection failed";
     }
 
