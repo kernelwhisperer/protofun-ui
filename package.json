@@ -8,7 +8,6 @@
     "email": "hello@danielconstantin.net"
   },
   "scripts": {
-    "postinstall": "yarn codegen",
     "start": "APP_VER=`npm pkg get version` GIT_HASH=`git rev-parse --short HEAD` next dev",
     "build": "next build",
     "preview": "next start",
