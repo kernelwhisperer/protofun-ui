@@ -14,7 +14,8 @@ export const TIME_FRAMES: Record<Timeframe, string> = {
 
 export const $timeframe = atom<Timeframe>("Hour");
 export const $seriesType = atom<SeriesType>("Candlestick");
-export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Normal);
+export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
+export const $liveMode = atom<boolean>(true);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);

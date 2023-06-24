@@ -1,4 +1,9 @@
-import { Stack, Typography, TypographyProps } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  TypographyProps,
+  useMediaQuery,
+} from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
 import { AnimatePresence, motion } from "framer-motion";
@@ -31,6 +36,7 @@ const LegendValue = (props: TypographyProps) => (
 
 export function CandleChartLegend() {
   // console.log("📜 LOG > ChartLegend render");
+  const smallDevice = !useMediaQuery("(min-width:600px)");
 
   const seriesType = useStore($seriesType);
   const timestamp = useStore($legendTimestamp);
@@ -63,17 +69,36 @@ export function CandleChartLegend() {
           transition={{ duration: 0.15 }}
         >
           <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
-            <LegendLabel variant="body2">Timestamp</LegendLabel>
-            <LegendValue variant="body2">
-              {
-                new Intl.DateTimeFormat(window.navigator.language, {
-                  dateStyle: "long",
-                  hourCycle: "h23",
-                  timeStyle: "medium",
-                }).format(candleDatetime)
-                // .split(", ")[1]
-              }{" "}
-            </LegendValue>
+            {smallDevice ? (
+              <>
+                <LegendLabel component="div">
+                  <LegendValue variant="body2">
+                    {
+                      new Intl.DateTimeFormat(window.navigator.language, {
+                        dateStyle: "short",
+                        hourCycle: "h23",
+                        timeStyle: "short",
+                      }).format(candleDatetime)
+                      // .split(", ")[1]
+                    }
+                  </LegendValue>
+                </LegendLabel>
+              </>
+            ) : (
+              <>
+                <LegendLabel variant="body2">Timestamp</LegendLabel>
+                <LegendValue variant="body2">
+                  {
+                    new Intl.DateTimeFormat(window.navigator.language, {
+                      dateStyle: "long",
+                      hourCycle: "h23",
+                      timeStyle: "short",
+                    }).format(candleDatetime)
+                    // .split(", ")[1]
+                  }
+                </LegendValue>
+              </>
+            )}
           </Stack>
           {seriesType === "Candlestick" ? (
             <>

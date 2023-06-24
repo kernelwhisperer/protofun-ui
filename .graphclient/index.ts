@@ -2084,7 +2084,7 @@ export type FetchBlocksSinceQueryVariables = Exact<{
 }>;
 
 
-export type FetchBlocksSinceQuery = { candle: Array<Pick<Block, 'id' | 'number' | 'timestamp' | 'gasUsed' | 'baseFeePerGas' | 'txnCount' | 'minGasPrice' | 'maxGasPrice' | 'firstGasPrice' | 'lastGasPrice' | 'gasFees' | 'burnedFees' | 'minerTips'>> };
+export type FetchBlocksSinceQuery = { blocks: Array<Pick<Block, 'id' | 'number' | 'timestamp' | 'gasUsed' | 'baseFeePerGas' | 'txnCount' | 'minGasPrice' | 'maxGasPrice' | 'firstGasPrice' | 'lastGasPrice' | 'gasFees' | 'burnedFees' | 'minerTips'>> };
 
 export type FetchBlockQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -2148,7 +2148,7 @@ export const FullTxnFragmentDoc = gql`
     ` as unknown as DocumentNode<FullTxnFragment, unknown>;
 export const FetchLastBlocksDocument = gql`
     query FetchLastBlocks {
-  blocks(first: 300, orderBy: timestamp, orderDirection: desc) {
+  blocks(first: 1000, orderBy: timestamp, orderDirection: desc) {
     ...FullBlock
   }
 }

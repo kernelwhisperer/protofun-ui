@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
 import React, { MutableRefObject, useEffect, useRef } from "react";
 
@@ -16,6 +16,7 @@ export function Chart(props: ChartProps) {
 
   const theme = useTheme();
   const containerRef = useRef<HTMLElement>();
+  const smallDevice = !useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -58,7 +59,9 @@ export function Chart(props: ChartProps) {
         textColor,
       },
       localization: {
-        priceFormatter: (x: number) => `${x.toFixed(2)} Gwei`,
+        priceFormatter: smallDevice
+          ? undefined
+          : (x: number) => `${x.toFixed(2)} Gwei`,
       },
       width: containerRef.current.clientWidth,
     });
@@ -81,7 +84,7 @@ export function Chart(props: ChartProps) {
 
       chartRef.current?.remove();
     };
-  }, [chartRef, theme, onReady, containerRef]);
+  }, [chartRef, theme, smallDevice, onReady, containerRef]);
 
   return (
     <Box

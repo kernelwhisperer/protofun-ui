@@ -45,7 +45,7 @@ export function BlockChart() {
   useNewBlocksSub(
     data[data.length - 1]?.timestamp,
     handleNewBlock,
-    !data.length
+    !!data.length
   );
 
   return (

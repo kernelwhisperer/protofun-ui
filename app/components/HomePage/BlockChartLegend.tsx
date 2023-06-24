@@ -44,7 +44,7 @@ export function BlockChartLegend() {
             paddingTop: 1,
             position: "absolute",
             top: 0,
-            zIndex: 99999,
+            zIndex: 999,
           }}
           component={motion.div}
           initial={{ opacity: 0 }}

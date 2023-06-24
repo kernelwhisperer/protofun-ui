@@ -3,6 +3,8 @@ import { useInterval } from "usehooks-ts";
 
 import { SimpleBlock } from "../utils/block-utils";
 import { sdk } from "../utils/client-utils";
+import { $liveMode } from "../stores/home-page";
+import { useStore } from "@nanostores/react";
 
 export function useNewBlocksSub(
   initialTimestamp: string,
@@ -10,10 +12,12 @@ export function useNewBlocksSub(
   active: boolean
 ) {
   const lastTimestamp = useRef<string>(initialTimestamp);
+  const liveMode = useStore($liveMode);
+  console.log("📜 LOG > liveMode:", liveMode, active);
 
   const tryFetch = useCallback(async () => {
     console.log("📜 LOG > useLatestBlocks > since", lastTimestamp.current);
-    const { candle: blocks } = await sdk.FetchBlocksSince({
+    const { blocks } = await sdk.FetchBlocksSince({
       since: lastTimestamp.current,
     });
     console.log("📜 LOG > useLatestBlocks > response", blocks);
@@ -28,6 +32,6 @@ export function useNewBlocksSub(
     tryFetch,
     // Delay in milliseconds or null to stop it
     // 12 * 1000
-    active ? 5 * 1000 : null // TODO
+    liveMode && active ? 5 * 1000 : null // TODO
   );
 }

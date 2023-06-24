@@ -56,7 +56,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
       <Header />
       <Container
         maxWidth="lg"
-        sx={{ padding: { sm: 0 }, position: "relative" }}
+        sx={{ padding: { xs: 0 }, position: "relative" }}
       >
         <Blobs />
         <Box

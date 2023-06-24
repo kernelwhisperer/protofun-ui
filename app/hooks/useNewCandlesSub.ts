@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
-import { $timeframe } from "../stores/home-page";
+import { $liveMode, $timeframe } from "../stores/home-page";
 import { Candle, queryCandles } from "../utils/candle-utils";
+import { useStore } from "@nanostores/react";
 
 export function useNewCandlesSub(
   initialTimestamp: string,
@@ -10,6 +11,7 @@ export function useNewCandlesSub(
   active: boolean
 ) {
   const lastTimestamp = useRef<string>(initialTimestamp);
+  const liveMode = useStore($liveMode);
 
   useEffect(() => {
     lastTimestamp.current = initialTimestamp;
@@ -18,8 +20,8 @@ export function useNewCandlesSub(
   const tryFetch = useCallback(async () => {
     console.log("📜 LOG > useLatestCandles > since", lastTimestamp.current);
     const timeframe = $timeframe.get();
-    const candle = await queryCandles(timeframe, lastTimestamp.current);
-    console.log("📜 LOG > useLatestCandles > response", candle);
+    const candles = await queryCandles(timeframe, lastTimestamp.current);
+    console.log("📜 LOG > useLatestCandles > response", candles);
 
     if (timeframe !== $timeframe.get()) {
       // TODO: this is not working
@@ -28,9 +30,9 @@ export function useNewCandlesSub(
       );
       return;
     }
-    if (candle.length) {
-      lastTimestamp.current = candle[candle.length - 1].timestamp;
-      candle.forEach(handleNewCandle);
+    if (candles.length) {
+      lastTimestamp.current = candles[candles.length - 1].timestamp;
+      candles.forEach(handleNewCandle);
     }
   }, [handleNewCandle]);
 
@@ -38,6 +40,6 @@ export function useNewCandlesSub(
     tryFetch,
     // Delay in milliseconds or null to stop it
     // 12 * 1000
-    active ? 5 * 1000 : null // TODO
+    liveMode && active ? 5 * 1000 : null // TODO
   );
 }

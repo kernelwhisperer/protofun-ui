@@ -1,9 +1,10 @@
-import { CandlestickChart, ShowChart } from "@mui/icons-material";
+import { CandlestickChart, CloudSync, PauseCircle, PlayArrow, ShowChart } from "@mui/icons-material";
 import { alpha, Button, ButtonGroup, Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import React from "react";
 
 import {
+  $liveMode,
   $scaleMode,
   $seriesType,
   $timeframe,
@@ -15,6 +16,7 @@ export function ChartActionBar() {
   const timeframe = useStore($timeframe);
   const seriesType = useStore($seriesType);
   const scaleMode = useStore($scaleMode);
+  const liveMode = useStore($liveMode);
 
   return (
     <Stack
@@ -78,7 +80,17 @@ export function ChartActionBar() {
             $scaleMode.set(nextMode);
           }}
         >
-          LOG
+          Log scale
+        </Button>
+        <Button
+          size="small"
+          className={liveMode ? "active" : undefined}
+          variant="outlined"
+          onClick={() => {
+            $liveMode.set(!liveMode);
+          }}
+        >
+         Live data
         </Button>
       </Stack>
     </Stack>
