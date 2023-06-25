@@ -79,7 +79,7 @@ export const globalStyles = `
   }
 
   html[data-mui-color-scheme="dark"] ::-webkit-scrollbar-thumb {
-    background-color: ${RETRO_BEIGE_1};
+    background-color: ${RETRO_BEIGE_2};
   }
 `;
 
@@ -157,7 +157,7 @@ export const theme = extendTheme({
       styleOverrides: {
         root: {
           // TODO get actual breakpoint
-          "@media (min-width: 600px)": {
+          "@media (min-width: 1240px)": {
             boxShadow: "12px 12px 0px 0px var(--mui-palette-primary-main)",
           },
 

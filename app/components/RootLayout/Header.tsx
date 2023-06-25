@@ -7,7 +7,6 @@ import {
   Container,
   Stack,
   Toolbar,
-  useScrollTrigger,
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
@@ -16,14 +15,9 @@ import { Logo } from "./Logo";
 import { Settings } from "./Settings";
 
 function StyledAppBar(props: AppBarProps) {
-  const shouldElevate = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 16,
-  });
-
   return (
     <AppBar
-      position="sticky"
+      position="static"
       color="transparent"
       elevation={0}
       sx={(theme) => ({
@@ -31,16 +25,6 @@ function StyledAppBar(props: AppBarProps) {
         borderBottom: "1px solid transparent",
         boxShadow: { xs: "none" },
         transition: theme.transitions.create("background"),
-        ...(shouldElevate
-          ? {
-              "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
-                {
-                  backdropFilter: "blur(12px)",
-                  background: theme.palette.background.glass,
-                },
-              borderColor: theme.palette.divider,
-            }
-          : {}),
       })}
       {...props}
     />

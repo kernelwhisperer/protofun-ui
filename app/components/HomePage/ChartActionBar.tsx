@@ -1,5 +1,5 @@
 import { CandlestickChart, ShowChart } from "@mui/icons-material";
-import { alpha, Button, ButtonGroup, Stack } from "@mui/material";
+import { Button, ButtonGroup, Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import React from "react";
 
@@ -25,16 +25,7 @@ export function ChartActionBar() {
       justifyContent="space-between"
       flexWrap="wrap"
     >
-      <ButtonGroup
-        variant="outlined"
-        size="small"
-        sx={(theme) => ({
-          "& .selected": {
-            background: alpha(theme.palette.primary.main, 1),
-            color: theme.palette.getContrastText(theme.palette.primary.main),
-          },
-        })}
-      >
+      <ButtonGroup size="small">
         {Object.keys(TIME_FRAMES).map((x) => (
           <Button
             key={x}
