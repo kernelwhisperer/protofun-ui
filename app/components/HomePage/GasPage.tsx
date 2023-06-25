@@ -108,19 +108,17 @@ export function GasPage(props: GasPageProps) {
         <motion.div
           style={{
             background: "var(--mui-palette-secondary-main)",
-            bottom: 0,
+            bottom: 2,
             content: '""',
-            height: 16,
+            height: 12,
             left: 0,
             opacity: 1,
             position: "absolute",
-            skew: "-45deg",
             width: UNDERLINE_WIDTH,
             zIndex: -1,
           }}
           animate={{
             scaleX: [0, 1, 0],
-            skew: ["-80deg", "-30deg", "-80deg"],
             x: [
               -UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
               UNDERLINE_OFFSET,

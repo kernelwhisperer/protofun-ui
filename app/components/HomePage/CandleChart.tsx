@@ -99,7 +99,9 @@ export function CandleChart() {
     });
   });
 
-  $legendTimestamp.set(data[data.length - 1]?.timestamp);
+  useEffect(() => {
+    $legendTimestamp.set(data[data.length - 1]?.timestamp);
+  }, [data]);
 
   const handleNewCandle = useCallback((candle: Candle) => {
     if ($timeframe.get() === "Minute") {
