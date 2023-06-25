@@ -1,19 +1,16 @@
 "use client";
-import { KeyboardBackspace } from "@mui/icons-material";
+
+import {
+  KeyboardBackspace,
+  LocalGasStationOutlined,
+} from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
 import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 import React from "react";
 
-import { $blockMap, $blocks, BlockMap } from "../../stores/block-data";
-import {
-  $minCandleMap,
-  $minCandles,
-  CandleMap,
-} from "../../stores/candle-data";
-import { SimpleBlock } from "../../utils/block-utils";
-import { Candle } from "../../utils/candle-utils";
+import { LinkButton } from "../LinkButton";
 import { RobotoSerifFF } from "../Theme/fonts";
-import { ChartGroup } from "./ChartGroup";
 
 const variants: Variants = {
   closed: {
@@ -40,34 +37,15 @@ const variants: Variants = {
   },
 };
 
-const UNDERLINE_WIDTH = 280;
+const UNDERLINE_WIDTH = 185;
 const UNDERLINE_OFFSET = 12;
 
-export interface GasPageProps {
-  blocks: SimpleBlock[];
-  candles: Candle[];
+interface ProtocolProps {
+  protocol: string;
 }
 
-export function GasPage(props: GasPageProps) {
-  const { blocks, candles } = props;
-  // console.log("📜 LOG > GasPage render");
-
-  const blockMap = blocks.reduce((acc, curr) => {
-    acc[curr.timestamp] = curr;
-    return acc;
-  }, {} as BlockMap);
-
-  $blocks.set(blocks);
-  $blockMap.set(blockMap);
-
-  const candleMap = candles.reduce((acc, curr) => {
-    acc[curr.timestamp] = curr;
-    return acc;
-  }, {} as CandleMap);
-
-  $minCandles.set(candles);
-  $minCandleMap.set(candleMap);
-
+export function ProtocolPage(props: ProtocolProps) {
+  const { protocol } = props;
   return (
     <Stack
       alignItems={"flex-start"}
@@ -87,11 +65,13 @@ export function GasPage(props: GasPageProps) {
     >
       <motion.div variants={variants}>
         <Button
+          href="/"
+          component={Link}
           size="small"
           sx={{ borderRadius: 16, paddingLeft: 1, paddingRight: 2 }}
           startIcon={<KeyboardBackspace />}
         >
-          Ethereum
+          Home
         </Button>
       </motion.div>
       <motion.div
@@ -103,7 +83,7 @@ export function GasPage(props: GasPageProps) {
         }}
       >
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
-          Base fee per gas
+          Ethereum
         </Typography>
         <motion.div
           style={{
@@ -132,8 +112,13 @@ export function GasPage(props: GasPageProps) {
           }}
         ></motion.div>
       </motion.div>
-      <motion.div style={{ width: "100%" }} variants={variants}>
-        <ChartGroup />
+      <motion.div variants={variants}>
+        <LinkButton
+          iconPadding="5px"
+          href={`/${protocol}/base_fee`}
+          label="Base fee per gas"
+          icon={LocalGasStationOutlined}
+        />
       </motion.div>
     </Stack>
   );

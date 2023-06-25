@@ -16,6 +16,15 @@ const nextConfig = {
         // https://github.com/graphprotocol/graph-client/issues/480
         { module: /graphql-mesh\/utils\/esm\/defaultImportFn.js/ },
       ],
+      module: {
+        rules: [
+          ...config.module.rules,
+          {
+            test: /\.svg$/,
+            use: ["@svgr/webpack"],
+          },
+        ],
+      },
     }),
 };
 

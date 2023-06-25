@@ -157,9 +157,9 @@ export const theme = extendTheme({
       styleOverrides: {
         root: {
           // TODO get actual breakpoint
-          "@media (min-width: 1240px)": {
-            boxShadow: "12px 12px 0px 0px var(--mui-palette-primary-main)",
-          },
+          // "@media (min-width: 1240px)": {
+          //   boxShadow: "5px 5px 0px 0px var(--mui-palette-primary-main)",
+          // },
 
           // "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
           //   {
