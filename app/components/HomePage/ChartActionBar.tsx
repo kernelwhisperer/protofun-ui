@@ -1,4 +1,4 @@
-import { CandlestickChart, CloudSync, PauseCircle, PlayArrow, ShowChart } from "@mui/icons-material";
+import { CandlestickChart, ShowChart } from "@mui/icons-material";
 import { alpha, Button, ButtonGroup, Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import React from "react";
@@ -90,7 +90,7 @@ export function ChartActionBar() {
             $liveMode.set(!liveMode);
           }}
         >
-         Live data
+          Live data
         </Button>
       </Stack>
     </Stack>

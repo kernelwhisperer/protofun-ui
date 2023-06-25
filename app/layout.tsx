@@ -1,7 +1,7 @@
 import React from "react";
 
 import { App } from "./components/RootLayout/App";
-
+import { SentryProvider } from "./components/RootLayout/SentryProvider";
 export const metadata = {
   description: "On-chain data visualized",
   title: "Protocol Fundamentals",
@@ -32,9 +32,11 @@ export default function RootLayout({
         /> */}
       </head>
       <body>
-        <App appVer={appVer} gitHash={gitHash}>
-          {children}
-        </App>
+        <SentryProvider appVer={appVer} gitHash={gitHash}>
+          <App appVer={appVer} gitHash={gitHash}>
+            {children}
+          </App>
+        </SentryProvider>
       </body>
     </html>
   );

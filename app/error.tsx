@@ -8,7 +8,6 @@ import { RobotoSerifFF } from "./components/Theme/fonts";
 
 export default function ErrorPage({
   error,
-  reset,
 }: {
   error: Error;
   reset: () => void;

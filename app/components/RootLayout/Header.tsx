@@ -29,7 +29,7 @@ function StyledAppBar(props: AppBarProps) {
       sx={(theme) => ({
         border: "none",
         borderBottom: "1px solid transparent",
-        boxShadow: "none",
+        boxShadow: { xs: "none" },
         transition: theme.transitions.create("background"),
         ...(shouldElevate
           ? {
@@ -53,7 +53,7 @@ export function Header() {
       <Toolbar disableGutters>
         <Container
           maxWidth="lg"
-          sx={{ padding: { sm: 0 }, position: "relative" }}
+          sx={{ padding: { xs: 0 }, position: "relative" }}
         >
           <Stack
             gap={1}

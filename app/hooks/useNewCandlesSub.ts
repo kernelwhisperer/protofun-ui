@@ -1,9 +1,9 @@
+import { useStore } from "@nanostores/react";
 import { useCallback, useEffect, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
 import { $liveMode, $timeframe } from "../stores/home-page";
 import { Candle, queryCandles } from "../utils/candle-utils";
-import { useStore } from "@nanostores/react";
 
 export function useNewCandlesSub(
   initialTimestamp: string,

@@ -92,7 +92,7 @@ export const theme = extendTheme({
         },
         background: {
           default: RETRO_GREY,
-          glass: alpha(RETRO_GREY_AF, 0.75),
+          glass: alpha(RETRO_GREY_AF, 0.5),
         },
         mode: "dark",
         primary: {
@@ -114,7 +114,7 @@ export const theme = extendTheme({
         },
         background: {
           default: RETRO_BEIGE_1,
-          glass: alpha(RETRO_BEIGE_1_AF, 0.75),
+          glass: alpha(RETRO_BEIGE_1_AF, 0.5),
         },
         primary: {
           main: RETRO_GREY,
@@ -156,6 +156,11 @@ export const theme = extendTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
+          // TODO get actual breakpoint
+          "@media (min-width: 600px)": {
+            boxShadow: "12px 12px 0px 0px var(--mui-palette-primary-main)",
+          },
+
           // "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
           //   {
           //     backdropFilter: "blur(100px)",
@@ -165,7 +170,6 @@ export const theme = extendTheme({
           border: "1px solid",
           borderColor: "var(--mui-palette-primary-main)",
           borderRadius: 0,
-          boxShadow: "12px 12px 0px 0px var(--mui-palette-primary-main)",
         },
       },
     },

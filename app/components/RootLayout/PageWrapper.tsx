@@ -9,7 +9,7 @@ export function PageWrapper(
   return (
     <Box
       component={motion.div}
-      sx={{ paddingX: 2, paddingTop: 1, paddingBottom: 4, width: "100%" }}
+      sx={{ paddingBottom: 4, paddingTop: 1, paddingX: 2, width: "100%" }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

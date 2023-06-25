@@ -1,20 +1,21 @@
-import { Box, BoxProps, useTheme } from "@mui/material";
-import { HTMLMotionProps, motion, Target } from "framer-motion";
+import { Box, BoxProps, useMediaQuery, useTheme } from "@mui/material";
+import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 
 const Blob = ({
   sx,
-  initial,
   ...rest
 }: HTMLMotionProps<"div"> & Pick<BoxProps, "sx">) => (
   <motion.div
-    initial={{
+    style={{
+      // filter: "blur(40px)",
       filter: "blur(40px) url(#noiseFilter) blur(5px)",
       opacity: 0.5,
       padding: "40px",
       position: "absolute",
+      right: 0,
+      top: 0,
       zIndex: -1,
-      ...(initial as Target),
     }}
     transition={{
       duration: 10,
@@ -30,8 +31,11 @@ const Blob = ({
 
 export function Blobs() {
   const { palette } = useTheme();
+  const smallDevice = !useMediaQuery("(min-width:600px)");
+
   return (
     <Box
+      className="blobs"
       sx={{
         margin: "auto",
         position: "absolute",
@@ -58,13 +62,20 @@ export function Blobs() {
           width: 200,
         }}
         initial={{
-          right: 150,
-          top: 200,
+          x: -150,
+          y: 200,
         }}
-        animate={{
-          right: [150, 200, 250, 150],
-          top: [200, 300, 100, 200],
-        }}
+        animate={
+          smallDevice
+            ? {
+                x: -150,
+                y: 200,
+              }
+            : {
+                x: [-150, -200, -250, -150],
+                y: [200, 300, 100, 200],
+              }
+        }
       />
       <Blob
         sx={{
@@ -72,34 +83,50 @@ export function Blobs() {
           borderRadius: "100px",
           height: 200,
           top: 80,
-        }}
-        initial={{
-          right: 20,
-          scale: 1.2,
           width: 250,
         }}
-        animate={{
-          right: [20, 20, 140, 20],
-          scale: [1.2, 1, 1, 1.2],
-          top: [80, 300, 200, 80],
+        initial={{
+          scale: 1.2,
+          x: -20,
+          y: 80,
         }}
+        animate={
+          smallDevice
+            ? {
+                scale: 1.2,
+                x: -20,
+                y: 80,
+              }
+            : {
+                scale: [1.2, 1, 1, 1.2],
+                x: [-20, -20, -140, -20],
+                y: [80, 300, 200, 80],
+              }
+        }
       />
       <Blob
         sx={{
           backgroundColor: "#EB6666",
           borderRadius: "100px",
-          height: 250,
+          height: 150,
           width: 200,
         }}
         initial={{
-          right: 0,
-          top: 300,
+          x: 0,
+          y: 300,
         }}
-        animate={{
-          right: [0, 150, 100, 0],
-          scale: [1, 1.4, 1, 1],
-          top: [300, 150, 250, 300],
-        }}
+        animate={
+          smallDevice
+            ? {
+                x: 0,
+                y: 300,
+              }
+            : {
+                scale: [1, 1.4, 1, 1],
+                x: [0, -150, -100, 0],
+                y: [300, 150, 250, 300],
+              }
+        }
       />
     </Box>
   );

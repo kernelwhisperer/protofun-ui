@@ -40,6 +40,9 @@ const variants: Variants = {
   },
 };
 
+const UNDERLINE_WIDTH = 280;
+const UNDERLINE_OFFSET = 12;
+
 export interface GasPageProps {
   blocks: SimpleBlock[];
   candles: Candle[];
@@ -111,12 +114,18 @@ export function GasPage(props: GasPageProps) {
             left: 0,
             opacity: 1,
             position: "absolute",
-            transform: "skew(-12deg) translateX(12px)",
+            skew: "-45deg",
+            width: UNDERLINE_WIDTH,
             zIndex: -1,
           }}
           animate={{
-            marginLeft: [0, 0, 280],
-            width: [0, 280, 0],
+            scaleX: [0, 1, 0],
+            skew: ["-80deg", "-30deg", "-80deg"],
+            x: [
+              -UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
+              UNDERLINE_OFFSET,
+              UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
+            ],
           }}
           transition={{
             delay: 0.2,
