@@ -38,6 +38,7 @@ export function Blobs() {
       className="blobs"
       sx={{
         margin: "auto",
+        pointerEvents: "none",
         position: "absolute",
         right: 50,
         top: -300,
