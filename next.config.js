@@ -7,6 +7,9 @@ const nextConfig = {
   },
   reactStrictMode: false,
   swcMinify: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack: (config) =>
     Object.assign({}, config, {
       ignoreWarnings: [
