@@ -1,5 +1,5 @@
 import { SvgIconComponent } from "@mui/icons-material";
-import { Button, ButtonProps, Typography } from "@mui/material";
+import { Button, ButtonProps, SvgIcon, Typography } from "@mui/material";
 import Link from "next/link";
 import React, { FunctionComponent, SVGProps } from "react";
 
@@ -32,18 +32,18 @@ export function LinkButton({
       }}
       {...(rest as any)}
     >
-      <Icon
+      <SvgIcon
+        inheritViewBox
+        component={Icon}
         width="100%"
         height="100%"
-        style={{
+        sx={{
           fontSize: "50px",
           height: "100%",
           padding: iconPadding,
           position: "absolute",
           right: "-25%",
-          // right: "0",
           transform: "rotate(14deg) scale(1.5)",
-
           width: "100%",
         }}
       />
