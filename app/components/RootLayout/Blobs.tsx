@@ -8,8 +8,8 @@ const Blob = ({
 }: HTMLMotionProps<"div"> & Pick<BoxProps, "sx">) => (
   <motion.div
     style={{
-      // filter: "blur(40px)",
-      filter: "blur(40px) url(#noiseFilter) blur(5px)",
+      filter: "blur(40px)",
+      // filter: "blur(40px) url(#noiseFilter) blur(5px)",
       opacity: 0.5,
       padding: "40px",
       position: "absolute",

@@ -12,10 +12,10 @@ export const TIME_FRAMES: Record<Timeframe, string> = {
   Week: "W",
 };
 
-export const $timeframe = atom<Timeframe>("Hour");
+export const $timeframe = atom<Timeframe>("Minute");
 export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
-export const $liveMode = atom<boolean>(true);
+export const $liveMode = atom<boolean>(false);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);

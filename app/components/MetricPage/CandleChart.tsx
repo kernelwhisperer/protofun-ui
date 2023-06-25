@@ -71,6 +71,13 @@ export function CandleChart() {
             return acc;
           }, {} as CandleMap);
           $hourCandleMap.set(candleMap);
+        } else {
+          $minCandles.set(data);
+          const candleMap = data.reduce((acc, curr) => {
+            acc[curr.timestamp] = curr;
+            return acc;
+          }, {} as CandleMap);
+          $minCandleMap.set(candleMap);
         }
       })
       .then(() => {
@@ -117,6 +124,7 @@ export function CandleChart() {
   }, []);
 
   useNewCandlesSub(data[data.length - 1]?.timestamp, handleNewCandle, !error);
+  console.log("📜 LOG > CandleChart > data.length:", data.length);
 
   return (
     <>

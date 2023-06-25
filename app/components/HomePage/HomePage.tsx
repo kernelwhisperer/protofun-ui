@@ -1,37 +1,13 @@
 "use client";
 
 import { Stack } from "@mui/material";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import React from "react";
 
+import { variants } from "../../utils/client-utils";
 import { LinkButton } from "../LinkButton";
 import BitcoinIcon from "./assets/bitcoin.svg";
 import EthereumIcon from "./assets/ethereum.svg";
-
-const variants: Variants = {
-  closed: {
-    opacity: 0,
-    transition: {
-      // duration: 0.25,
-      // ease: "easeInOut",
-      damping: 40,
-      stiffness: 240,
-      type: "spring",
-    },
-    y: 50,
-  },
-  open: {
-    opacity: 1,
-    transition: {
-      // duration: 0.25,
-      // ease: "easeInOut",
-      damping: 40,
-      stiffness: 240,
-      type: "spring",
-    },
-    y: 0,
-  },
-};
 
 export function HomePage() {
   return (

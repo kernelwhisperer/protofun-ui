@@ -30,7 +30,7 @@ export const globalStyles = `
   }
 
   body::before {
-    filter: url(#noiseFilter);
+    // filter: url(#noiseFilter);
     position: fixed;
     left: 0;
     top: 0;
@@ -67,11 +67,11 @@ export const globalStyles = `
   }
 
   ::-webkit-scrollbar {
-    background-color: ${RETRO_BEIGE_1_AF};
+    background-color: ${RETRO_BEIGE_1};
   }
 
   html[data-mui-color-scheme="dark"] ::-webkit-scrollbar {
-    background-color: ${RETRO_GREY_AF};
+    background-color: ${RETRO_GREY};
   }
 
   ::-webkit-scrollbar-thumb {
@@ -92,7 +92,7 @@ export const theme = extendTheme({
         },
         background: {
           default: RETRO_GREY,
-          glass: alpha(RETRO_GREY_AF, 0.5),
+          glass: alpha(RETRO_GREY, 0.5),
         },
         mode: "dark",
         primary: {
@@ -114,7 +114,7 @@ export const theme = extendTheme({
         },
         background: {
           default: RETRO_BEIGE_1,
-          glass: alpha(RETRO_BEIGE_1_AF, 0.5),
+          glass: alpha(RETRO_BEIGE_1, 0.5),
         },
         primary: {
           main: RETRO_GREY,

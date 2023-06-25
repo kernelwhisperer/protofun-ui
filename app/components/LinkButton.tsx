@@ -42,7 +42,7 @@ export function LinkButton({
           height: "100%",
           padding: iconPadding,
           position: "absolute",
-          right: "-25%",
+          right: "-30%",
           transform: "rotate(14deg) scale(1.5)",
           width: "100%",
         }}

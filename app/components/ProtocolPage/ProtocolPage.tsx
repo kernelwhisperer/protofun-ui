@@ -5,37 +5,13 @@ import {
   LocalGasStationOutlined,
 } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
+import { variants } from "../../utils/client-utils";
 import { LinkButton } from "../LinkButton";
 import { RobotoSerifFF } from "../Theme/fonts";
-
-const variants: Variants = {
-  closed: {
-    opacity: 0,
-    transition: {
-      // duration: 0.25,
-      // ease: "easeInOut",
-      damping: 40,
-      stiffness: 240,
-      type: "spring",
-    },
-    y: 50,
-  },
-  open: {
-    opacity: 1,
-    transition: {
-      // duration: 0.25,
-      // ease: "easeInOut",
-      damping: 40,
-      stiffness: 240,
-      type: "spring",
-    },
-    y: 0,
-  },
-};
 
 const UNDERLINE_WIDTH = 185;
 const UNDERLINE_OFFSET = 12;
