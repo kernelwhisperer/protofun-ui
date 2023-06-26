@@ -38,20 +38,12 @@ export function Blobs() {
       className="blobs"
       sx={{
         margin: "auto",
+        opacity: palette.mode === "dark" ? 0.33 : 1,
         pointerEvents: "none",
         position: "absolute",
         right: 50,
         top: -300,
         width: "300px",
-      }}
-      component={motion.div}
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: palette.mode === "dark" ? 0.33 : 1,
-      }}
-      transition={{
-        duration: 2,
-        ease: "easeInOut",
       }}
     >
       <Blob

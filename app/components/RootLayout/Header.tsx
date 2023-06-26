@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import React from "react";
 
+import { Blobs } from "./Blobs";
 import { Logo } from "./Logo";
 import { Settings } from "./Settings";
 
@@ -48,6 +49,7 @@ export function Header() {
             paddingX={2}
             marginY={1}
           >
+            <Blobs />
             {/* <Box
         sx={{
           filter: "blur(40px) url(#noiseFilter) blur(1px)",

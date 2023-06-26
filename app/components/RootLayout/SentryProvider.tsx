@@ -27,7 +27,7 @@ export function SentryProvider({
 
       // You can remove this option if you're not planning to use the Sentry Session Replay feature:
       integrations: [
-        // new Sentry.Replay({
+        // new Sentry.Replay({ // TODO
         // blockAllMedia: true,
         // Additional Replay configuration goes in here, for example:
         // maskAllText: true,

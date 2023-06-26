@@ -4,7 +4,6 @@ import { Box, Container } from "@mui/material";
 import React from "react";
 
 import ThemeRegistry from "../Theme/ThemeRegistry";
-import { Blobs } from "./Blobs";
 import { Header } from "./Header";
 
 interface AppProps {
@@ -21,7 +20,6 @@ export function App({ children }: AppProps) {
         maxWidth="lg"
         sx={{ padding: { xs: 0 }, position: "relative" }}
       >
-        <Blobs />
         <Box
           sx={{
             alignItems: "flex-start",
