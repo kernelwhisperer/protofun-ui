@@ -27,11 +27,11 @@ export function SentryProvider({
 
       // You can remove this option if you're not planning to use the Sentry Session Replay feature:
       integrations: [
-        new Sentry.Replay({
-          // blockAllMedia: true,
-          // Additional Replay configuration goes in here, for example:
-          // maskAllText: true,
-        }),
+        // new Sentry.Replay({
+        // blockAllMedia: true,
+        // Additional Replay configuration goes in here, for example:
+        // maskAllText: true,
+        // }),
       ],
       release: gitHash,
 
