@@ -57,7 +57,7 @@ export function CandleChart() {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    if (data.length) return;
+    if (data.length || $loading.get()) return;
     // console.log("📜 LOG > CandleChart > fetching");
 
     $loading.set(true);
@@ -141,12 +141,22 @@ export function CandleChart() {
             );
             if (seriesType === "Candlestick") {
               mainSeries.current = chartRef.current?.addCandlestickSeries({
-                borderDownColor: "#EB6666", // TODO
-                borderUpColor: "#5e9a77",
-                downColor: "#EB6666",
-                upColor: "#5e9a77",
-                wickDownColor: "#EB6666",
-                wickUpColor: "#5e9a77",
+                // ----default
+                // rgb(227, 96, 85)
+                // rgb(72, 163, 154)
+                // ----tv-mobile
+                // rgb(229, 75, 74)
+                // rgb(58, 151, 129)
+                // ----tv-web
+                // rgb(242, 54, 69)
+                // rgb(8, 153, 129)
+                //
+                borderDownColor: "rgb(220, 60, 70)",
+                borderUpColor: "rgb(0, 150, 108)",
+                downColor: "rgb(220, 60, 70)",
+                upColor: "rgb(0, 150, 108)",
+                wickDownColor: "rgb(220, 60, 70)",
+                wickUpColor: "rgb(0, 150, 108)",
               });
             } else {
               const primaryColor = theme.palette.primary.main;

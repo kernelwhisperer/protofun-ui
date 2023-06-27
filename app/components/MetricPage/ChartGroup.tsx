@@ -21,7 +21,9 @@ export function ChartGroup() {
       <Paper
         elevation={0}
         sx={{
-          height: "500px",
+          height: "calc(100vh - 372px)",
+          maxHeight: "1000px",
+          minHeight: "400px",
           paddingLeft: 0.5,
           paddingTop: 0.5,
           position: "relative",

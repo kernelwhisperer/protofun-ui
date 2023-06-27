@@ -116,6 +116,7 @@ export const theme = extendTheme({
           default: RETRO_BEIGE_1,
           glass: alpha(RETRO_BEIGE_1, 0.5),
         },
+        divider: alpha(RETRO_GREY, 0.12),
         primary: {
           main: RETRO_GREY,
         },

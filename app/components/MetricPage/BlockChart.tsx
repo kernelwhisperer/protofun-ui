@@ -41,7 +41,7 @@ export function BlockChart() {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    if (data.length) return;
+    if (data.length || $loading.get()) return;
     // console.log("📜 LOG > CandleChart > fetching");
 
     $loading.set(true);
