@@ -12,8 +12,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const appVer = (process.env.APP_VER as string).replaceAll('"', "");
-  const gitHash = process.env.GIT_HASH as string;
+  const appVer = (process.env.NEXT_PUBLIC_APP_VER as string).replaceAll(
+    '"',
+    ""
+  );
+  const gitHash = process.env.NEXT_PUBLIC_GIT_HASH as string;
 
   return (
     <html lang="en">

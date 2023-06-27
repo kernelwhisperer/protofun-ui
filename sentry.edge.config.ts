@@ -14,7 +14,7 @@ Sentry.init({
       ? ""
       : "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
 
-  release: process.env.GIT_HASH,
+  release: process.env.NEXT_PUBLIC_GIT_HASH,
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,

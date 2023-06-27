@@ -8,9 +8,9 @@
     "email": "hello@danielconstantin.net"
   },
   "scripts": {
-    "start": "APP_VER=`npm pkg get version` GIT_HASH=`git rev-parse HEAD` next dev",
-    "build": "APP_VER=`npm pkg get version` GIT_HASH=`git rev-parse HEAD` next build",
-    "preview": "next start",
+    "dev": "NEXT_PUBLIC_APP_VER=`npm pkg get version` NEXT_PUBLIC_GIT_HASH=`git rev-parse HEAD` next dev",
+    "build": "NEXT_PUBLIC_APP_VER=`npm pkg get version` NEXT_PUBLIC_GIT_HASH=`git rev-parse HEAD` next build",
+    "start": "next start",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest",
