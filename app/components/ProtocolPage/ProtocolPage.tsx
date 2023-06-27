@@ -12,9 +12,7 @@ import React from "react";
 import { variants } from "../../utils/client-utils";
 import { LinkButton } from "../LinkButton";
 import { RobotoSerifFF } from "../Theme/fonts";
-
-const UNDERLINE_WIDTH = 185;
-const UNDERLINE_OFFSET = 12;
+import { Underline } from "../Underline";
 
 interface ProtocolProps {
   protocol: string;
@@ -61,32 +59,7 @@ export function ProtocolPage(props: ProtocolProps) {
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
           Ethereum
         </Typography>
-        <motion.div
-          style={{
-            background: "var(--mui-palette-secondary-main)",
-            bottom: 2,
-            content: '""',
-            height: 12,
-            left: 0,
-            opacity: 1,
-            position: "absolute",
-            width: UNDERLINE_WIDTH,
-            zIndex: -1,
-          }}
-          animate={{
-            scaleX: [0, 1, 0],
-            x: [
-              -UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
-              UNDERLINE_OFFSET,
-              UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
-            ],
-          }}
-          transition={{
-            delay: 0.2,
-            duration: 1,
-            ease: "easeInOut",
-          }}
-        ></motion.div>
+        <Underline />
       </motion.div>
       <motion.div variants={variants}>
         <LinkButton

@@ -15,10 +15,8 @@ import { SimpleBlock } from "../../utils/block-utils";
 import { Candle } from "../../utils/candle-utils";
 import { variants } from "../../utils/client-utils";
 import { RobotoSerifFF } from "../Theme/fonts";
+import { Underline } from "../Underline";
 import { ChartGroup } from "./ChartGroup";
-
-const UNDERLINE_WIDTH = 280;
-const UNDERLINE_OFFSET = 12;
 
 export interface MetricPageProps {
   blocks: SimpleBlock[];
@@ -84,32 +82,7 @@ export function MetricPage(props: MetricPageProps) {
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
           Base fee per gas
         </Typography>
-        <motion.div
-          style={{
-            background: "var(--mui-palette-secondary-main)",
-            bottom: 2,
-            content: '""',
-            height: 12,
-            left: 0,
-            opacity: 1,
-            position: "absolute",
-            width: UNDERLINE_WIDTH,
-            zIndex: -1,
-          }}
-          animate={{
-            scaleX: [0, 1, 0],
-            x: [
-              -UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
-              UNDERLINE_OFFSET,
-              UNDERLINE_WIDTH / 2 + UNDERLINE_OFFSET,
-            ],
-          }}
-          transition={{
-            delay: 0.2,
-            duration: 1,
-            ease: "easeInOut",
-          }}
-        ></motion.div>
+        <Underline />
       </motion.div>
       <motion.div style={{ width: "100%" }} variants={variants}>
         <ChartGroup />
