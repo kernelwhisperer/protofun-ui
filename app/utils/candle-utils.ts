@@ -39,6 +39,10 @@ export async function queryCandles(
     throw new IndexerError(errorMessage);
   }
 
+  if (response.data[entityId].length === 0) {
+    throw new IndexerError("Empty response. Has the subgraph finish syncing?");
+  }
+
   return response.data[entityId].reverse();
 }
 
@@ -69,3 +73,11 @@ export type Candle = {
   open: string;
   timestamp: string;
 };
+
+export function isCandle(value: unknown): value is Candle {
+  return typeof value === "object" && value !== null && "open" in value;
+}
+
+export function isCandleArray(value: unknown[]): value is Candle[] {
+  return Array.isArray(value) && value.length > 0 && isCandle(value[0]);
+}

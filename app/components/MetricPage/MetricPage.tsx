@@ -1,11 +1,12 @@
 "use client";
 import { KeyboardBackspace } from "@mui/icons-material";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
 import {
+  $seriesType,
   $timeframe,
   isTimeframe,
   MetricId,
@@ -17,7 +18,8 @@ import { Candle } from "../../utils/candle-utils";
 import { variants } from "../../utils/client-utils";
 import { RobotoSerifFF } from "../Theme/fonts";
 import { Underline } from "../Underline";
-import { ChartGroup } from "./ChartGroup";
+import { ChartActionBar } from "./ChartActionBar";
+import { MetricChart } from "./MetricChart";
 
 export interface MetricPageProps {
   blocks: SimpleBlock[];
@@ -40,6 +42,9 @@ export function MetricPage(props: MetricPageProps) {
   const { timeframe = "" } = searchParams;
   if (isTimeframe(timeframe)) {
     $timeframe.set(timeframe);
+    if (timeframe === "Block") {
+      $seriesType.set("Line");
+    }
   }
 
   // const blockMap = blocks.reduce((acc, curr) => {
@@ -100,7 +105,22 @@ export function MetricPage(props: MetricPageProps) {
         <Underline />
       </motion.div>
       <motion.div style={{ width: "100%" }} variants={variants}>
-        <ChartGroup />
+        <Stack gap={1}>
+          <ChartActionBar />
+          <Paper
+            elevation={0}
+            sx={{
+              height: "calc(100vh - 372px)",
+              maxHeight: "800px",
+              minHeight: "400px",
+              paddingLeft: 0.5,
+              paddingTop: 0.5,
+              position: "relative",
+            }}
+          >
+            <MetricChart />
+          </Paper>
+        </Stack>
       </motion.div>
     </Stack>
   );

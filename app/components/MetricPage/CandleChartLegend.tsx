@@ -1,57 +1,33 @@
-import {
-  Stack,
-  Typography,
-  TypographyProps,
-  useMediaQuery,
-} from "@mui/material";
+import { Stack, useMediaQuery } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
-import { $hourCandleMap, $minCandleMap } from "../../stores/candle-data";
 import {
+  $entryMap,
   $legendTimestamp,
   $seriesType,
-  $timeframe,
+  CandleMap,
 } from "../../stores/metric-page";
+import { isCandle } from "../../utils/candle-utils";
 import { formatNumber } from "../../utils/client-utils";
-import { RobotoMonoFF } from "../Theme/fonts";
-
-const LegendLabel = ({ sx, ...rest }: TypographyProps) => (
-  <Typography
-    variant="caption"
-    sx={{
-      backgroundColor: "var(--mui-palette-background-glass)",
-      paddingX: 1,
-      ...sx,
-    }}
-    {...rest}
-  />
-);
-
-const LegendValue = (props: TypographyProps) => (
-  <LegendLabel fontFamily={RobotoMonoFF} sx={{ paddingLeft: 0 }} {...props} />
-);
+import { LegendLabel } from "./LegendLabel";
+import { LegendValue } from "./LegendValue";
 
 export function CandleChartLegend() {
-  // console.log("📜 LOG > ChartLegend render");
   const smallDevice = !useMediaQuery("(min-width:600px)");
 
   const seriesType = useStore($seriesType);
   const timestamp = useStore($legendTimestamp);
-  const timeframe = useStore($timeframe);
-  const candleMap = useStore(
-    timeframe === "Minute" ? $minCandleMap : $hourCandleMap
-  );
+  const candleMap = useStore($entryMap) as CandleMap;
 
   const candle = candleMap[timestamp];
-
   const candleDatetime = new Date(parseInt(timestamp || "0") * 1000);
 
   return (
     <AnimatePresence>
-      {!!candle && (
+      {!!candle && isCandle(candle) && (
         <Stack
           sx={{
             alignItems: "flex-start",
@@ -60,7 +36,7 @@ export function CandleChartLegend() {
             paddingTop: 1,
             position: "absolute",
             top: 0,
-            zIndex: 99999,
+            zIndex: 999,
           }}
           component={motion.div}
           initial={{ opacity: 0 }}
@@ -71,7 +47,7 @@ export function CandleChartLegend() {
           <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
             {smallDevice ? (
               <>
-                <LegendLabel component="div">
+                <LegendLabel>
                   <LegendValue variant="body2">
                     {
                       new Intl.DateTimeFormat(window.navigator.language, {

@@ -2,17 +2,16 @@
 
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
-import React, { MutableRefObject, useEffect, useRef } from "react";
+import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
 import { RobotoMonoFF } from "./Theme/fonts";
 
 export interface ChartProps {
   chartRef: MutableRefObject<IChartApi | undefined>;
-  onReady: () => void;
 }
 
-export function Chart(props: ChartProps) {
-  const { chartRef, onReady } = props;
+function Chart(props: ChartProps) {
+  const { chartRef } = props;
 
   const theme = useTheme();
   const containerRef = useRef<HTMLElement>();
@@ -20,7 +19,6 @@ export function Chart(props: ChartProps) {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    // console.log("📜 LOG > Chart > render");
 
     const handleResize = () => {
       chartRef.current?.applyOptions({
@@ -68,7 +66,8 @@ export function Chart(props: ChartProps) {
 
     chartRef.current.timeScale().applyOptions({
       borderVisible: false,
-      secondsVisible: true,
+      rightOffset: smallDevice ? 4 : 8,
+      secondsVisible: true, // TODO: make it dissapear for higher timeframes
       timeVisible: true,
     });
 
@@ -77,14 +76,13 @@ export function Chart(props: ChartProps) {
     });
 
     window.addEventListener("resize", handleResize);
-    onReady();
 
     return () => {
       window.removeEventListener("resize", handleResize);
 
       chartRef.current?.remove();
     };
-  }, [chartRef, theme, smallDevice, onReady, containerRef]);
+  }, [chartRef, theme, smallDevice, containerRef]);
 
   return (
     <Box
@@ -97,3 +95,5 @@ export function Chart(props: ChartProps) {
     />
   );
 }
+
+export const MemoChart = memo(Chart, () => true);

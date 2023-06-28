@@ -1,41 +1,29 @@
-import { Stack, Typography, TypographyProps } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
-import { $blockMap } from "../../stores/block-data";
-import { $legendTimestamp } from "../../stores/metric-page";
+import {
+  $entryMap,
+  $legendTimestamp,
+  BlockMap,
+} from "../../stores/metric-page";
+import { isBlock } from "../../utils/block-utils";
 import { formatBigInt, formatNumber } from "../../utils/client-utils";
-import { RobotoMonoFF } from "../Theme/fonts";
-
-const LegendLabel = ({ sx, ...rest }: TypographyProps) => (
-  <Typography
-    variant="caption"
-    sx={{
-      backgroundColor: "var(--mui-palette-background-glass)",
-      paddingX: 1,
-      ...sx,
-    }}
-    {...rest}
-  />
-);
-
-const LegendValue = (props: TypographyProps) => (
-  <LegendLabel fontFamily={RobotoMonoFF} sx={{ paddingLeft: 0 }} {...props} />
-);
+import { LegendLabel } from "./LegendLabel";
+import { LegendValue } from "./LegendValue";
 
 export function BlockChartLegend() {
-  // console.log("📜 LOG > ChartLegend render");
-
   const timestamp = useStore($legendTimestamp);
-  const block = $blockMap.get()[timestamp];
+  const blockMap = useStore($entryMap) as BlockMap;
+  const block = blockMap[timestamp];
 
   // const blockDate = new Date(parseInt(timestamp || "0") * 1000);
 
   return (
     <AnimatePresence>
-      {!!block && (
+      {!!block && isBlock(block) && (
         <Stack
           sx={{
             alignItems: "flex-start",

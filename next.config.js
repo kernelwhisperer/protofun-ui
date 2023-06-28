@@ -6,7 +6,7 @@ const nextConfig = {
     },
   },
   // https://github.com/facebook/react/issues/24502
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,

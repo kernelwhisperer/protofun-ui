@@ -4,19 +4,13 @@ import React from "react";
 
 import { MetricPage } from "../../components/MetricPage/MetricPage";
 import { PageWrapper } from "../../components/RootLayout/PageWrapper";
-import { isMetric, METRICS, METRICS_MAP } from "../../stores/metric-page";
+import { isMetric, METRICS_MAP } from "../../stores/metric-page";
 import { isProtocol, PROTOCOL_LABELS } from "../../stores/protocol-page";
 
 type Props = {
   params: { metric: string; protocol: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
-
-export const dynamic = "error";
-
-export async function generateStaticParams() {
-  return METRICS.map(({ protocol, id }) => ({ metric: id, protocol }));
-}
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { params } = props;

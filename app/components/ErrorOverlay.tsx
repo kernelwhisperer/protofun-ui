@@ -11,6 +11,7 @@ export function ErrorOverlay(props: ProgressProps) {
 
   return (
     <Stack
+      style={{ zIndex: errorMessage ? 999 : undefined }}
       sx={{
         left: 0,
         position: "absolute",

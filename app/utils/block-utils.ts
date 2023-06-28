@@ -14,11 +14,20 @@ import { IndexerError } from "./errors";
 //   };
 // }
 
-export type SimpleBlock = Omit<Block, "txns">;
+export type SimpleBlock = Omit<Block, "txns" | "timestamp"> & {
+  timestamp: string;
+};
 
 export async function queryBlocks() {
   try {
     const res = await sdk.FetchLastBlocks();
+
+    if (res.blocks.length === 0) {
+      throw new IndexerError(
+        "Empty response. Has the subgraph finish syncing?"
+      );
+    }
+
     return res.blocks.reverse();
   } catch (error) {
     let errorMessage = (error as Error).message;
@@ -37,4 +46,14 @@ export function createBlockMapper(value: keyof SimpleBlock, precision: number) {
       value: parseInt(block[value]) / precision,
     };
   };
+}
+
+export function isBlock(value: unknown): value is SimpleBlock {
+  return (
+    typeof value === "object" && value !== null && "baseFeePerGas" in value
+  );
+}
+
+export function isBlockArray(value: unknown[]): value is SimpleBlock[] {
+  return Array.isArray(value) && value.length > 0 && isBlock(value[0]);
 }
