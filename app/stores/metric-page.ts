@@ -26,7 +26,7 @@ export function isTimeframe(value: string): value is Timeframe {
 export const $timeframe = atom<Timeframe>("Minute");
 export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
-export const $liveMode = atom<boolean>(false);
+export const $liveMode = atom<boolean>(true);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);

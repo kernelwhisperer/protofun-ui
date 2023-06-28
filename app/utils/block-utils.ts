@@ -39,6 +39,23 @@ export async function queryBlocks() {
   }
 }
 
+export async function queryBlocksSince(timestamp: string) {
+  try {
+    const res = await sdk.FetchBlocksSince({
+      since: timestamp,
+    });
+
+    return res.blocks.reverse();
+  } catch (error) {
+    let errorMessage = (error as Error).message;
+    if (errorMessage.includes("ECONNREFUSED")) {
+      errorMessage = "Connection failed";
+    }
+
+    throw new IndexerError(errorMessage);
+  }
+}
+
 export function createBlockMapper(value: keyof SimpleBlock, precision: number) {
   return function customMapper(block: SimpleBlock): LineData {
     return {

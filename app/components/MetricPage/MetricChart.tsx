@@ -9,8 +9,15 @@ import {
   MouseEventParams,
   Time,
 } from "lightweight-charts";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
+import { useLiveData } from "../../hooks/useLiveData";
 import {
   $entries,
   $entryMap,
@@ -24,6 +31,7 @@ import {
 } from "../../stores/metric-page";
 import {
   createBlockMapper,
+  isBlock,
   isBlockArray,
   queryBlocks,
   SimpleBlock,
@@ -32,6 +40,7 @@ import {
   Candle,
   createCandleMapper,
   createLineMapper,
+  isCandle,
   isCandleArray,
   queryCandles,
 } from "../../utils/candle-utils";
@@ -185,24 +194,33 @@ export function MetricChart() {
     };
   }, [mainSeriesData]);
 
-  // const handleNewCandle = useCallback((candle: Candle) => {
-  //   $candles.get().push(candle);
-  //   $candleMap.setKey(candle.timestamp, candle);
-  //   $legendTimestamp.set(candle.timestamp);
-  //   mainSeries.current?.update(mapCandleToCandleData(candle));
-  // }, []);
+  const handleNewData = useCallback((data: Candle | SimpleBlock) => {
+    const entries = $entries.get();
 
-  // useNewCandlesSub(data[data.length - 1]?.timestamp, handleNewCandle, !error);
+    if (isBlockArray(entries) && isBlock(data)) {
+      entries.push(data);
+      $entryMap.setKey(data.timestamp, data);
+      $legendTimestamp.set(data.timestamp);
+      mainSeries.current?.update(mapBlockToLine(data));
+    }
 
-  // const handleNewBlock = useCallback((block: SimpleBlock) => {
-  //   $blockMap.setKey(block.timestamp, block);
-  //   $blocks.get().push(block);
-  //   $legendTimestamp.set(block.timestamp);
-  //   mainSeries.current?.update(mapBlockToLine(block));
-  // }, []);
+    if (isCandleArray(entries) && isCandle(data)) {
+      entries.push(data);
+      $entryMap.setKey(data.timestamp, data);
+      $legendTimestamp.set(data.timestamp);
+      if ($seriesType.get() === "Line") {
+        mainSeries.current?.update(mapCandleToLineData(data));
+      } else {
+        mainSeries.current?.update(mapCandleToCandleData(data));
+      }
+    }
+  }, []);
 
-  // useNewBlocksSub(data[data.length - 1]?.timestamp, handleNewBlock, !error);
-  // console.log("📜 LOG > BlockChart > data.length:", data.length);
+  useLiveData(
+    data[data.length - 1]?.timestamp,
+    handleNewData,
+    !loading && !error && data.length > 0
+  );
 
   return (
     <>
