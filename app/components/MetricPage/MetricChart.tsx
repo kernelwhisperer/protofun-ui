@@ -198,14 +198,18 @@ export function MetricChart() {
     const entries = $entries.get();
 
     if (isBlockArray(entries) && isBlock(data)) {
-      entries.push(data);
-      $entryMap.setKey(data.timestamp, data);
-      $legendTimestamp.set(data.timestamp);
-      mainSeries.current?.update(mapBlockToLine(data));
+      if (entries[entries.length - 1].timestamp !== data.timestamp) {
+        entries.push(data);
+        $entryMap.setKey(data.timestamp, data);
+        $legendTimestamp.set(data.timestamp);
+        mainSeries.current?.update(mapBlockToLine(data));
+      }
     }
 
     if (isCandleArray(entries) && isCandle(data)) {
-      entries.push(data);
+      if (entries[entries.length - 1].timestamp !== data.timestamp) {
+        entries.push(data);
+      }
       $entryMap.setKey(data.timestamp, data);
       $legendTimestamp.set(data.timestamp);
       if ($seriesType.get() === "Line") {
