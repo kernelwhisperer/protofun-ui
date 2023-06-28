@@ -4,46 +4,35 @@ import {
   KeyboardBackspace,
   LocalGasStationOutlined,
 } from "@mui/icons-material";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
+import { METRICS_MAP } from "../../stores/metric-page";
+import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocol-page";
 import { variants } from "../../utils/client-utils";
 import { LinkButton } from "../LinkButton";
+import { PageLayout } from "../RootLayout/PageLayout";
 import { RobotoSerifFF } from "../Theme/fonts";
 import { Underline } from "../Underline";
 
 interface ProtocolProps {
-  protocol: string;
+  protocolId: ProtocolId;
 }
 
 export function ProtocolPage(props: ProtocolProps) {
-  const { protocol } = props;
+  const { protocolId } = props;
+  const protocol = PROTOCOL_MAP[protocolId];
 
   return (
-    <Stack
-      alignItems={"flex-start"}
-      gap={0}
-      component={motion.div}
-      initial={"closed"}
-      animate={"open"}
-      variants={{
-        closed: {
-          // transition: { staggerChildren: 0.05, staggerDirection: -1 },
-        },
-        open: {
-          transition: { staggerChildren: 0.15 },
-        },
-      }}
-      transition={{ duration: 5 }}
-    >
+    <PageLayout>
       <motion.div variants={variants}>
         <Button
           href="/"
           component={Link}
           size="small"
-          sx={{ borderRadius: 16, paddingLeft: 1, paddingRight: 2 }}
+          sx={{ borderRadius: 16, height: 31, paddingLeft: 1, paddingRight: 2 }}
           startIcon={<KeyboardBackspace />}
         >
           Home
@@ -58,18 +47,20 @@ export function ProtocolPage(props: ProtocolProps) {
         }}
       >
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
-          Ethereum
+          {protocol.title} metrics
         </Typography>
         <Underline />
       </motion.div>
-      <motion.div variants={variants}>
-        <LinkButton
-          iconPadding="5px"
-          href={`/${protocol}/base_fee`}
-          label="Base fee per gas"
-          icon={LocalGasStationOutlined}
-        />
-      </motion.div>
-    </Stack>
+      {Object.values(METRICS_MAP[protocolId] || {}).map((metric) => (
+        <motion.div variants={variants} key={metric.id}>
+          <LinkButton
+            iconPadding="16px" // TODO
+            href={`/${protocolId}/${metric.id}`}
+            label={metric.title}
+            icon={LocalGasStationOutlined} // TODO
+          />
+        </motion.div>
+      ))}
+    </PageLayout>
   );
 }

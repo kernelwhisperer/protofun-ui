@@ -27,7 +27,7 @@ export function LinkButton({
         justifyContent: "flex-start",
         overflow: "hidden",
         // width: 240,
-        paddingRight: 16,
+        paddingRight: 12,
         paddingY: 2,
       }}
       {...(rest as any)}
@@ -42,8 +42,8 @@ export function LinkButton({
           height: "100%",
           padding: iconPadding,
           position: "absolute",
-          right: "-30%",
-          transform: "rotate(14deg) scale(1.5)",
+          right: "-33%",
+          // transform: "rotate(14deg) scale(1.5)",
           width: "100%",
         }}
       />

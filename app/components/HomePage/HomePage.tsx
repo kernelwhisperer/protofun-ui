@@ -1,47 +1,66 @@
 "use client";
 
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React from "react";
 
+import { PROTOCOLS } from "../../stores/protocol-page";
 import { variants } from "../../utils/client-utils";
 import { LinkButton } from "../LinkButton";
-import BitcoinIcon from "./assets/bitcoin.svg";
-import EthereumIcon from "./assets/ethereum.svg";
+import { PageLayout } from "../RootLayout/PageLayout";
+import { RobotoSerifFF } from "../Theme/fonts";
+import { Underline } from "../Underline";
 
 export function HomePage() {
   return (
-    <Stack
-      sx={{ marginTop: 5 }}
-      alignItems={"flex-start"}
-      direction={"row"}
-      flexWrap="wrap"
-      gap={2}
-      component={motion.div}
-      initial={"closed"}
-      animate={"open"}
-      variants={{
-        closed: {
-          // transition: { staggerChildren: 0.05, staggerDirection: -1 },
-        },
-        open: {
-          transition: { staggerChildren: 0.15 },
-        },
+    <PageLayout
+      sx={{
+        marginTop: "31px",
       }}
-      transition={{ duration: 5 }}
     >
-      <motion.div variants={variants}>
-        <LinkButton
-          href={`/btc`}
-          label="Bitcoin"
-          icon={BitcoinIcon}
-          disabled
-          iconPadding="5px"
-        />
+      <motion.div
+        variants={variants}
+        style={{
+          marginBottom: 32,
+          marginTop: 16,
+          position: "relative",
+        }}
+      >
+        <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
+          Protocols
+        </Typography>
+        <Underline />
       </motion.div>
-      <motion.div variants={variants}>
-        <LinkButton href={`/eth`} label="Ethereum" icon={EthereumIcon} />
-      </motion.div>
-    </Stack>
+      <Stack
+        alignItems={"flex-start"}
+        direction={"row"}
+        flexWrap="wrap"
+        gap={2}
+        component={motion.div}
+        initial={"closed"}
+        animate={"open"}
+        variants={{
+          closed: {
+            // transition: { staggerChildren: 0.05, staggerDirection: -1 },
+          },
+          open: {
+            transition: { staggerChildren: 0.15 },
+          },
+        }}
+        transition={{ duration: 5 }}
+      >
+        {PROTOCOLS.map((protocol) => (
+          <motion.div key={protocol.id} variants={variants}>
+            <LinkButton
+              href={`/${protocol.id}`}
+              label={protocol.title}
+              icon={protocol.icon}
+              disabled={!protocol.enabled}
+              iconPadding={protocol.iconPadding}
+            />
+          </motion.div>
+        ))}
+      </Stack>
+    </PageLayout>
   );
 }

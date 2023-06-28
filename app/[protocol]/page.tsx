@@ -4,27 +4,23 @@ import React from "react";
 
 import { ProtocolPage } from "../components/ProtocolPage/ProtocolPage";
 import { PageWrapper } from "../components/RootLayout/PageWrapper";
-import {
-  isProtocol,
-  PROTOCOL_LABELS,
-  PROTOCOLS,
-} from "../stores/protocol-page";
+import { isProtocolId, PROTOCOL_MAP, PROTOCOLS } from "../stores/protocol-page";
 
 type Props = {
   params: { protocol: string };
 };
 
 export async function generateStaticParams() {
-  return PROTOCOLS.map((protocol) => ({ protocol }));
+  return PROTOCOLS.map(({ id }) => ({ protocol: id }));
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { params } = props;
-  const { protocol } = params;
+  const { protocol: protocolId } = params;
 
-  if (isProtocol(protocol)) {
+  if (isProtocolId(protocolId)) {
     return {
-      title: `${PROTOCOL_LABELS[protocol]} · Protocol Fundamentals`,
+      title: `${PROTOCOL_MAP[protocolId].title} · Protocol Fundamentals`,
     };
   }
 
@@ -33,15 +29,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function ProtocolPageServer(props: Props) {
   const { params } = props;
-  const { protocol } = params;
+  const { protocol: protocolId } = params;
 
-  if (!isProtocol(protocol)) {
+  if (!isProtocolId(protocolId)) {
     notFound();
   }
 
   return (
     <PageWrapper>
-      <ProtocolPage protocol={protocol} />
+      <ProtocolPage protocolId={protocolId} />
     </PageWrapper>
   );
 }

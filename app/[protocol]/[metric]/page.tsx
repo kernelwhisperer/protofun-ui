@@ -5,7 +5,7 @@ import React from "react";
 import { MetricPage } from "../../components/MetricPage/MetricPage";
 import { PageWrapper } from "../../components/RootLayout/PageWrapper";
 import { isMetric, METRICS_MAP } from "../../stores/metric-page";
-import { isProtocol, PROTOCOL_LABELS } from "../../stores/protocol-page";
+import { isProtocolId, PROTOCOL_MAP } from "../../stores/protocol-page";
 
 type Props = {
   params: { metric: string; protocol: string };
@@ -14,11 +14,11 @@ type Props = {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { params } = props;
-  const { protocol, metric } = params;
+  const { protocol: protocolId, metric: metricId } = params;
 
-  if (isProtocol(protocol) && isMetric(protocol, metric)) {
+  if (isProtocolId(protocolId) && isMetric(protocolId, metricId)) {
     return {
-      title: `${METRICS_MAP[protocol][metric].title} · ${PROTOCOL_LABELS[protocol]} · Protocol Fundamentals`,
+      title: `${METRICS_MAP[protocolId]?.[metricId].title} · ${PROTOCOL_MAP[protocolId]} · Protocol Fundamentals`,
     };
   }
 
@@ -26,7 +26,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 export default async function MetricPageServer(props: Props) {
   const { params, searchParams } = props;
-  const { protocol, metric } = params;
+  const { protocol: protocolId, metric: metricId } = params;
 
   // const [candles, blocks] = await Promise.all([
   //   queryCandles("Minute").catch((error) => {
@@ -41,15 +41,15 @@ export default async function MetricPageServer(props: Props) {
   //   }),
   // ]);
 
-  if (!isProtocol(protocol) || !isMetric(protocol, metric)) {
+  if (!isProtocolId(protocolId) || !isMetric(protocolId, metricId)) {
     notFound();
   }
 
   return (
     <PageWrapper>
       <MetricPage
-        protocol={protocol}
-        metric={metric}
+        protocolId={protocolId}
+        metricId={metricId}
         searchParams={searchParams}
         blocks={[]}
         candles={[]}

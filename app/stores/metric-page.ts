@@ -7,7 +7,7 @@ import { atom, map } from "nanostores";
 
 import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
-import { ProtocolId, PROTOCOLS } from "./protocol-page";
+import { PROTOCOL_IDS, ProtocolId } from "./protocol-page";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
 export const TIME_FRAMES: Record<Timeframe, string> = {
@@ -39,21 +39,23 @@ export type Metric = {
   title: string;
 };
 
-export const METRICS_MAP: Record<ProtocolId, Record<MetricId, Metric>> = {
+export const METRICS_MAP: Partial<
+  Record<ProtocolId, Record<MetricId, Metric>>
+> = {
   eth: {
     base_fee: { id: "base_fee", protocol: "eth", title: "Base fee per gas" },
   },
 };
 
-export const METRICS = PROTOCOLS.map((x) =>
-  Object.values(METRICS_MAP[x])
+export const METRICS = PROTOCOL_IDS.map((protocolId) =>
+  Object.values(METRICS_MAP[protocolId] || {})
 ).flat();
 
 export function isMetric(
   protocol: ProtocolId,
   value: string
 ): value is MetricId {
-  return !!METRICS_MAP[protocol][value as MetricId];
+  return !!METRICS_MAP[protocol]?.[value as MetricId];
 }
 
 export const candleStickOptions: CandlestickSeriesPartialOptions = {

@@ -12,10 +12,11 @@ import {
   MetricId,
   METRICS_MAP,
 } from "../../stores/metric-page";
-import { PROTOCOL_LABELS, ProtocolId } from "../../stores/protocol-page";
+import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocol-page";
 import { SimpleBlock } from "../../utils/block-utils";
 import { Candle } from "../../utils/candle-utils";
 import { variants } from "../../utils/client-utils";
+import { PageLayout } from "../RootLayout/PageLayout";
 import { RobotoSerifFF } from "../Theme/fonts";
 import { Underline } from "../Underline";
 import { ChartActionBar } from "./ChartActionBar";
@@ -24,8 +25,8 @@ import { MetricChart } from "./MetricChart";
 export interface MetricPageProps {
   blocks: SimpleBlock[];
   candles: Candle[];
-  metric: MetricId;
-  protocol: ProtocolId;
+  metricId: MetricId;
+  protocolId: ProtocolId;
   searchParams: { timeframe?: string };
 }
 
@@ -33,8 +34,8 @@ export function MetricPage(props: MetricPageProps) {
   const {
     // blocks,
     // candles,
-    metric,
-    protocol,
+    metricId,
+    protocolId,
     searchParams,
   } = props;
   console.log("📜 LOG > MetricPage render");
@@ -47,6 +48,7 @@ export function MetricPage(props: MetricPageProps) {
     }
   }
 
+  // TODO
   // const blockMap = blocks.reduce((acc, curr) => {
   //   acc[curr.timestamp] = curr;
   //   return acc;
@@ -64,31 +66,16 @@ export function MetricPage(props: MetricPageProps) {
   // $minCandleMap.set(candleMap);
 
   return (
-    <Stack
-      alignItems={"flex-start"}
-      gap={0}
-      component={motion.div}
-      initial={"closed"}
-      animate={"open"}
-      variants={{
-        closed: {
-          // transition: { staggerChildren: 0.05, staggerDirection: -1 },
-        },
-        open: {
-          transition: { staggerChildren: 0.15 },
-        },
-      }}
-      transition={{ duration: 5 }}
-    >
+    <PageLayout>
       <motion.div variants={variants}>
         <Button
-          href="/eth"
+          href={`/${PROTOCOL_MAP[protocolId].id}`}
           component={Link}
           size="small"
-          sx={{ borderRadius: 16, paddingLeft: 1, paddingRight: 2 }}
+          sx={{ borderRadius: 16, height: 31, paddingLeft: 1, paddingRight: 2 }}
           startIcon={<KeyboardBackspace />}
         >
-          {PROTOCOL_LABELS[protocol]}
+          {PROTOCOL_MAP[protocolId].title}
         </Button>
       </motion.div>
       <motion.div
@@ -100,7 +87,7 @@ export function MetricPage(props: MetricPageProps) {
         }}
       >
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
-          {METRICS_MAP[protocol][metric].title}
+          {METRICS_MAP[protocolId]?.[metricId].title}
         </Typography>
         <Underline />
       </motion.div>
@@ -122,6 +109,6 @@ export function MetricPage(props: MetricPageProps) {
           </Paper>
         </Stack>
       </motion.div>
-    </Stack>
+    </PageLayout>
   );
 }
