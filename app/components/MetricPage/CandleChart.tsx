@@ -29,7 +29,7 @@ import {
   $scaleMode,
   $seriesType,
   $timeframe,
-} from "../../stores/home-page";
+} from "../../stores/metric-page";
 import {
   Candle,
   createCandleMapper,

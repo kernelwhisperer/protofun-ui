@@ -17,7 +17,11 @@ import React, {
 
 import { useNewBlocksSub } from "../../hooks/useNewBlocksSub";
 import { $blockMap, $blocks, BlockMap } from "../../stores/block-data";
-import { $legendTimestamp, $loading, $scaleMode } from "../../stores/home-page";
+import {
+  $legendTimestamp,
+  $loading,
+  $scaleMode,
+} from "../../stores/metric-page";
 import {
   createBlockMapper,
   queryBlocks,

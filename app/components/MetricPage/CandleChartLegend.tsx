@@ -14,7 +14,7 @@ import {
   $legendTimestamp,
   $seriesType,
   $timeframe,
-} from "../../stores/home-page";
+} from "../../stores/metric-page";
 import { formatNumber } from "../../utils/client-utils";
 import { RobotoMonoFF } from "../Theme/fonts";
 

@@ -20,6 +20,7 @@ interface ProtocolProps {
 
 export function ProtocolPage(props: ProtocolProps) {
   const { protocol } = props;
+
   return (
     <Stack
       alignItems={"flex-start"}

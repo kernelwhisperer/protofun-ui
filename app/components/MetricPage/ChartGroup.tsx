@@ -3,16 +3,17 @@ import { useStore } from "@nanostores/react";
 import { motion } from "framer-motion";
 import React from "react";
 
-import { $loading, $timeframe } from "../../stores/home-page";
+import { $loading, $timeframe } from "../../stores/metric-page";
 import { Progress } from "../Progress";
 import { BlockChart } from "./BlockChart";
 import { CandleChart } from "./CandleChart";
 import { ChartActionBar } from "./ChartActionBar";
 
 export function ChartGroup() {
-  // console.log("📜 LOG > ChartGroup > render");
+  console.log("📜 LOG > ChartGroup > render");
 
   const timeframe = useStore($timeframe);
+  console.log("📜 LOG > ChartGroup > timeframe:", timeframe);
   const loading = useStore($loading);
 
   return (

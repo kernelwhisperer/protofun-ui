@@ -1,4 +1,4 @@
-import { Box, BoxProps, useMediaQuery, useTheme } from "@mui/material";
+import { Box, BoxProps, useMediaQuery } from "@mui/material";
 import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 
@@ -30,15 +30,17 @@ const Blob = ({
 );
 
 export function Blobs() {
-  const { palette } = useTheme();
   const smallDevice = !useMediaQuery("(min-width:600px)");
 
   return (
     <Box
       className="blobs"
       sx={{
+        "html[data-mui-color-scheme='dark'] &": {
+          opacity: 0.33,
+        },
         margin: "auto",
-        opacity: palette.mode === "dark" ? 0.33 : 1,
+        opacity: 1,
         pointerEvents: "none",
         position: "absolute",
         right: 50,

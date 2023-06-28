@@ -5,12 +5,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
-import { $blockMap, $blocks, BlockMap } from "../../stores/block-data";
 import {
-  $minCandleMap,
-  $minCandles,
-  CandleMap,
-} from "../../stores/candle-data";
+  $timeframe,
+  isTimeframe,
+  MetricId,
+  METRICS_MAP,
+} from "../../stores/metric-page";
+import { PROTOCOL_LABELS, ProtocolId } from "../../stores/protocol-page";
 import { SimpleBlock } from "../../utils/block-utils";
 import { Candle } from "../../utils/candle-utils";
 import { variants } from "../../utils/client-utils";
@@ -21,27 +22,41 @@ import { ChartGroup } from "./ChartGroup";
 export interface MetricPageProps {
   blocks: SimpleBlock[];
   candles: Candle[];
+  metric: MetricId;
+  protocol: ProtocolId;
+  searchParams: { timeframe?: string };
 }
 
 export function MetricPage(props: MetricPageProps) {
-  const { blocks, candles } = props;
-  // console.log("📜 LOG > GasPage render");
+  const {
+    // blocks,
+    // candles,
+    metric,
+    protocol,
+    searchParams,
+  } = props;
+  console.log("📜 LOG > MetricPage render");
 
-  const blockMap = blocks.reduce((acc, curr) => {
-    acc[curr.timestamp] = curr;
-    return acc;
-  }, {} as BlockMap);
+  const { timeframe = "" } = searchParams;
+  if (isTimeframe(timeframe)) {
+    $timeframe.set(timeframe);
+  }
 
-  $blocks.set(blocks);
-  $blockMap.set(blockMap);
+  // const blockMap = blocks.reduce((acc, curr) => {
+  //   acc[curr.timestamp] = curr;
+  //   return acc;
+  // }, {} as BlockMap);
 
-  const candleMap = candles.reduce((acc, curr) => {
-    acc[curr.timestamp] = curr;
-    return acc;
-  }, {} as CandleMap);
+  // $blocks.set(blocks);
+  // $blockMap.set(blockMap);
 
-  $minCandles.set(candles);
-  $minCandleMap.set(candleMap);
+  // const candleMap = candles.reduce((acc, curr) => {
+  //   acc[curr.timestamp] = curr;
+  //   return acc;
+  // }, {} as CandleMap);
+
+  // $minCandles.set(candles);
+  // $minCandleMap.set(candleMap);
 
   return (
     <Stack
@@ -68,7 +83,7 @@ export function MetricPage(props: MetricPageProps) {
           sx={{ borderRadius: 16, paddingLeft: 1, paddingRight: 2 }}
           startIcon={<KeyboardBackspace />}
         >
-          Ethereum
+          {PROTOCOL_LABELS[protocol]}
         </Button>
       </motion.div>
       <motion.div
@@ -80,7 +95,7 @@ export function MetricPage(props: MetricPageProps) {
         }}
       >
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
-          Base fee per gas
+          {METRICS_MAP[protocol][metric].title}
         </Typography>
         <Underline />
       </motion.div>

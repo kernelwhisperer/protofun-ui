@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import { $blockMap } from "../../stores/block-data";
-import { $legendTimestamp } from "../../stores/home-page";
+import { $legendTimestamp } from "../../stores/metric-page";
 import { formatBigInt, formatNumber } from "../../utils/client-utils";
 import { RobotoMonoFF } from "../Theme/fonts";
 

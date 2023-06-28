@@ -5,7 +5,8 @@ const nextConfig = {
       transform: "@mui/icons-material/{{member}}",
     },
   },
-  reactStrictMode: false,
+  // https://github.com/facebook/react/issues/24502
+  reactStrictMode: true,
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,

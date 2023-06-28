@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { useCallback, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
-import { $liveMode } from "../stores/home-page";
+import { $liveMode } from "../stores/metric-page";
 import { SimpleBlock } from "../utils/block-utils";
 import { sdk } from "../utils/client-utils";
 

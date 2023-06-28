@@ -3,6 +3,7 @@ import { Button, ButtonGroup, Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import React from "react";
 
+import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams";
 import {
   $liveMode,
   $scaleMode,
@@ -10,13 +11,14 @@ import {
   $timeframe,
   TIME_FRAMES,
   Timeframe,
-} from "../../stores/home-page";
+} from "../../stores/metric-page";
 
 export function ChartActionBar() {
   const timeframe = useStore($timeframe);
   const seriesType = useStore($seriesType);
   const scaleMode = useStore($scaleMode);
   const liveMode = useStore($liveMode);
+  useSyncedSearchParams();
 
   return (
     <Stack
@@ -29,7 +31,6 @@ export function ChartActionBar() {
         {Object.keys(TIME_FRAMES).map((x) => (
           <Button
             key={x}
-            disabled={x === "Day" || x === "Week"}
             className={timeframe === x ? "active" : undefined}
             onClick={() => {
               if (x === "Block" && seriesType !== "Line") {

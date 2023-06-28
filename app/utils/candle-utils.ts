@@ -1,7 +1,7 @@
 import { CandlestickData, LineData, UTCTimestamp } from "lightweight-charts";
 
 import { execute } from "../../.graphclient";
-import { Timeframe } from "../stores/home-page";
+import { Timeframe } from "../stores/metric-page";
 import { TZ_OFFSET } from "./client-utils";
 import { IndexerError } from "./errors";
 

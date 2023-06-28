@@ -2,6 +2,7 @@ import React from "react";
 
 import { App } from "./components/RootLayout/App";
 import { SentryProvider } from "./components/RootLayout/SentryProvider";
+
 export const metadata = {
   description: "On-chain data visualized",
   title: "Protocol Fundamentals",
