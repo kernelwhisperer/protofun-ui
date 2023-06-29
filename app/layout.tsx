@@ -1,5 +1,6 @@
 import React from "react";
 
+import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider";
 import { App } from "./components/RootLayout/App";
 import { SentryProvider } from "./components/RootLayout/SentryProvider";
 
@@ -47,11 +48,13 @@ export default function RootLayout({
         /> */}
       </head>
       <body>
-        <SentryProvider appVer={appVer} gitHash={gitHash}>
-          <App appVer={appVer} gitHash={gitHash}>
-            {children}
-          </App>
-        </SentryProvider>
+        <AnalyticsProvider appVer={appVer} gitHash={gitHash}>
+          <SentryProvider appVer={appVer} gitHash={gitHash}>
+            <App appVer={appVer} gitHash={gitHash}>
+              {children}
+            </App>
+          </SentryProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );

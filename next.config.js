@@ -7,6 +7,14 @@ const nextConfig = {
   },
   // https://github.com/facebook/react/issues/24502
   reactStrictMode: false,
+  async rewrites() {
+    return [
+      {
+        destination: "https://api-eu.mixpanel.com/:slug",
+        source: "/mp/:slug",
+      },
+    ];
+  },
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
