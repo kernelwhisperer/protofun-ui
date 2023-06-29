@@ -20,11 +20,11 @@ export function useLiveData(
 
   const tryFetch = useCallback(async () => {
     const timeframe = $timeframe.get();
-    console.log(
-      "📜 LOG > useLiveData > since",
-      lastTimestamp.current,
-      timeframe
-    );
+    // console.log(
+    //   "📜 LOG > useLiveData > since",
+    //   lastTimestamp.current,
+    //   timeframe
+    // );
 
     const fetchPromise =
       timeframe === "Block"
@@ -32,7 +32,7 @@ export function useLiveData(
         : queryCandles(timeframe, lastTimestamp.current);
 
     const data = await fetchPromise;
-    console.log("📜 LOG > useLiveData > response", timeframe, data);
+    // console.log("📜 LOG > useLiveData > response", timeframe, data);
 
     if (data.length) {
       lastTimestamp.current = data[data.length - 1].timestamp;

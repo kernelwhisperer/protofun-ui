@@ -68,10 +68,10 @@ export function MetricChart() {
 
   const [error, setError] = useState<string>("");
 
-  console.log("📜 LOG > MetricChart render", data.length, loading);
+  // console.log("📜 LOG > MetricChart render", data.length, loading);
   useEffect(() => {
     if ($loading.get()) return;
-    console.log("📜 LOG > MetricChart > fetching");
+    // console.log("📜 LOG > MetricChart > fetching");
 
     $loading.set(true);
     setError("");
@@ -91,7 +91,7 @@ export function MetricChart() {
 
         $entryMap.set(map);
         $entries.set(data);
-        console.log("📜 LOG > MetricChart > fetching finished");
+        // console.log("📜 LOG > MetricChart > fetching finished");
       })
       .then(() => {
         $loading.set(false);
@@ -133,12 +133,12 @@ export function MetricChart() {
   }, [data]);
 
   useEffect(() => {
-    console.log(
-      "📜 LOG > MetricChart > useEffect > createSeries:",
-      // !!mainSeries.current,
-      !!chartRef.current,
-      mainSeriesData.length
-    );
+    // console.log(
+    //   // "📜 LOG > MetricChart > useEffect > createSeries:",
+    //   // !!mainSeries.current,
+    //   !!chartRef.current,
+    //   mainSeriesData.length
+    // );
     if (mainSeriesData.length === 0) return;
     if (mainSeries.current) {
       try {

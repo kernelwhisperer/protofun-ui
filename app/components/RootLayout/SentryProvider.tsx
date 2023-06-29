@@ -26,13 +26,15 @@ export function SentryProvider({
           : "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
 
       // You can remove this option if you're not planning to use the Sentry Session Replay feature:
-      integrations: [
-        // new Sentry.Replay({ // TODO
-        // blockAllMedia: true,
-        // Additional Replay configuration goes in here, for example:
-        // maskAllText: true,
-        // }),
-      ],
+      integrations:
+        process.env.NODE_ENV === "development"
+          ? []
+          : [
+              new Sentry.Replay({
+                // blockAllMedia: true,
+                // maskAllText: true,
+              }),
+            ],
       release: gitHash,
 
       replaysOnErrorSampleRate: 1.0,

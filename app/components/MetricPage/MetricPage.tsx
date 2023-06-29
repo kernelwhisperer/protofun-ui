@@ -38,7 +38,7 @@ export function MetricPage(props: MetricPageProps) {
     protocolId,
     searchParams,
   } = props;
-  console.log("📜 LOG > MetricPage render");
+  // console.log("📜 LOG > MetricPage render");
 
   const { timeframe = "" } = searchParams;
   if (isTimeframe(timeframe)) {
