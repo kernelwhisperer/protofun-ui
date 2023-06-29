@@ -197,6 +197,11 @@ export function MetricChart() {
   const handleNewData = useCallback((data: Candle | SimpleBlock) => {
     const entries = $entries.get();
 
+    if (entries.length === 0) return;
+    if (entries[entries.length - 1].timestamp > data.timestamp) {
+      return;
+    }
+
     if (isBlockArray(entries) && isBlock(data)) {
       if (entries[entries.length - 1].timestamp !== data.timestamp) {
         entries.push(data);
@@ -207,6 +212,7 @@ export function MetricChart() {
     }
 
     if (isCandleArray(entries) && isCandle(data)) {
+      // for candles we want to update the last value because high/low/close has likely changed
       if (entries[entries.length - 1].timestamp !== data.timestamp) {
         entries.push(data);
       }
