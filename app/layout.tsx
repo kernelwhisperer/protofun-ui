@@ -2,6 +2,7 @@ import React from "react";
 
 import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider";
 import { App } from "./components/RootLayout/App";
+import { PageChangeListener } from "./components/RootLayout/PageChangeListener";
 import { SentryProvider } from "./components/RootLayout/SentryProvider";
 
 export const metadata = {
@@ -54,6 +55,7 @@ export default function RootLayout({
               {children}
             </App>
           </SentryProvider>
+          <PageChangeListener />
         </AnalyticsProvider>
       </body>
     </html>

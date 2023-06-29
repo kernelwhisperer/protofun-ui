@@ -4,6 +4,8 @@ import mixpanel from "mixpanel-browser";
 import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 
+import { $fullAppVersion, $mixpanel } from "../../stores/app";
+
 interface AnalyticsProviderProps {
   appVer: string;
   children: React.ReactNode;
@@ -35,17 +37,15 @@ export function AnalyticsProvider({
       api_host: "/mp",
       debug: process.env.NODE_ENV === "development",
       ignore_dnt: true,
-      track_pageview: true,
+      track_pageview: false,
     });
 
     // Set this to a unique identifier for the user performing the event.
     // eg: their ID in your database or their email address.
     mixpanel.identify(userId);
 
-    mixpanel.track("App start", {
-      version: `${appVer}@${gitHash}`,
-    });
-
+    $fullAppVersion.set(`${appVer}@${gitHash}`);
+    $mixpanel.set(mixpanel);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
