@@ -7,6 +7,8 @@ import { atom, map } from "nanostores";
 
 import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
+import { queryBaseFeePerGas } from "../utils/metrics/eth/base-fee-per-gas";
+import { queryEtherPrice } from "../utils/metrics/eth/ether-price";
 import { PROTOCOL_IDS, ProtocolId } from "./protocol-page";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
@@ -31,19 +33,47 @@ export const $liveMode = atom<boolean>(true);
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
 
-export type MetricId = "base_fee";
+export type MetricId = "base_fee" | "eth_price";
+
+export type QueryFn = (
+  timeframe: Timeframe,
+  since?: string
+) => Promise<Candle[] | SimpleBlock[]>;
 
 export type Metric = {
+  iconPadding?: string;
   id: MetricId;
+  precision: number;
   protocol: ProtocolId;
+  queryFn: QueryFn;
+  timeframes?: string[];
   title: string;
+  unitLabel: string;
 };
 
 export const METRICS_MAP: Partial<
   Record<ProtocolId, Record<MetricId, Metric>>
 > = {
   eth: {
-    base_fee: { id: "base_fee", protocol: "eth", title: "Base fee per gas" },
+    base_fee: {
+      iconPadding: "16px",
+      id: "base_fee",
+      precision: 1e9,
+      protocol: "eth",
+      queryFn: queryBaseFeePerGas,
+      title: "Base fee per gas",
+      unitLabel: "Gwei",
+    },
+    eth_price: {
+      iconPadding: "16px",
+      id: "eth_price",
+      precision: 1,
+      protocol: "eth",
+      queryFn: queryEtherPrice,
+      timeframes: ["Day", "Hour", "Minute", "Week"],
+      title: "Ether price",
+      unitLabel: "USD",
+    },
   },
 };
 

@@ -9,13 +9,17 @@ import {
   $legendTimestamp,
   $seriesType,
   CandleMap,
+  Metric,
 } from "../../stores/metric-page";
 import { isCandle } from "../../utils/candle-utils";
 import { formatNumber } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";
 import { LegendValue } from "./LegendValue";
 
-export function CandleChartLegend() {
+export function CandleChartLegend({
+  precision,
+  unitLabel,
+}: Pick<Metric, "precision" | "unitLabel">) {
   const smallDevice = !useMediaQuery("(min-width:600px)");
 
   const seriesType = useStore($seriesType);
@@ -81,29 +85,37 @@ export function CandleChartLegend() {
               <Stack direction="row">
                 <LegendLabel>Open</LegendLabel>
                 <LegendValue>
-                  {formatNumber(new Decimal(candle.open).div(1e9).toNumber())}{" "}
-                  Gwei
+                  {formatNumber(
+                    new Decimal(candle.open).div(precision).toNumber()
+                  )}{" "}
+                  {unitLabel}
                 </LegendValue>
               </Stack>
               <Stack direction="row">
                 <LegendLabel>High</LegendLabel>
                 <LegendValue>
-                  {formatNumber(new Decimal(candle.high).div(1e9).toNumber())}{" "}
-                  Gwei
+                  {formatNumber(
+                    new Decimal(candle.high).div(precision).toNumber()
+                  )}{" "}
+                  {unitLabel}
                 </LegendValue>
               </Stack>
               <Stack direction="row">
                 <LegendLabel>Low</LegendLabel>
                 <LegendValue>
-                  {formatNumber(new Decimal(candle.low).div(1e9).toNumber())}{" "}
-                  Gwei
+                  {formatNumber(
+                    new Decimal(candle.low).div(precision).toNumber()
+                  )}{" "}
+                  {unitLabel}
                 </LegendValue>
               </Stack>
               <Stack direction="row">
                 <LegendLabel>Close</LegendLabel>
                 <LegendValue>
-                  {formatNumber(new Decimal(candle.close).div(1e9).toNumber())}{" "}
-                  Gwei
+                  {formatNumber(
+                    new Decimal(candle.close).div(precision).toNumber()
+                  )}{" "}
+                  {unitLabel}
                 </LegendValue>
               </Stack>
             </>
@@ -111,8 +123,10 @@ export function CandleChartLegend() {
             <Stack direction="row">
               <LegendLabel>Base fee per gas</LegendLabel>
               <LegendValue>
-                {formatNumber(new Decimal(candle.close).div(1e9).toNumber())}{" "}
-                Gwei
+                {formatNumber(
+                  new Decimal(candle.close).div(precision).toNumber()
+                )}{" "}
+                {unitLabel}
               </LegendValue>
             </Stack>
           )}

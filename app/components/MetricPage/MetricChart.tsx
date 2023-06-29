@@ -28,12 +28,12 @@ import {
   $timeframe,
   candleStickOptions,
   EntryMap,
+  Metric,
 } from "../../stores/metric-page";
 import {
   createBlockMapper,
   isBlock,
   isBlockArray,
-  queryBlocks,
   SimpleBlock,
 } from "../../utils/block-utils";
 import {
@@ -42,7 +42,6 @@ import {
   createLineMapper,
   isCandle,
   isCandleArray,
-  queryCandles,
 } from "../../utils/candle-utils";
 import { TZ_OFFSET } from "../../utils/client-utils";
 import { MemoChart } from "../Chart";
@@ -51,11 +50,8 @@ import { Progress } from "../Progress";
 import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
 
-const mapCandleToCandleData = createCandleMapper(1e9);
-const mapCandleToLineData = createLineMapper(1e9);
-const mapBlockToLine = createBlockMapper("baseFeePerGas", 1e9);
-
-export function MetricChart() {
+export function MetricChart({ metric }: { metric: Metric }) {
+  const { queryFn, unitLabel, precision } = metric;
   const theme = useTheme();
   const crosshairSubRef = useRef<MouseEventHandler>();
   const chartRef = useRef<IChartApi>();
@@ -76,10 +72,7 @@ export function MetricChart() {
     $loading.set(true);
     setError("");
 
-    const fetchPromise =
-      timeframe === "Block" ? queryBlocks() : queryCandles(timeframe);
-
-    fetchPromise
+    queryFn(timeframe)
       .then((data) => {
         const map = (data as Array<Candle | SimpleBlock>).reduce(
           (acc, curr) => {
@@ -102,12 +95,14 @@ export function MetricChart() {
         setError(`${error.name}: ${error.message}`);
         $loading.set(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe]);
 
   const mainSeriesData = useMemo(() => {
     if (data.length === 0) return [];
 
     if (isBlockArray(data)) {
+      const mapBlockToLine = createBlockMapper("baseFeePerGas", precision);
       return data.map(mapBlockToLine);
     }
 
@@ -115,6 +110,8 @@ export function MetricChart() {
       throw new Error("This should never happen!");
     }
 
+    const mapCandleToCandleData = createCandleMapper(precision);
+    const mapCandleToLineData = createLineMapper(precision);
     return seriesType === "Candlestick"
       ? data.map(mapCandleToCandleData)
       : data.map(mapCandleToLineData);
@@ -207,6 +204,7 @@ export function MetricChart() {
         entries.push(data);
         $entryMap.setKey(data.timestamp, data);
         $legendTimestamp.set(data.timestamp);
+        const mapBlockToLine = createBlockMapper("baseFeePerGas", precision);
         mainSeries.current?.update(mapBlockToLine(data));
       }
     }
@@ -218,6 +216,10 @@ export function MetricChart() {
       }
       $entryMap.setKey(data.timestamp, data);
       $legendTimestamp.set(data.timestamp);
+
+      const mapCandleToCandleData = createCandleMapper(precision);
+      const mapCandleToLineData = createLineMapper(precision);
+
       if ($seriesType.get() === "Line") {
         mainSeries.current?.update(mapCandleToLineData(data));
       } else {
@@ -228,6 +230,7 @@ export function MetricChart() {
 
   useLiveData(
     data[data.length - 1]?.timestamp,
+    queryFn,
     handleNewData,
     !loading && !error && data.length > 0
   );
@@ -237,7 +240,9 @@ export function MetricChart() {
       <Progress loading={loading} />
       <ErrorOverlay errorMessage={error} />
       {!loading && timeframe === "Block" && <BlockChartLegend />}
-      {!loading && timeframe !== "Block" && <CandleChartLegend />}
+      {!loading && timeframe !== "Block" && (
+        <CandleChartLegend precision={precision} unitLabel={unitLabel} />
+      )}
       <motion.div
         style={{
           height: "100%",
@@ -256,7 +261,7 @@ export function MetricChart() {
           },
         }}
       >
-        <MemoChart chartRef={chartRef} />
+        <MemoChart chartRef={chartRef} unitLabel={unitLabel} />
       </motion.div>
     </>
   );

@@ -1,14 +1,12 @@
 "use client";
 
-import {
-  KeyboardBackspace,
-  LocalGasStationOutlined,
-} from "@mui/icons-material";
-import { Button, Typography } from "@mui/material";
+import { KeyboardBackspace, SvgIconComponent } from "@mui/icons-material";
+import { Button, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
+import { METRIC_ICONS_MAP } from "../../stores/metric-icons";
 import { METRICS_MAP } from "../../stores/metric-page";
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocol-page";
 import { variants } from "../../utils/client-utils";
@@ -51,16 +49,37 @@ export function ProtocolPage(props: ProtocolProps) {
         </Typography>
         <Underline />
       </motion.div>
-      {Object.values(METRICS_MAP[protocolId] || {}).map((metric) => (
-        <motion.div variants={variants} key={metric.id}>
-          <LinkButton
-            iconPadding="16px" // TODO
-            href={`/${protocolId}/${metric.id}`}
-            label={metric.title}
-            icon={LocalGasStationOutlined} // TODO
-          />
-        </motion.div>
-      ))}
+      <Stack
+        alignItems={"flex-start"}
+        direction={"row"}
+        flexWrap="wrap"
+        gap={2}
+        component={motion.div}
+        initial={"closed"}
+        animate={"open"}
+        variants={{
+          closed: {
+            // transition: { staggerChildren: 0.05, staggerDirection: -1 },
+          },
+          open: {
+            transition: { staggerChildren: 0.15 },
+          },
+        }}
+        transition={{ duration: 5 }}
+      >
+        {Object.values(METRICS_MAP[protocolId] || {}).map((metric) => (
+          <motion.div variants={variants} key={metric.id}>
+            <LinkButton
+              iconPadding={metric.iconPadding}
+              href={`/${protocolId}/${metric.id}`}
+              label={metric.title}
+              icon={
+                METRIC_ICONS_MAP[protocolId]?.[metric.id] as SvgIconComponent
+              }
+            />
+          </motion.div>
+        ))}
+      </Stack>
     </PageLayout>
   );
 }

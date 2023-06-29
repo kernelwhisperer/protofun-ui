@@ -36,7 +36,8 @@ export function AnalyticsProvider({
     mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL, {
       api_host: "/mp",
       debug: process.env.NODE_ENV === "development",
-      ignore_dnt: true,
+      ignore_dnt: process.env.NODE_ENV !== "development",
+      // ignore_dnt: true,
       track_pageview: false,
     });
 

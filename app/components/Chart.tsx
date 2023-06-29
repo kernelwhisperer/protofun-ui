@@ -8,10 +8,11 @@ import { RobotoMonoFF } from "./Theme/fonts";
 
 export interface ChartProps {
   chartRef: MutableRefObject<IChartApi | undefined>;
+  unitLabel: string;
 }
 
 function Chart(props: ChartProps) {
-  const { chartRef } = props;
+  const { chartRef, unitLabel } = props;
 
   const theme = useTheme();
   const containerRef = useRef<HTMLElement>();
@@ -59,7 +60,7 @@ function Chart(props: ChartProps) {
       localization: {
         priceFormatter: smallDevice
           ? undefined
-          : (x: number) => `${x.toFixed(2)} Gwei`,
+          : (x: number) => `${x.toFixed(2)} ${unitLabel}`,
       },
       width: containerRef.current.clientWidth,
     });
@@ -82,7 +83,7 @@ function Chart(props: ChartProps) {
 
       chartRef.current?.remove();
     };
-  }, [chartRef, theme, smallDevice, containerRef]);
+  }, [chartRef, theme, smallDevice, containerRef, unitLabel]);
 
   return (
     <Box

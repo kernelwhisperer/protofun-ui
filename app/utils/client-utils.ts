@@ -9,7 +9,7 @@ export function formatNumber(number: number, digits = 2) {
   return new Intl.NumberFormat(undefined, {
     maximumFractionDigits: digits,
     // minimumFractionDigits: digits,
-    notation: "compact",
+    notation: "standard",
   }).format(number);
 }
 

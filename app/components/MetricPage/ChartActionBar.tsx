@@ -9,11 +9,13 @@ import {
   $scaleMode,
   $seriesType,
   $timeframe,
+  Metric,
   TIME_FRAMES,
   Timeframe,
 } from "../../stores/metric-page";
 
-export function ChartActionBar() {
+export function ChartActionBar({ metric }: { metric: Metric }) {
+  const { timeframes } = metric;
   const timeframe = useStore($timeframe);
   const seriesType = useStore($seriesType);
   const scaleMode = useStore($scaleMode);
@@ -31,6 +33,7 @@ export function ChartActionBar() {
         {Object.keys(TIME_FRAMES).map((x) => (
           <Button
             key={x}
+            disabled={timeframes ? !timeframes.includes(x) : false}
             className={timeframe === x ? "active" : undefined}
             onClick={() => {
               if (x === "Block" && seriesType !== "Line") {

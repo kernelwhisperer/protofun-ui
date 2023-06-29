@@ -9,6 +9,7 @@ import {
   $seriesType,
   $timeframe,
   isTimeframe,
+  Metric,
   MetricId,
   METRICS_MAP,
 } from "../../stores/metric-page";
@@ -47,6 +48,8 @@ export function MetricPage(props: MetricPageProps) {
       $seriesType.set("Line");
     }
   }
+
+  const metric = METRICS_MAP[protocolId]?.[metricId] as Metric;
 
   // TODO
   // const blockMap = blocks.reduce((acc, curr) => {
@@ -87,13 +90,13 @@ export function MetricPage(props: MetricPageProps) {
         }}
       >
         <Typography variant="h4" fontWeight={500} fontFamily={RobotoSerifFF}>
-          {METRICS_MAP[protocolId]?.[metricId].title}
+          {metric.title}
         </Typography>
         <Underline />
       </motion.div>
       <motion.div style={{ width: "100%" }} variants={variants}>
         <Stack gap={1}>
-          <ChartActionBar />
+          <ChartActionBar metric={metric} />
           <Paper
             elevation={0}
             sx={{
@@ -105,7 +108,7 @@ export function MetricPage(props: MetricPageProps) {
               position: "relative",
             }}
           >
-            <MetricChart />
+            <MetricChart metric={metric} />
           </Paper>
         </Stack>
       </motion.div>
