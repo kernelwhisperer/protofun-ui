@@ -33,7 +33,7 @@ export function AnalyticsProvider({
     // Note: This is configured to track an event for every page view automatically.
     mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL, {
       api_host: "/mp",
-      debug: true,
+      debug: process.env.NODE_ENV === "development",
       ignore_dnt: true,
       track_pageview: true,
     });
