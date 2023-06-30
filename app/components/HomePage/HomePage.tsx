@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { PROTOCOLS } from "../../stores/protocol-page";
+import { PROTOCOLS } from "../../stores/protocols";
 import { LinkButton } from "../LinkButton";
 import { PageTitle } from "../PageTitle";
 import { StaggeredList } from "../StaggeredList";

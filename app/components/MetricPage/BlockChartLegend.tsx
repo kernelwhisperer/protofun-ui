@@ -8,7 +8,7 @@ import {
   $entryMap,
   $legendTimestamp,
   BlockMap,
-} from "../../stores/metric-page";
+} from "../../stores/metrics";
 import { isBlock } from "../../utils/block-utils";
 import { formatBigInt, formatNumber } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";

@@ -9,8 +9,8 @@ import {
   Metric,
   MetricId,
   METRICS_MAP,
-} from "../../stores/metric-page";
-import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocol-page";
+} from "../../stores/metrics";
+import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
 import { SimpleBlock } from "../../utils/block-utils";
 import { Candle } from "../../utils/candle-utils";
 import { BackButton } from "../BackButton";

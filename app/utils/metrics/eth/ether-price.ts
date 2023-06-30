@@ -1,4 +1,4 @@
-import { Timeframe } from "../../../stores/metric-page";
+import { Timeframe } from "../../../stores/metrics";
 
 export const TIMEFRAME_TO_INTERVAL_MAP: Record<Timeframe, string | null> = {
   Block: null,

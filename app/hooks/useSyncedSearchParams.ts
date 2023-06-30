@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
 
-import { $timeframe } from "../stores/metric-page";
+import { $timeframe } from "../stores/metrics";
 
 function updateSearchParams(searchParams: string) {
   window.history.pushState(

@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { useCallback, useEffect, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
-import { $liveMode, $timeframe, QueryFn } from "../stores/metric-page";
+import { $liveMode, $timeframe, QueryFn } from "../stores/metrics";
 import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
 

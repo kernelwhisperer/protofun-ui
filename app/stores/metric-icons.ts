@@ -5,8 +5,8 @@ import {
   SvgIconComponent,
 } from "@mui/icons-material";
 
-import { MetricId } from "./metric-page";
-import { ProtocolId } from "./protocol-page";
+import { MetricId } from "./metrics";
+import { ProtocolId } from "./protocols";
 
 export const METRIC_ICONS_MAP: Partial<
   Record<ProtocolId, Record<MetricId, SvgIconComponent>>

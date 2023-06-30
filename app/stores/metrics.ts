@@ -9,7 +9,7 @@ import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
 import { queryBaseFeePerGas } from "../utils/metrics/eth/base-fee-per-gas";
 import { queryEtherPrice } from "../utils/metrics/eth/ether-price";
-import { PROTOCOL_IDS, ProtocolId } from "./protocol-page";
+import { PROTOCOL_IDS, ProtocolId } from "./protocols";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
 export const TIME_FRAMES: Record<Timeframe, string> = {

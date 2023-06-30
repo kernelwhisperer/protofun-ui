@@ -29,7 +29,7 @@ import {
   candleStickOptions,
   EntryMap,
   Metric,
-} from "../../stores/metric-page";
+} from "../../stores/metrics";
 import {
   createBlockMapper,
   isBlock,

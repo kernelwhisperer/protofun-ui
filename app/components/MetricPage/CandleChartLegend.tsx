@@ -10,7 +10,7 @@ import {
   $seriesType,
   CandleMap,
   Metric,
-} from "../../stores/metric-page";
+} from "../../stores/metrics";
 import { isCandle } from "../../utils/candle-utils";
 import { formatNumber } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";

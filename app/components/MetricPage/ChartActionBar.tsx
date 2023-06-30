@@ -12,7 +12,7 @@ import {
   Metric,
   TIME_FRAMES,
   Timeframe,
-} from "../../stores/metric-page";
+} from "../../stores/metrics";
 
 export function ChartActionBar({ metric }: { metric: Metric }) {
   const { timeframes } = metric;

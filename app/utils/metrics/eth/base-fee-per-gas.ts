@@ -1,5 +1,5 @@
 import { execute } from "../../../../.graphclient";
-import { Timeframe } from "../../../stores/metric-page";
+import { Timeframe } from "../../../stores/metrics";
 import { queryBlocks, queryBlocksSince } from "../../block-utils";
 import { Candle } from "../../candle-utils";
 import { IndexerError } from "../../errors";

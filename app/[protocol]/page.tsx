@@ -4,7 +4,7 @@ import React from "react";
 
 import { ProtocolPage } from "../components/ProtocolPage/ProtocolPage";
 import { PageWrapper } from "../components/RootLayout/PageWrapper";
-import { isProtocolId, PROTOCOL_MAP, PROTOCOLS } from "../stores/protocol-page";
+import { isProtocolId, PROTOCOL_MAP, PROTOCOLS } from "../stores/protocols";
 
 type Props = {
   params: { protocol: string };

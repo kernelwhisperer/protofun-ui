@@ -4,8 +4,8 @@ import { SvgIconComponent } from "@mui/icons-material";
 import React from "react";
 
 import { METRIC_ICONS_MAP } from "../../stores/metric-icons";
-import { METRICS_MAP } from "../../stores/metric-page";
-import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocol-page";
+import { METRICS_MAP } from "../../stores/metrics";
+import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
 import { BackButton } from "../BackButton";
 import { LinkButton } from "../LinkButton";
 import { PageTitle } from "../PageTitle";
