@@ -1,4 +1,4 @@
-import { Variants } from "framer-motion";
+import { Transition, Variants } from "framer-motion";
 
 import { getBuiltGraphSDK } from "../../.graphclient";
 
@@ -21,27 +21,25 @@ export const TZ_OFFSET = new Date().getTimezoneOffset() * 60;
 
 export const sdk = getBuiltGraphSDK();
 
-export const variants: Variants = {
-  closed: {
+const revealTransition: Transition = {
+  duration: 0.3,
+  ease: "easeOut",
+  // damping: 40,
+  // damping: 14,
+  // mass: 100,
+  // stiffness: 220,
+  // type: "spring",
+};
+
+export const revealVariants: Variants = {
+  hide: {
     opacity: 0,
-    transition: {
-      duration: 0.25,
-      ease: "easeInOut",
-      // damping: 40,
-      // stiffness: 240,
-      // type: "spring",
-    },
-    y: 50,
+    transition: revealTransition,
+    y: 60,
   },
-  open: {
+  show: {
     opacity: 1,
-    transition: {
-      duration: 0.25,
-      ease: "easeInOut",
-      // damping: 40,
-      // stiffness: 240,
-      // type: "spring",
-    },
+    transition: revealTransition,
     y: 0,
   },
 };

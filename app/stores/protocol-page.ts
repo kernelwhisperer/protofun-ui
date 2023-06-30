@@ -50,7 +50,15 @@ export const PROTOCOL_MAP: Record<ProtocolId, Protocol> = {
   },
 };
 export const PROTOCOL_IDS = Object.keys(PROTOCOL_MAP) as ProtocolId[];
-export const PROTOCOLS = Object.values(PROTOCOL_MAP);
+export const PROTOCOLS = Object.values(PROTOCOL_MAP).sort((a, b) => {
+  if (a.enabled === b.enabled) {
+    return 0;
+  } else if (a.enabled && !b.enabled) {
+    return -1;
+  } else {
+    return 1;
+  }
+});
 
 export function isProtocolId(value: string): value is ProtocolId {
   return value in PROTOCOL_MAP;
