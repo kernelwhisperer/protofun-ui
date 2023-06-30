@@ -8,13 +8,18 @@ import {
   $entryMap,
   $legendTimestamp,
   BlockMap,
+  Metric,
 } from "../../stores/metrics";
 import { isBlock } from "../../utils/block-utils";
 import { formatBigInt, formatNumber } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";
 import { LegendValue } from "./LegendValue";
 
-export function BlockChartLegend() {
+export function BlockChartLegend({
+  // precision,
+  // unitLabel,
+  significantDigits,
+}: Pick<Metric, "precision" | "unitLabel" | "significantDigits">) {
   const timestamp = useStore($legendTimestamp);
   const blockMap = useStore($entryMap) as BlockMap;
   const block = blockMap[timestamp];
@@ -57,15 +62,18 @@ export function BlockChartLegend() {
             <LegendLabel>Base fee per gas </LegendLabel>
             <LegendValue>
               {formatNumber(
-                new Decimal(block.baseFeePerGas).div(1e9).toNumber()
+                new Decimal(block.baseFeePerGas).div(1e9).toNumber(),
+                significantDigits
               )}{" "}
               Gwei
             </LegendValue>
           </Stack>
           <Stack direction="row">
             <LegendLabel>Gas used </LegendLabel>
-            {/* {formatNumber(new Decimal(block.minGasPrice).div(1e9).toNumber())} Gwei */}
-            <LegendValue>{formatNumber(block.gasUsed)}</LegendValue>
+            {/* {formatNumber(new Decimal(block.minGasPrice).div(1e9).toNumber(), significantDigits)} Gwei */}
+            <LegendValue>
+              {formatNumber(block.gasUsed, significantDigits)}
+            </LegendValue>
           </Stack>
           <Stack direction="row">
             <LegendLabel>Miner tips </LegendLabel>

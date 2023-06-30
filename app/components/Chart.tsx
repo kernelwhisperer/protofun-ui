@@ -4,15 +4,15 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
 import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
+import { Metric } from "../stores/metrics";
 import { RobotoMonoFF } from "./Theme/fonts";
 
-export interface ChartProps {
+export type ChartProps = Pick<Metric, "unitLabel" | "significantDigits"> & {
   chartRef: MutableRefObject<IChartApi | undefined>;
-  unitLabel: string;
-}
+};
 
 function Chart(props: ChartProps) {
-  const { chartRef, unitLabel } = props;
+  const { chartRef, unitLabel, significantDigits } = props;
 
   const theme = useTheme();
   const containerRef = useRef<HTMLElement>();
@@ -60,7 +60,7 @@ function Chart(props: ChartProps) {
       localization: {
         priceFormatter: smallDevice
           ? undefined
-          : (x: number) => `${x.toFixed(2)} ${unitLabel}`,
+          : (x: number) => `${x.toFixed(significantDigits)} ${unitLabel}`,
       },
       width: containerRef.current.clientWidth,
     });
@@ -83,7 +83,14 @@ function Chart(props: ChartProps) {
 
       chartRef.current?.remove();
     };
-  }, [chartRef, theme, smallDevice, containerRef, unitLabel]);
+  }, [
+    chartRef,
+    theme,
+    smallDevice,
+    containerRef,
+    unitLabel,
+    significantDigits,
+  ]);
 
   return (
     <Box

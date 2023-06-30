@@ -33,7 +33,7 @@ export const $liveMode = atom<boolean>(true);
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
 
-export type MetricId = "base_fee" | "eth_price";
+export type MetricId = "base_fee" | "eth_price" | "transfer_cost";
 
 export type QueryFn = (
   timeframe: Timeframe,
@@ -46,6 +46,7 @@ export type Metric = {
   precision: number;
   protocol: ProtocolId;
   queryFn: QueryFn;
+  significantDigits: number;
   timeframes?: string[];
   title: string;
   unitLabel: string;
@@ -61,6 +62,7 @@ export const METRICS_MAP: Partial<
       precision: 1e9,
       protocol: "eth",
       queryFn: queryBaseFeePerGas,
+      significantDigits: 2,
       title: "Base fee per gas",
       unitLabel: "Gwei",
     },
@@ -70,9 +72,20 @@ export const METRICS_MAP: Partial<
       precision: 1,
       protocol: "eth",
       queryFn: queryEtherPrice,
+      significantDigits: 2,
       timeframes: ["Day", "Hour", "Minute", "Week"],
       title: "Ether price",
       unitLabel: "USD",
+    },
+    transfer_cost: {
+      iconPadding: "16px",
+      id: "transfer_cost",
+      precision: 1e18 / 21000,
+      protocol: "eth",
+      queryFn: queryBaseFeePerGas,
+      significantDigits: 5,
+      title: "Transfer cost",
+      unitLabel: "ETH",
     },
   },
 };

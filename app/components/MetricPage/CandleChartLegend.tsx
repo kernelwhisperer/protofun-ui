@@ -19,7 +19,8 @@ import { LegendValue } from "./LegendValue";
 export function CandleChartLegend({
   precision,
   unitLabel,
-}: Pick<Metric, "precision" | "unitLabel">) {
+  significantDigits,
+}: Pick<Metric, "precision" | "unitLabel" | "significantDigits">) {
   const smallDevice = !useMediaQuery("(min-width:600px)");
 
   const seriesType = useStore($seriesType);
@@ -86,7 +87,8 @@ export function CandleChartLegend({
                 <LegendLabel>Open</LegendLabel>
                 <LegendValue>
                   {formatNumber(
-                    new Decimal(candle.open).div(precision).toNumber()
+                    new Decimal(candle.open).div(precision).toNumber(),
+                    significantDigits
                   )}{" "}
                   {unitLabel}
                 </LegendValue>
@@ -95,7 +97,8 @@ export function CandleChartLegend({
                 <LegendLabel>High</LegendLabel>
                 <LegendValue>
                   {formatNumber(
-                    new Decimal(candle.high).div(precision).toNumber()
+                    new Decimal(candle.high).div(precision).toNumber(),
+                    significantDigits
                   )}{" "}
                   {unitLabel}
                 </LegendValue>
@@ -104,7 +107,8 @@ export function CandleChartLegend({
                 <LegendLabel>Low</LegendLabel>
                 <LegendValue>
                   {formatNumber(
-                    new Decimal(candle.low).div(precision).toNumber()
+                    new Decimal(candle.low).div(precision).toNumber(),
+                    significantDigits
                   )}{" "}
                   {unitLabel}
                 </LegendValue>
@@ -113,7 +117,8 @@ export function CandleChartLegend({
                 <LegendLabel>Close</LegendLabel>
                 <LegendValue>
                   {formatNumber(
-                    new Decimal(candle.close).div(precision).toNumber()
+                    new Decimal(candle.close).div(precision).toNumber(),
+                    significantDigits
                   )}{" "}
                   {unitLabel}
                 </LegendValue>
@@ -124,7 +129,8 @@ export function CandleChartLegend({
               <LegendLabel>Base fee per gas</LegendLabel>
               <LegendValue>
                 {formatNumber(
-                  new Decimal(candle.close).div(precision).toNumber()
+                  new Decimal(candle.close).div(precision).toNumber(),
+                  significantDigits
                 )}{" "}
                 {unitLabel}
               </LegendValue>

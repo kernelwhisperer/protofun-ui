@@ -51,7 +51,7 @@ import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
 
 export function MetricChart({ metric }: { metric: Metric }) {
-  const { queryFn, unitLabel, precision } = metric;
+  const { queryFn, unitLabel, precision, significantDigits } = metric;
   const theme = useTheme();
   const crosshairSubRef = useRef<MouseEventHandler>();
   const chartRef = useRef<IChartApi>();
@@ -155,10 +155,15 @@ export function MetricChart({ metric }: { metric: Metric }) {
     }
 
     mainSeries.current?.setData(mainSeriesData);
+    mainSeries.current?.applyOptions({
+      priceFormat: {
+        minMove: 1 / 10 ** significantDigits,
+      },
+    });
     chartRef.current?.priceScale("right").applyOptions({
       mode: $scaleMode.get(),
     });
-  }, [mainSeriesData, theme, seriesType]);
+  }, [mainSeriesData, theme, seriesType, significantDigits]);
 
   useEffect(() => {
     if (crosshairSubRef.current) {
@@ -219,7 +224,6 @@ export function MetricChart({ metric }: { metric: Metric }) {
 
       const mapCandleToCandleData = createCandleMapper(precision);
       const mapCandleToLineData = createLineMapper(precision);
-
       if ($seriesType.get() === "Line") {
         mainSeries.current?.update(mapCandleToLineData(data));
       } else {
@@ -239,9 +243,19 @@ export function MetricChart({ metric }: { metric: Metric }) {
     <>
       <Progress loading={loading} />
       <ErrorOverlay errorMessage={error} />
-      {!loading && timeframe === "Block" && <BlockChartLegend />}
+      {!loading && timeframe === "Block" && (
+        <BlockChartLegend
+          precision={precision}
+          unitLabel={unitLabel}
+          significantDigits={significantDigits}
+        />
+      )}
       {!loading && timeframe !== "Block" && (
-        <CandleChartLegend precision={precision} unitLabel={unitLabel} />
+        <CandleChartLegend
+          precision={precision}
+          unitLabel={unitLabel}
+          significantDigits={significantDigits}
+        />
       )}
       <motion.div
         style={{
@@ -261,7 +275,11 @@ export function MetricChart({ metric }: { metric: Metric }) {
           },
         }}
       >
-        <MemoChart chartRef={chartRef} unitLabel={unitLabel} />
+        <MemoChart
+          chartRef={chartRef}
+          unitLabel={unitLabel}
+          significantDigits={significantDigits}
+        />
       </motion.div>
     </>
   );
