@@ -19,6 +19,7 @@ import { StaggeredList } from "../StaggeredList";
 import { Underline } from "../Underline";
 import { ChartActionBar } from "./ChartActionBar";
 import { MetricChart } from "./MetricChart";
+import { MetricVariantSelector } from "./MetricVariantSelector";
 
 export interface MetricPageProps {
   blocks: SimpleBlock[];
@@ -72,8 +73,11 @@ export function MetricPage(props: MetricPageProps) {
         {protocol.title}
       </BackButton>
       <PageTitle>
-        {metric.title}
-        <Underline />
+        <span style={{ marginRight: 12, position: "relative" }}>
+          {metric.title}
+          <Underline />
+        </span>
+        <MetricVariantSelector variants={metric.variants} />
       </PageTitle>
       <Stack gap={1} style={{ width: "100%" }}>
         <ChartActionBar metric={metric} />

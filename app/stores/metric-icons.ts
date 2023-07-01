@@ -2,7 +2,7 @@
 import {
   AttachMoney,
   LocalGasStationOutlined,
-  Send,
+  ReceiptLong,
   SvgIconComponent,
 } from "@mui/icons-material";
 
@@ -15,7 +15,7 @@ export const METRIC_ICONS_MAP: Partial<
   eth: {
     base_fee: LocalGasStationOutlined,
     eth_price: AttachMoney,
-    transfer_cost: Send,
-    transfer_cost_usd: Send,
+    transaction_cost: ReceiptLong,
+    transaction_cost_usd: ReceiptLong,
   },
 };

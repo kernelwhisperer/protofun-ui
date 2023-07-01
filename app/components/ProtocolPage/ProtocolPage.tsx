@@ -25,8 +25,11 @@ export function ProtocolPage(props: ProtocolProps) {
     <StaggeredList>
       <BackButton href="/">Home</BackButton>
       <PageTitle>
-        {protocol.title} metrics
-        <Underline />
+        <span style={{ marginRight: 8, position: "relative" }}>
+          {protocol.title}
+          <Underline />
+        </span>
+        metrics
       </PageTitle>
       <StaggeredList
         direction="row"

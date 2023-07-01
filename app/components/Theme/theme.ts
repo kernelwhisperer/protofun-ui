@@ -3,9 +3,12 @@ import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 import { RobotoFlexFF } from "./fonts";
 
-declare module "@mui/material/styles" {
+declare module "@mui/material" {
   interface TypeBackground {
     glass: string;
+  }
+  interface ZIndex {
+    title: number;
   }
   // interface SimplePaletteColorOptions {
   //   raw?: string;
@@ -131,6 +134,16 @@ export const theme = extendTheme({
     },
   },
   components: {
+    MuiBackdrop: {
+      styleOverrides: {
+        invisible: {
+          "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
+            {
+              backdropFilter: "blur(8px)",
+            },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -151,6 +164,14 @@ export const theme = extendTheme({
           borderColor: "var(--mui-palette-primary-main)",
           borderRadius: 0,
           textTransform: "none",
+        },
+      },
+    },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "var(--mui-palette-background-default)",
+          marginTop: 4,
         },
       },
     },
@@ -177,5 +198,8 @@ export const theme = extendTheme({
   },
   typography: {
     fontFamily: RobotoFlexFF,
+  },
+  zIndex: {
+    title: 1350,
   },
 });

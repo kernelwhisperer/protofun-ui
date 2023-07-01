@@ -9,7 +9,7 @@ import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
 import { queryBaseFeePerGas } from "../utils/metrics/eth/base-fee-per-gas";
 import { queryEtherPrice } from "../utils/metrics/eth/ether-price";
-import { queryTransferCostUsd } from "../utils/metrics/eth/transfer-cost-usd";
+import { queryTxCostUsd } from "../utils/metrics/eth/tx-cost-usd";
 import { PROTOCOL_IDS, ProtocolId } from "./protocols";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
@@ -26,10 +26,10 @@ export function isTimeframe(value: string): value is Timeframe {
   return Object.keys(TIME_FRAMES).includes(value);
 }
 
-export const $timeframe = atom<Timeframe>("Minute");
+export const $timeframe = atom<Timeframe>("Hour");
 export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
-export const $liveMode = atom<boolean>(false);
+export const $liveMode = atom<boolean>(true);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
@@ -37,13 +37,18 @@ export const $loading = atom<boolean>(false);
 export type MetricId =
   | "base_fee"
   | "eth_price"
-  | "transfer_cost"
-  | "transfer_cost_usd";
+  | "transaction_cost"
+  | "transaction_cost_usd";
 
 export type QueryFn = (
   timeframe: Timeframe,
   since?: string
 ) => Promise<Candle[] | SimpleBlock[]>;
+
+export type Variant = {
+  label: string;
+  value: number;
+};
 
 export type Metric = {
   iconPadding?: string;
@@ -55,6 +60,7 @@ export type Metric = {
   timeframes?: string[];
   title: string;
   unitLabel: string;
+  variants?: Variant[];
 };
 
 export const METRICS_MAP: Partial<
@@ -82,26 +88,35 @@ export const METRICS_MAP: Partial<
       title: "Ether price",
       unitLabel: "USD",
     },
-    transfer_cost: {
+    transaction_cost: {
       iconPadding: "16px",
-      id: "transfer_cost",
-      precision: 1e18 / 21000,
+      id: "transaction_cost",
+      precision: 1e18 / 21_000,
       protocol: "eth",
       queryFn: queryBaseFeePerGas,
       significantDigits: 5,
-      title: "Transfer cost",
+      title: "Transaction cost",
       unitLabel: "ETH",
     },
-    transfer_cost_usd: {
+    transaction_cost_usd: {
       iconPadding: "16px",
-      id: "transfer_cost_usd",
-      precision: 1e18 / 21000,
+      id: "transaction_cost_usd",
+      precision: 1e18 / 21_000,
       protocol: "eth",
-      queryFn: queryTransferCostUsd,
+      queryFn: queryTxCostUsd,
       significantDigits: 2,
       timeframes: ["Day", "Hour", "Minute", "Week"],
-      title: "Transfer cost in USD",
+      title: "Transaction cost in USD",
       unitLabel: "USD",
+      variants: [
+        { label: "ETH Transfer", value: 21_000 },
+        { label: "ERC20 Approval", value: 45_000 },
+        { label: "ERC20 Transfer", value: 65_000 },
+        { label: "NFT Transfer", value: 85_000 },
+        { label: "Uniswap V2 Swap", value: 150_000 },
+        { label: "Uniswap V3 Swap", value: 185_000 },
+        { label: "L2 Deposit", value: 250_000 },
+      ],
     },
   },
 };

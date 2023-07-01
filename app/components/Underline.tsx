@@ -9,7 +9,7 @@ export function Underline() {
         bottom: 0,
         content: '""',
         height: 8,
-        left: 12,
+        left: 0,
         opacity: 1,
         position: "absolute",
         width: "100%",

@@ -6,15 +6,11 @@ import { PROTOCOLS } from "../../stores/protocols";
 import { LinkButton } from "../LinkButton";
 import { PageTitle } from "../PageTitle";
 import { StaggeredList } from "../StaggeredList";
-import { Underline } from "../Underline";
 
 export function HomePage() {
   return (
     <StaggeredList sx={{ marginTop: "31px" }}>
-      <PageTitle>
-        Protocols
-        <Underline />
-      </PageTitle>
+      <PageTitle>Protocols</PageTitle>
       <StaggeredList
         direction="row"
         flexWrap="wrap"

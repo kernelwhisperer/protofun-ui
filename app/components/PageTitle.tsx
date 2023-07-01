@@ -3,7 +3,7 @@ import React from "react";
 
 import { RobotoSerifFF } from "./Theme/fonts";
 
-export function PageTitle(props: TypographyProps) {
+export function PageTitle({ sx, ...rest }: TypographyProps) {
   return (
     <Typography
       sx={{
@@ -11,11 +11,13 @@ export function PageTitle(props: TypographyProps) {
         marginBottom: 4,
         marginTop: 2,
         position: "relative",
+        zIndex: "var(--mui-zIndex-title)",
+        ...sx,
       }}
       variant="h4"
       fontWeight={500}
       fontFamily={RobotoSerifFF}
-      {...props}
+      {...rest}
     />
   );
 }
