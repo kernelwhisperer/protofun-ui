@@ -16,5 +16,6 @@ export const METRIC_ICONS_MAP: Partial<
     base_fee: LocalGasStationOutlined,
     eth_price: AttachMoney,
     transfer_cost: Send,
+    transfer_cost_usd: Send,
   },
 };

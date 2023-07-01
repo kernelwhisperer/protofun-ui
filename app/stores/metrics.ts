@@ -9,6 +9,7 @@ import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
 import { queryBaseFeePerGas } from "../utils/metrics/eth/base-fee-per-gas";
 import { queryEtherPrice } from "../utils/metrics/eth/ether-price";
+import { queryTransferCostUsd } from "../utils/metrics/eth/transfer-cost-usd";
 import { PROTOCOL_IDS, ProtocolId } from "./protocols";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
@@ -28,12 +29,16 @@ export function isTimeframe(value: string): value is Timeframe {
 export const $timeframe = atom<Timeframe>("Minute");
 export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
-export const $liveMode = atom<boolean>(true);
+export const $liveMode = atom<boolean>(false);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
 
-export type MetricId = "base_fee" | "eth_price" | "transfer_cost";
+export type MetricId =
+  | "base_fee"
+  | "eth_price"
+  | "transfer_cost"
+  | "transfer_cost_usd";
 
 export type QueryFn = (
   timeframe: Timeframe,
@@ -86,6 +91,17 @@ export const METRICS_MAP: Partial<
       significantDigits: 5,
       title: "Transfer cost",
       unitLabel: "ETH",
+    },
+    transfer_cost_usd: {
+      iconPadding: "16px",
+      id: "transfer_cost_usd",
+      precision: 1e18 / 21000,
+      protocol: "eth",
+      queryFn: queryTransferCostUsd,
+      significantDigits: 2,
+      timeframes: ["Day", "Hour", "Minute", "Week"],
+      title: "Transfer cost in USD",
+      unitLabel: "USD",
     },
   },
 };
