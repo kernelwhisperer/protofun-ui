@@ -30,6 +30,7 @@ export const $timeframe = atom<Timeframe>("Hour");
 export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
 export const $liveMode = atom<boolean>(true);
+export const $variantIndex = atom<number>(0);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
@@ -47,7 +48,8 @@ export type QueryFn = (
 
 export type Variant = {
   label: string;
-  value: number;
+  precision: number;
+  value?: string;
 };
 
 export type Metric = {
@@ -101,7 +103,7 @@ export const METRICS_MAP: Partial<
     transaction_cost_usd: {
       iconPadding: "16px",
       id: "transaction_cost_usd",
-      precision: 1e18 / 21_000,
+      precision: 1,
       protocol: "eth",
       queryFn: queryTxCostUsd,
       significantDigits: 2,
@@ -109,13 +111,13 @@ export const METRICS_MAP: Partial<
       title: "Transaction cost in USD",
       unitLabel: "USD",
       variants: [
-        { label: "ETH Transfer", value: 21_000 },
-        { label: "ERC20 Approval", value: 45_000 },
-        { label: "ERC20 Transfer", value: 65_000 },
-        { label: "NFT Transfer", value: 85_000 },
-        { label: "Uniswap V2 Swap", value: 150_000 },
-        { label: "Uniswap V3 Swap", value: 185_000 },
-        { label: "L2 Deposit", value: 250_000 },
+        { label: "ETH Transfer", precision: 1e18 / 21_000 },
+        { label: "ERC20 Approval", precision: 1e18 / 45_000 },
+        { label: "ERC20 Transfer", precision: 1e18 / 65_000 },
+        { label: "NFT Transfer", precision: 1e18 / 85_000 },
+        { label: "Uniswap V2 Swap", precision: 1e18 / 150_000 },
+        { label: "Uniswap V3 Swap", precision: 1e18 / 185_000 },
+        { label: "L2 Deposit", precision: 1e18 / 250_000 },
       ],
     },
   },

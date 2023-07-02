@@ -26,6 +26,7 @@ import {
   $scaleMode,
   $seriesType,
   $timeframe,
+  $variantIndex,
   candleStickOptions,
   EntryMap,
   Metric,
@@ -51,7 +52,13 @@ import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
 
 export function MetricChart({ metric }: { metric: Metric }) {
-  const { queryFn, unitLabel, precision, significantDigits } = metric;
+  const {
+    queryFn,
+    unitLabel,
+    precision: defaultPrecision,
+    significantDigits,
+    variants,
+  } = metric;
   const theme = useTheme();
   const crosshairSubRef = useRef<MouseEventHandler>();
   const chartRef = useRef<IChartApi>();
@@ -61,6 +68,10 @@ export function MetricChart({ metric }: { metric: Metric }) {
   const timeframe = useStore($timeframe);
   const data = useStore($entries);
   const seriesType = useStore($seriesType);
+  const variantIndex = useStore($variantIndex);
+  const precision = variants
+    ? variants[variantIndex].precision
+    : defaultPrecision;
 
   const [error, setError] = useState<string>("");
 
@@ -115,7 +126,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
     return seriesType === "Candlestick"
       ? data.map(mapCandleToCandleData)
       : data.map(mapCandleToLineData);
-  }, [data, seriesType]);
+  }, [data, precision, seriesType]);
 
   useEffect(() => {
     $scaleMode.subscribe((mode) => {
@@ -196,41 +207,50 @@ export function MetricChart({ metric }: { metric: Metric }) {
     };
   }, [mainSeriesData]);
 
-  const handleNewData = useCallback((data: Candle | SimpleBlock) => {
-    const entries = $entries.get();
+  const handleNewData = useCallback(
+    (data: Candle | SimpleBlock) => {
+      const precision = variants
+        ? variants[$variantIndex.get()].precision
+        : defaultPrecision;
 
-    if (entries.length === 0) return;
-    if (entries[entries.length - 1].timestamp > data.timestamp) {
-      return;
-    }
+      const entries = $entries.get();
 
-    if (isBlockArray(entries) && isBlock(data)) {
-      if (entries[entries.length - 1].timestamp !== data.timestamp) {
-        entries.push(data);
+      if (entries.length === 0) return;
+      if (entries[entries.length - 1].timestamp > data.timestamp) {
+        return;
+      }
+
+      if (isBlockArray(entries) && isBlock(data)) {
+        if (entries[entries.length - 1].timestamp !== data.timestamp) {
+          entries.push(data);
+          $entryMap.setKey(data.timestamp, data);
+          $legendTimestamp.set(data.timestamp);
+          const mapBlockToLine = createBlockMapper("baseFeePerGas", precision);
+          mainSeries.current?.update(mapBlockToLine(data));
+        }
+      }
+
+      if (isCandleArray(entries) && isCandle(data)) {
+        // for candles we want to update the last value because high/low/close has likely changed
+        if (entries[entries.length - 1].timestamp !== data.timestamp) {
+          entries.push(data);
+        } else {
+          entries[entries.length - 1] = data;
+        }
         $entryMap.setKey(data.timestamp, data);
         $legendTimestamp.set(data.timestamp);
-        const mapBlockToLine = createBlockMapper("baseFeePerGas", precision);
-        mainSeries.current?.update(mapBlockToLine(data));
-      }
-    }
 
-    if (isCandleArray(entries) && isCandle(data)) {
-      // for candles we want to update the last value because high/low/close has likely changed
-      if (entries[entries.length - 1].timestamp !== data.timestamp) {
-        entries.push(data);
+        const mapCandleToCandleData = createCandleMapper(precision);
+        const mapCandleToLineData = createLineMapper(precision);
+        if ($seriesType.get() === "Line") {
+          mainSeries.current?.update(mapCandleToLineData(data));
+        } else {
+          mainSeries.current?.update(mapCandleToCandleData(data));
+        }
       }
-      $entryMap.setKey(data.timestamp, data);
-      $legendTimestamp.set(data.timestamp);
-
-      const mapCandleToCandleData = createCandleMapper(precision);
-      const mapCandleToLineData = createLineMapper(precision);
-      if ($seriesType.get() === "Line") {
-        mainSeries.current?.update(mapCandleToLineData(data));
-      } else {
-        mainSeries.current?.update(mapCandleToCandleData(data));
-      }
-    }
-  }, []);
+    },
+    [defaultPrecision, variants]
+  );
 
   useLiveData(
     data[data.length - 1]?.timestamp,

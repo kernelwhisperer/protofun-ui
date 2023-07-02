@@ -1,15 +1,14 @@
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import React, { useState } from "react";
+import { useStore } from "@nanostores/react";
+import React from "react";
 
-import { Metric } from "../../stores/metrics";
+import { $variantIndex, Metric } from "../../stores/metrics";
 
 export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
-  const [variant, setVariant] = useState(variants?.[0].value);
-  console.log("📜 LOG > MetricVariantSelector > variant:", variant);
+  const variantIndex = useStore($variantIndex);
 
   const handleChange = (event: SelectChangeEvent) => {
-    if (typeof event.target.value === "string") return;
-    setVariant(event.target.value);
+    $variantIndex.set(parseInt(event.target.value));
   };
 
   if (!variants) return null;
@@ -25,15 +24,15 @@ export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
         verticalAlign: "text-bottom",
       }}
       variant="filled"
-      value={variant as any}
+      value={String(variantIndex)}
       onChange={handleChange}
       disableUnderline
       MenuProps={{
         elevation: 0,
       }}
     >
-      {variants.map(({ value, label }) => (
-        <MenuItem key={value} value={value}>
+      {variants.map(({ label }, index) => (
+        <MenuItem key={index} value={index}>
           {label}
         </MenuItem>
       ))}

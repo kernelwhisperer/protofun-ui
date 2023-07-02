@@ -6,7 +6,7 @@ export function Underline() {
     <motion.div
       style={{
         background: "var(--mui-palette-secondary-main)",
-        bottom: 0,
+        bottom: -2,
         content: '""',
         height: 8,
         left: 0,
