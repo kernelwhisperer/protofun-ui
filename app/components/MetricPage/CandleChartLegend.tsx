@@ -9,18 +9,20 @@ import {
   $legendTimestamp,
   $seriesType,
   CandleMap,
-  Metric,
 } from "../../stores/metrics";
 import { isCandle } from "../../utils/candle-utils";
 import { formatNumber } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";
 import { LegendValue } from "./LegendValue";
 
-export function CandleChartLegend({
-  precision,
-  unitLabel,
-  significantDigits,
-}: Pick<Metric, "precision" | "unitLabel" | "significantDigits">) {
+export type CandleChartLegendProps = {
+  precision: number;
+  significantDigits: number;
+  unitLabel: string;
+};
+
+export function CandleChartLegend(props: CandleChartLegendProps) {
+  const { precision, unitLabel, significantDigits } = props;
   const smallDevice = !useMediaQuery("(min-width:600px)");
 
   const seriesType = useStore($seriesType);
@@ -87,7 +89,7 @@ export function CandleChartLegend({
                 <LegendLabel>Open</LegendLabel>
                 <LegendValue>
                   {formatNumber(
-                    new Decimal(candle.open).div(precision).toNumber(),
+                    new Decimal(candle.open || 0).div(precision).toNumber(), // TODO
                     significantDigits
                   )}{" "}
                   {unitLabel}

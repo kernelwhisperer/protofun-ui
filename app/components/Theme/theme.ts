@@ -136,11 +136,13 @@ export const theme = extendTheme({
   components: {
     MuiBackdrop: {
       styleOverrides: {
-        invisible: {
-          "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
-            {
-              backdropFilter: "blur(8px)",
-            },
+        root: {
+          "&.blurred": {
+            "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
+              {
+                backdropFilter: "blur(8px)",
+              },
+          },
         },
       },
     },

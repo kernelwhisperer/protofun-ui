@@ -1,11 +1,12 @@
-import { Timeframe } from "../../../stores/metrics";
+import { PriceUnit, Timeframe } from "../../../stores/metrics";
 import { Candle } from "../../candle-utils";
 import { queryBaseFeePerGas } from "./base-fee-per-gas";
 import { queryEtherPrice } from "./ether-price";
 
 export async function queryTxCostUsd(
   timeframe: Timeframe,
-  since?: string
+  since?: string,
+  priceUnit?: PriceUnit
 ): Promise<Candle[]> {
   if (timeframe === "Block") {
     throw new Error("queryTransferCostUsd: Block timeframe unsupported.");
@@ -13,8 +14,14 @@ export async function queryTxCostUsd(
 
   let [baseFeePerGas, etherPrice] = await Promise.all([
     queryBaseFeePerGas(timeframe, since),
-    queryEtherPrice(timeframe, since),
+    priceUnit === PriceUnit.ETH
+      ? Promise.resolve([])
+      : queryEtherPrice(timeframe, since),
   ]);
+
+  if (priceUnit === PriceUnit.ETH) {
+    return baseFeePerGas as Candle[];
+  }
 
   etherPrice = etherPrice.slice(etherPrice.length - baseFeePerGas.length);
   baseFeePerGas = baseFeePerGas as Candle[];

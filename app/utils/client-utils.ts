@@ -8,7 +8,7 @@ export function noop() {}
 export function formatNumber(number: number, digits: number) {
   return new Intl.NumberFormat(undefined, {
     maximumFractionDigits: digits,
-    // minimumFractionDigits: digits,
+    minimumFractionDigits: digits,
     notation: "standard",
   }).format(number);
 }

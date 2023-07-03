@@ -1,15 +1,15 @@
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useStore } from "@nanostores/react";
-import React from "react";
+import React, { useCallback } from "react";
 
 import { $variantIndex, Metric } from "../../stores/metrics";
 
 export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
   const variantIndex = useStore($variantIndex);
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = useCallback((event: SelectChangeEvent) => {
     $variantIndex.set(parseInt(event.target.value));
-  };
+  }, []);
 
   if (!variants) return null;
 
@@ -28,6 +28,9 @@ export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
       onChange={handleChange}
       disableUnderline
       MenuProps={{
+        BackdropProps: {
+          className: "blurred",
+        },
         elevation: 0,
       }}
     >

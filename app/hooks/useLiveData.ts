@@ -2,13 +2,14 @@ import { useStore } from "@nanostores/react";
 import { useCallback, useEffect, useRef } from "react";
 import { useInterval } from "usehooks-ts";
 
-import { $liveMode, $timeframe, QueryFn } from "../stores/metrics";
+import { $liveMode, $timeframe, PriceUnit, QueryFn } from "../stores/metrics";
 import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
 
 export function useLiveData(
   initialTimestamp: string,
   queryFn: QueryFn,
+  priceUnit: PriceUnit,
   handleNewData: (data: Candle | SimpleBlock) => void,
   active: boolean
 ) {
@@ -27,14 +28,14 @@ export function useLiveData(
     //   timeframe
     // );
 
-    const data = await queryFn(timeframe, lastTimestamp.current);
+    const data = await queryFn(timeframe, lastTimestamp.current, priceUnit);
     // console.log("📜 LOG > useLiveData > response", timeframe, data);
 
     if (data.length) {
       lastTimestamp.current = data[data.length - 1].timestamp;
       data.forEach(handleNewData);
     }
-  }, [queryFn, handleNewData]);
+  }, [queryFn, priceUnit, handleNewData]);
 
   useInterval(
     tryFetch,

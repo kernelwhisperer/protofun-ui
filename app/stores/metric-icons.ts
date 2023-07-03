@@ -15,7 +15,6 @@ export const METRIC_ICONS_MAP: Partial<
   eth: {
     base_fee: LocalGasStationOutlined,
     eth_price: AttachMoney,
-    transaction_cost: ReceiptLong,
-    transaction_cost_usd: ReceiptLong,
+    tx_cost: ReceiptLong,
   },
 };

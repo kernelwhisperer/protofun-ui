@@ -1,11 +1,19 @@
 import { CandlestickChart, ShowChart } from "@mui/icons-material";
-import { Button, ButtonGroup, Stack } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+} from "@mui/material";
 import { useStore } from "@nanostores/react";
-import React from "react";
+import React, { useCallback } from "react";
 
 import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams";
 import {
   $liveMode,
+  $priceUnitIndex,
   $scaleMode,
   $seriesType,
   $timeframe,
@@ -15,11 +23,17 @@ import {
 } from "../../stores/metrics";
 
 export function ChartActionBar({ metric }: { metric: Metric }) {
-  const { timeframes } = metric;
+  const { timeframes, priceUnits } = metric;
   const timeframe = useStore($timeframe);
   const seriesType = useStore($seriesType);
   const scaleMode = useStore($scaleMode);
   const liveMode = useStore($liveMode);
+  const priceUnitIndex = useStore($priceUnitIndex);
+
+  const handlePriceUnitChange = useCallback((event: SelectChangeEvent) => {
+    $priceUnitIndex.set(parseInt(event.target.value));
+  }, []);
+
   useSyncedSearchParams();
 
   return (
@@ -87,6 +101,40 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
         >
           Live data
         </Button>
+        {priceUnits.length > 1 && (
+          <Select
+            sx={{
+              "& .MuiSelect-select": {
+                paddingTop: 0.5,
+              },
+              background: "transparent",
+              border:
+                "1px solid rgba(var(--mui-palette-primary-mainChannel) / 0.5)",
+              borderRadius: 0,
+              fontSize: "0.8125rem",
+            }}
+            variant="filled"
+            value={String(priceUnitIndex)}
+            onChange={handlePriceUnitChange}
+            disableUnderline
+            MenuProps={{
+              BackdropProps: {
+                invisible: false,
+              },
+              MenuListProps: {
+                dense: true,
+              },
+              elevation: 0,
+            }}
+            size="small"
+          >
+            {priceUnits.map((priceUnit, index) => (
+              <MenuItem key={index} value={index}>
+                {priceUnit}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
       </Stack>
     </Stack>
   );

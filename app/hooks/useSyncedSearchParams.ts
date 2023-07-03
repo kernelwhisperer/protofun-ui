@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
 
-import { $timeframe } from "../stores/metrics";
+import { $priceUnitIndex, $timeframe } from "../stores/metrics";
 
 function updateSearchParams(searchParams: string) {
   window.history.pushState(
@@ -13,6 +13,7 @@ function updateSearchParams(searchParams: string) {
 
 export function useSyncedSearchParams() {
   const timeframe = useStore($timeframe);
+  const priceUnitIndex = useStore($priceUnitIndex);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -22,4 +23,13 @@ export function useSyncedSearchParams() {
       updateSearchParams(searchParams.toString());
     }
   }, [timeframe]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (String(priceUnitIndex) !== searchParams.get("unit")) {
+      searchParams.set("unit", String(priceUnitIndex));
+      updateSearchParams(searchParams.toString());
+    }
+  }, [priceUnitIndex]);
 }

@@ -23,6 +23,7 @@ import {
   $entryMap,
   $legendTimestamp,
   $loading,
+  $priceUnitIndex,
   $scaleMode,
   $seriesType,
   $timeframe,
@@ -54,11 +55,16 @@ import { CandleChartLegend } from "./CandleChartLegend";
 export function MetricChart({ metric }: { metric: Metric }) {
   const {
     queryFn,
-    unitLabel,
+    priceUnits,
     precision: defaultPrecision,
-    significantDigits,
+    significantDigits: significantDigitsArray,
     variants,
   } = metric;
+
+  const priceUnitIndex = useStore($priceUnitIndex);
+  const priceUnit = priceUnits[priceUnitIndex];
+  const significantDigits = significantDigitsArray[priceUnitIndex];
+
   const theme = useTheme();
   const crosshairSubRef = useRef<MouseEventHandler>();
   const chartRef = useRef<IChartApi>();
@@ -83,7 +89,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
     $loading.set(true);
     setError("");
 
-    queryFn(timeframe)
+    queryFn(timeframe, undefined, priceUnit)
       .then((data) => {
         const map = (data as Array<Candle | SimpleBlock>).reduce(
           (acc, curr) => {
@@ -107,7 +113,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
         $loading.set(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeframe]);
+  }, [timeframe, priceUnit]);
 
   const mainSeriesData = useMemo(() => {
     if (data.length === 0) return [];
@@ -207,14 +213,28 @@ export function MetricChart({ metric }: { metric: Metric }) {
     };
   }, [mainSeriesData]);
 
+  useEffect(() => {
+    chartRef.current?.applyOptions({
+      localization: {
+        // eslint-disable-next-line no-constant-condition
+        priceFormatter: false // TODO
+          ? undefined
+          : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
+      },
+    });
+  }, [priceUnit]);
+
   const handleNewData = useCallback(
     (data: Candle | SimpleBlock) => {
       const precision = variants
         ? variants[$variantIndex.get()].precision
         : defaultPrecision;
 
-      const entries = $entries.get();
+      if (priceUnit !== priceUnits[$priceUnitIndex.get()]) {
+        return;
+      }
 
+      const entries = $entries.get();
       if (entries.length === 0) return;
       if (entries[entries.length - 1].timestamp > data.timestamp) {
         return;
@@ -249,12 +269,13 @@ export function MetricChart({ metric }: { metric: Metric }) {
         }
       }
     },
-    [defaultPrecision, variants]
+    [defaultPrecision, priceUnit, priceUnits, variants]
   );
 
   useLiveData(
     data[data.length - 1]?.timestamp,
     queryFn,
+    priceUnit,
     handleNewData,
     !loading && !error && data.length > 0
   );
@@ -266,14 +287,14 @@ export function MetricChart({ metric }: { metric: Metric }) {
       {!loading && timeframe === "Block" && (
         <BlockChartLegend
           precision={precision}
-          unitLabel={unitLabel}
+          unitLabel={priceUnit}
           significantDigits={significantDigits}
         />
       )}
       {!loading && timeframe !== "Block" && (
         <CandleChartLegend
           precision={precision}
-          unitLabel={unitLabel}
+          unitLabel={priceUnit}
           significantDigits={significantDigits}
         />
       )}
@@ -297,7 +318,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
       >
         <MemoChart
           chartRef={chartRef}
-          unitLabel={unitLabel}
+          unitLabel={priceUnit}
           significantDigits={significantDigits}
         />
       </motion.div>

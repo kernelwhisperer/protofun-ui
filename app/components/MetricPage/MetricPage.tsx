@@ -3,6 +3,7 @@ import { Paper, Stack } from "@mui/material";
 import React from "react";
 
 import {
+  $priceUnitIndex,
   $seriesType,
   $timeframe,
   isTimeframe,
@@ -26,7 +27,7 @@ export interface MetricPageProps {
   candles: Candle[];
   metricId: MetricId;
   protocolId: ProtocolId;
-  searchParams: { timeframe?: string };
+  searchParams: { timeframe?: string; unit?: string };
 }
 
 export function MetricPage(props: MetricPageProps) {
@@ -39,7 +40,7 @@ export function MetricPage(props: MetricPageProps) {
   } = props;
   // console.log("📜 LOG > MetricPage render");
 
-  const { timeframe = "" } = searchParams;
+  const { timeframe = "", unit = "" } = searchParams;
   if (isTimeframe(timeframe)) {
     $timeframe.set(timeframe);
     if (timeframe === "Block") {
@@ -49,6 +50,17 @@ export function MetricPage(props: MetricPageProps) {
 
   const protocol = PROTOCOL_MAP[protocolId];
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric;
+
+  const priceUnit = parseInt(unit);
+  if (!isNaN(priceUnit)) {
+    if (metric.priceUnits.length > priceUnit) {
+      $priceUnitIndex.set(priceUnit);
+    } else {
+      $priceUnitIndex.set(0);
+    }
+  } else {
+    $priceUnitIndex.set(0);
+  }
 
   // TODO
   // const blockMap = blocks.reduce((acc, curr) => {

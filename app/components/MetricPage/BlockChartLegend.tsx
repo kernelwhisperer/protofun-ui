@@ -4,22 +4,20 @@ import Decimal from "decimal.js";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
-import {
-  $entryMap,
-  $legendTimestamp,
-  BlockMap,
-  Metric,
-} from "../../stores/metrics";
+import { $entryMap, $legendTimestamp, BlockMap } from "../../stores/metrics";
 import { isBlock } from "../../utils/block-utils";
 import { formatBigInt, formatNumber } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";
 import { LegendValue } from "./LegendValue";
 
-export function BlockChartLegend({
-  // precision,
-  // unitLabel,
-  significantDigits,
-}: Pick<Metric, "precision" | "unitLabel" | "significantDigits">) {
+export type BlockChartLegendProps = {
+  precision: number;
+  significantDigits: number;
+  unitLabel: string;
+};
+
+export function BlockChartLegend(props: BlockChartLegendProps) {
+  const { significantDigits } = props;
   const timestamp = useStore($legendTimestamp);
   const blockMap = useStore($entryMap) as BlockMap;
   const block = blockMap[timestamp];

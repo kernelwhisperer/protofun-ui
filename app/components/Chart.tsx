@@ -4,11 +4,12 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
 import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
-import { Metric } from "../stores/metrics";
 import { RobotoMonoFF } from "./Theme/fonts";
 
-export type ChartProps = Pick<Metric, "unitLabel" | "significantDigits"> & {
+export type ChartProps = {
   chartRef: MutableRefObject<IChartApi | undefined>;
+  significantDigits: number;
+  unitLabel: string;
 };
 
 function Chart(props: ChartProps) {

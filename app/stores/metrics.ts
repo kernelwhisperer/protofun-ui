@@ -30,20 +30,18 @@ export const $timeframe = atom<Timeframe>("Hour");
 export const $seriesType = atom<SeriesType>("Candlestick");
 export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
 export const $liveMode = atom<boolean>(true);
+export const $priceUnitIndex = atom<number>(0);
 export const $variantIndex = atom<number>(0);
 
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
 
-export type MetricId =
-  | "base_fee"
-  | "eth_price"
-  | "transaction_cost"
-  | "transaction_cost_usd";
+export type MetricId = "base_fee" | "eth_price" | "tx_cost";
 
 export type QueryFn = (
   timeframe: Timeframe,
-  since?: string
+  since?: string,
+  priceUnit?: PriceUnit
 ) => Promise<Candle[] | SimpleBlock[]>;
 
 export type Variant = {
@@ -52,16 +50,22 @@ export type Variant = {
   value?: string;
 };
 
+export enum PriceUnit {
+  ETH = "ETH",
+  USD = "USD",
+  GWEI = "Gwei",
+}
+
 export type Metric = {
   iconPadding?: string;
   id: MetricId;
   precision: number;
+  priceUnits: PriceUnit[];
   protocol: ProtocolId;
   queryFn: QueryFn;
-  significantDigits: number;
+  significantDigits: number[];
   timeframes?: string[];
   title: string;
-  unitLabel: string;
   variants?: Variant[];
 };
 
@@ -73,43 +77,33 @@ export const METRICS_MAP: Partial<
       iconPadding: "16px",
       id: "base_fee",
       precision: 1e9,
+      priceUnits: [PriceUnit.GWEI],
       protocol: "eth",
       queryFn: queryBaseFeePerGas,
-      significantDigits: 2,
+      significantDigits: [2],
       title: "Base fee per gas",
-      unitLabel: "Gwei",
     },
     eth_price: {
       iconPadding: "16px",
       id: "eth_price",
       precision: 1,
+      priceUnits: [PriceUnit.USD],
       protocol: "eth",
       queryFn: queryEtherPrice,
-      significantDigits: 2,
+      significantDigits: [2],
       timeframes: ["Day", "Hour", "Minute", "Week"],
       title: "Ether price",
-      unitLabel: "USD",
     },
-    transaction_cost: {
+    tx_cost: {
       iconPadding: "16px",
-      id: "transaction_cost",
-      precision: 1e18 / 21_000,
-      protocol: "eth",
-      queryFn: queryBaseFeePerGas,
-      significantDigits: 5,
-      title: "Transaction cost",
-      unitLabel: "ETH",
-    },
-    transaction_cost_usd: {
-      iconPadding: "16px",
-      id: "transaction_cost_usd",
+      id: "tx_cost",
       precision: 1,
+      priceUnits: [PriceUnit.USD, PriceUnit.ETH],
       protocol: "eth",
       queryFn: queryTxCostUsd,
-      significantDigits: 2,
+      significantDigits: [2, 5],
       timeframes: ["Day", "Hour", "Minute", "Week"],
-      title: "Transaction cost in USD",
-      unitLabel: "USD",
+      title: "Transaction cost",
       variants: [
         { label: "ETH Transfer", precision: 1e18 / 21_000 },
         { label: "ERC20 Approval", precision: 1e18 / 45_000 },
