@@ -45,7 +45,7 @@ import {
   isCandle,
   isCandleArray,
 } from "../../utils/candle-utils";
-import { TZ_OFFSET } from "../../utils/client-utils";
+import { TZ_OFFSET, wait } from "../../utils/client-utils";
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
@@ -89,8 +89,8 @@ export function MetricChart({ metric }: { metric: Metric }) {
     $loading.set(true);
     setError("");
 
-    queryFn(timeframe, undefined, priceUnit)
-      .then((data) => {
+    Promise.all([queryFn(timeframe, undefined, priceUnit), wait(666)])
+      .then(([data]) => {
         const map = (data as Array<Candle | SimpleBlock>).reduce(
           (acc, curr) => {
             acc[curr.timestamp] = curr;
@@ -214,14 +214,16 @@ export function MetricChart({ metric }: { metric: Metric }) {
   }, [mainSeriesData]);
 
   useEffect(() => {
-    chartRef.current?.applyOptions({
-      localization: {
-        // eslint-disable-next-line no-constant-condition
-        priceFormatter: false // TODO
-          ? undefined
-          : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
-      },
-    });
+    setTimeout(() => {
+      chartRef.current?.applyOptions({
+        localization: {
+          // eslint-disable-next-line no-constant-condition
+          priceFormatter: false // TODO
+            ? undefined
+            : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
+        },
+      });
+    }, 333);
   }, [priceUnit]);
 
   const handleNewData = useCallback(
@@ -309,7 +311,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
             opacity: 0,
           },
           loading: {
-            opacity: 0.25,
+            opacity: 0,
           },
           ready: {
             opacity: 1,

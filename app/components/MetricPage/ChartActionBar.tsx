@@ -60,7 +60,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
           </Button>
         ))}
       </ButtonGroup>
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" gap={1} flexWrap="wrap">
         <ButtonGroup size="small">
           <Button
             className={seriesType === "Line" ? "active" : undefined}

@@ -3,7 +3,7 @@ import { Candle } from "../../candle-utils";
 import { queryBaseFeePerGas } from "./base-fee-per-gas";
 import { queryEtherPrice } from "./ether-price";
 
-export async function queryTxCostUsd(
+export async function queryTxCost(
   timeframe: Timeframe,
   since?: string,
   priceUnit?: PriceUnit

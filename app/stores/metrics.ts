@@ -9,7 +9,7 @@ import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
 import { queryBaseFeePerGas } from "../utils/metrics/eth/base-fee-per-gas";
 import { queryEtherPrice } from "../utils/metrics/eth/ether-price";
-import { queryTxCostUsd } from "../utils/metrics/eth/tx-cost-usd";
+import { queryTxCost } from "../utils/metrics/eth/tx-cost";
 import { PROTOCOL_IDS, ProtocolId } from "./protocols";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
@@ -100,7 +100,7 @@ export const METRICS_MAP: Partial<
       precision: 1,
       priceUnits: [PriceUnit.USD, PriceUnit.ETH],
       protocol: "eth",
-      queryFn: queryTxCostUsd,
+      queryFn: queryTxCost,
       significantDigits: [2, 5],
       timeframes: ["Day", "Hour", "Minute", "Week"],
       title: "Transaction cost",

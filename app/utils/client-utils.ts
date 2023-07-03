@@ -5,6 +5,10 @@ import { getBuiltGraphSDK } from "../../.graphclient";
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
 
+export async function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function formatNumber(number: number, digits: number) {
   return new Intl.NumberFormat(undefined, {
     maximumFractionDigits: digits,
