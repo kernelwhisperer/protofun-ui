@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { $priceUnitIndex, $timeframe } from "../stores/metrics";
 
 function updateSearchParams(searchParams: string) {
-  window.history.pushState(
+  window.history.replaceState(
     {},
     "",
     `${window.location.pathname}?${searchParams}`
@@ -20,16 +20,14 @@ export function useSyncedSearchParams() {
 
     if (timeframe !== searchParams.get("timeframe")) {
       searchParams.set("timeframe", timeframe);
-      updateSearchParams(searchParams.toString());
     }
-  }, [timeframe]);
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
 
     if (String(priceUnitIndex) !== searchParams.get("unit")) {
       searchParams.set("unit", String(priceUnitIndex));
+    }
+
+    if (!window.location.search.includes(searchParams.toString())) {
       updateSearchParams(searchParams.toString());
     }
-  }, [priceUnitIndex]);
+  }, [timeframe, priceUnitIndex]);
 }
