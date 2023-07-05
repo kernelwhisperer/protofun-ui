@@ -39,17 +39,24 @@ export function MetricPage(props: MetricPageProps) {
     searchParams,
   } = props;
   // console.log("📜 LOG > MetricPage render");
-
-  const { timeframe = "", unit = "" } = searchParams;
-  if (isTimeframe(timeframe)) {
-    $timeframe.set(timeframe);
-    if (timeframe === "Block") {
-      $seriesType.set("Line");
-    }
-  }
-
   const protocol = PROTOCOL_MAP[protocolId];
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric;
+
+  const { timeframe = "", unit = "" } = searchParams;
+
+  if (isTimeframe(timeframe)) {
+    $timeframe.set(timeframe);
+    if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
+      $timeframe.set(metric.timeframes[0]);
+    } else if (timeframe === "Block") {
+      $seriesType.set("Line");
+    }
+  } else if (
+    metric.timeframes &&
+    !metric.timeframes.includes($timeframe.get())
+  ) {
+    $timeframe.set(metric.timeframes[0]);
+  }
 
   const priceUnit = parseInt(unit);
   if (!isNaN(priceUnit)) {

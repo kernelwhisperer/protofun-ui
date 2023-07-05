@@ -64,7 +64,7 @@ export type Metric = {
   protocol: ProtocolId;
   queryFn: QueryFn;
   significantDigits: number[];
-  timeframes?: string[];
+  timeframes?: Timeframe[];
   title: string;
   variants?: Variant[];
 };
@@ -91,7 +91,7 @@ export const METRICS_MAP: Partial<
       protocol: "eth",
       queryFn: queryEtherPrice,
       significantDigits: [2],
-      timeframes: ["Day", "Hour", "Minute", "Week"],
+      timeframes: ["Minute", "Hour", "Day", "Week"],
       title: "Ether price",
     },
     tx_cost: {
@@ -102,7 +102,7 @@ export const METRICS_MAP: Partial<
       protocol: "eth",
       queryFn: queryTxCost,
       significantDigits: [2, 5],
-      timeframes: ["Day", "Hour", "Minute", "Week"],
+      timeframes: ["Minute", "Hour", "Day", "Week"],
       title: "Transaction cost",
       variants: [
         { label: "ETH Transfer", precision: 1e18 / 21_000 },
