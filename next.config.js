@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+let nextConfig = {
   modularizeImports: {
     "@mui/icons-material": {
       transform: "@mui/icons-material/{{member}}",
@@ -37,7 +38,12 @@ const nextConfig = {
     }),
 };
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+nextConfig = withBundleAnalyzer(nextConfig);
+
 const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(

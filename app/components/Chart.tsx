@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { createChart, IChartApi } from "lightweight-charts";
+import { createChart, CrosshairMode, IChartApi } from "lightweight-charts";
 import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
 import { RobotoMonoFF } from "./Theme/fonts";
@@ -37,7 +37,7 @@ function Chart(props: ChartProps) {
         horzLine: {
           labelBackgroundColor: primaryColor,
         },
-        // mode: CrosshairMode.Normal,
+        mode: CrosshairMode.Normal,
         vertLine: {
           labelBackgroundColor: primaryColor,
         },
