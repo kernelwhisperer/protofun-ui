@@ -8,6 +8,8 @@ declare module "@mui/material" {
     glass: string;
   }
   interface ZIndex {
+    menu: number;
+    menuButton: number;
     title: number;
   }
   // interface SimplePaletteColorOptions {
@@ -202,6 +204,8 @@ export const theme = extendTheme({
     fontFamily: RobotoFlexFF,
   },
   zIndex: {
+    menu: 1600,
+    menuButton: 1601,
     title: 1350,
   },
 });

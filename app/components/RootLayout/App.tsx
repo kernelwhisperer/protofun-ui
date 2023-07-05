@@ -14,7 +14,7 @@ interface AppProps {
 
 export function App({ children }: AppProps) {
   return (
-    // <LazyMotion features={domAnimation}>
+    // <LazyMotion features={domAnimation}> // TODO
     <ThemeRegistry>
       <Header />
       <Container

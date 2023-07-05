@@ -12,8 +12,8 @@ import Link from "next/link";
 import React from "react";
 
 import { Blobs } from "./Blobs";
+import { HamburgerMenu } from "./HamburgerMenu";
 import { Logo } from "./Logo";
-import { Settings } from "./Settings";
 
 function StyledAppBar(props: AppBarProps) {
   return (
@@ -83,7 +83,7 @@ export function Header() {
             >
               <Logo />
             </Button>
-            <Settings />
+            <HamburgerMenu />
           </Stack>
         </Container>
       </Toolbar>
