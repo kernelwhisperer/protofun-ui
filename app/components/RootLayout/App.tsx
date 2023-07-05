@@ -14,6 +14,7 @@ interface AppProps {
 
 export function App({ children }: AppProps) {
   return (
+    // <LazyMotion features={domAnimation}>
     <ThemeRegistry>
       <Header />
       <Container
@@ -27,20 +28,6 @@ export function App({ children }: AppProps) {
             flexDirection: "column",
           }}
         >
-          {/* <Breadcrumbs
-            separator={<NavigateNext fontSize="small" />}
-            aria-label="breadcrumb"
-          >
-            <Link
-              underline="hover"
-              color="inherit"
-              href="/"
-              component={NextLink}
-            >
-              Home
-            </Link>
-          </Breadcrumbs> */}
-          {/* <LazyMotion features={domAnimation}> */}
           {/* TODO: https://github.com/vercel/next.js/issues/49279 */}
           {/* <AnimatePresence>
             <motion.div
@@ -61,6 +48,7 @@ export function App({ children }: AppProps) {
           {/* <Typography sx={{ margin: 2, opacity: 0.5 }} variant="body2">
             App version {`${appVer}@${gitHash}`}
           </Typography> */}
+          {/* TODO contact page */}
         </Box>
         <svg
           style={{
@@ -87,5 +75,6 @@ export function App({ children }: AppProps) {
         </svg>
       </Container>
     </ThemeRegistry>
+    // </LazyMotion>
   );
 }
