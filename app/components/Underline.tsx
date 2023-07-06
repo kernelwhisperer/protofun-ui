@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React from "react";
 
 export function Underline() {
   return (
-    <motion.div
+    <m.div
       style={{
         background: "var(--mui-palette-secondary-main)",
         bottom: -2,
@@ -24,6 +24,6 @@ export function Underline() {
         duration: 0.75,
         ease: "easeInOut",
       }}
-    ></motion.div>
+    ></m.div>
   );
 }

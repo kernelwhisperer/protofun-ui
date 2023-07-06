@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import React from "react";
 
+import { AppVerProps } from "../../stores/app";
 import { Blobs } from "./Blobs";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { Logo } from "./Logo";
@@ -32,7 +33,7 @@ function StyledAppBar(props: AppBarProps) {
   );
 }
 
-export function Header() {
+export function Header({ appVer, gitHash }: AppVerProps) {
   return (
     <StyledAppBar>
       <Toolbar disableGutters>
@@ -50,28 +51,6 @@ export function Header() {
             marginY={1}
           >
             <Blobs />
-            {/* <Box
-        sx={{
-          filter: "blur(40px) url(#noiseFilter) blur(1px)",
-          left: 0,
-          // opacity: 1,
-          opacity: 0.33,
-          padding: 5,
-          // mixBlendMode: "color-dodge",
-          position: "absolute",
-          top: 0,
-          zIndex: -1,
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: "var(--mui-palette-secondary-main)",
-            borderRadius: "100px",
-            height: 200,
-            width: 200,
-          }}
-        />
-      </Box> */}
             <Button
               href="/"
               LinkComponent={Link}
@@ -83,7 +62,7 @@ export function Header() {
             >
               <Logo />
             </Button>
-            <HamburgerMenu />
+            <HamburgerMenu appVer={appVer} gitHash={gitHash} />
           </Stack>
         </Container>
       </Toolbar>

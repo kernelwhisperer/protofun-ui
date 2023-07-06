@@ -1,7 +1,7 @@
 import { Stack, useMediaQuery } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import React from "react";
 
 import {
@@ -45,7 +45,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
             top: 0,
             zIndex: 999,
           }}
-          component={motion.div}
+          component={m.div}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

@@ -2,10 +2,10 @@
 import * as Sentry from "@sentry/nextjs";
 import React, { useEffect } from "react";
 
-interface SentryProviderProps {
-  appVer: string;
+import { AppVerProps } from "../../stores/app";
+
+interface SentryProviderProps extends AppVerProps {
   children: React.ReactNode;
-  gitHash: string;
 }
 
 export function SentryProvider({

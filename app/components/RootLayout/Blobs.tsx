@@ -1,12 +1,12 @@
 import { Box, BoxProps, useMediaQuery } from "@mui/material";
-import { HTMLMotionProps, motion } from "framer-motion";
+import { HTMLMotionProps, m } from "framer-motion";
 import React from "react";
 
 const Blob = ({
   sx,
   ...rest
 }: HTMLMotionProps<"div"> & Pick<BoxProps, "sx">) => (
-  <motion.div
+  <m.div
     style={{
       filter: "blur(40px)",
       // filter: "blur(40px) url(#noiseFilter) blur(5px)",
@@ -26,7 +26,7 @@ const Blob = ({
     {...rest}
   >
     <Box sx={sx} />
-  </motion.div>
+  </m.div>
 );
 
 export function Blobs() {

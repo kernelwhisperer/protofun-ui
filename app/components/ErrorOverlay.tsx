@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React from "react";
 
 interface ProgressProps {
@@ -21,7 +21,7 @@ export function ErrorOverlay(props: ProgressProps) {
       justifyContent="center"
       height={"100%"}
     >
-      <motion.div
+      <m.div
         animate={errorMessage ? "show" : "hide"}
         variants={{
           hide: {
@@ -33,7 +33,7 @@ export function ErrorOverlay(props: ProgressProps) {
         }}
       >
         <Typography>{errorMessage}</Typography>
-      </motion.div>
+      </m.div>
     </Stack>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { Backdrop, Box } from "@mui/material";
-import { motion, useCycle } from "framer-motion";
+import { m, useCycle } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
+import { AppVerProps } from "../../stores/app";
 import { MenuContents } from "./Menu/MenuContents";
 import { MenuToggle } from "./Menu/MenuToggle";
 
@@ -27,7 +28,7 @@ const sidebar = {
   }),
 };
 
-export function HamburgerMenu() {
+export function HamburgerMenu({ appVer, gitHash }: AppVerProps) {
   const [open, toggleOpen] = useCycle(false, true);
   const [screenHeight, setScreenHeight] = useState(0);
 
@@ -46,7 +47,7 @@ export function HamburgerMenu() {
   }, []);
 
   return (
-    <motion.nav
+    <m.nav
       initial={false}
       animate={open ? "open" : "closed"}
       custom={screenHeight}
@@ -61,7 +62,7 @@ export function HamburgerMenu() {
         onClick={toggleOpen as any}
       />
       <Box
-        component={motion.div}
+        component={m.div}
         sx={{
           backgroundColor: "var(--mui-palette-background-default)",
           bottom: "0",
@@ -75,8 +76,8 @@ export function HamburgerMenu() {
         }}
         variants={sidebar}
       >
-        <MenuContents />
+        <MenuContents appVer={appVer} gitHash={gitHash} />
       </Box>
-    </motion.nav>
+    </m.nav>
   );
 }

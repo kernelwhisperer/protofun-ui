@@ -1,36 +1,28 @@
 "use client";
 
-import { Box, Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import React from "react";
 
-import ThemeRegistry from "../Theme/ThemeRegistry";
+import { AppVerProps } from "../../stores/app";
+import ThemeProvider from "../Theme/ThemeProvider";
 import { Header } from "./Header";
 
-interface AppProps {
-  appVer: string;
+interface AppProps extends AppVerProps {
   children: React.ReactNode;
-  gitHash: string;
 }
 
-export function App({ children }: AppProps) {
+export function App({ children, appVer, gitHash }: AppProps) {
   return (
-    // <LazyMotion features={domAnimation}> // TODO
-    <ThemeRegistry>
-      <Header />
+    <ThemeProvider>
+      <Header appVer={appVer} gitHash={gitHash} />
       <Container
         maxWidth="lg"
         sx={{ padding: { xs: 0 }, position: "relative" }}
       >
-        <Box
-          sx={{
-            alignItems: "flex-start",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <Stack>
           {/* TODO: https://github.com/vercel/next.js/issues/49279 */}
           {/* <AnimatePresence>
-            <motion.div
+            <m.div
               key={pathname}
               initial={{ opacity: 0, y: 80 }}
               animate={{ opacity: 1, y: 0 }}
@@ -42,15 +34,11 @@ export function App({ children }: AppProps) {
                 type: "spring",
               }}
             >
-            </motion.div>
+            </m.div>
           </AnimatePresence> */}
           {children}
-          {/* <Typography sx={{ margin: 2, opacity: 0.5 }} variant="body2">
-            App version {`${appVer}@${gitHash}`}
-          </Typography> */}
-          {/* TODO contact page */}
-        </Box>
-        <svg
+        </Stack>
+        {/* <svg
           style={{
             opacity: 0,
             pointerEvents: "none",
@@ -72,9 +60,8 @@ export function App({ children }: AppProps) {
             <feComposite operator="in" in2="SourceGraphic" result="monoNoise" />
             <feBlend in="SourceGraphic" in2="monoNoise" mode="screen" />
           </filter>
-        </svg>
+        </svg> */}
       </Container>
-    </ThemeRegistry>
-    // </LazyMotion>
+    </ThemeProvider>
   );
 }

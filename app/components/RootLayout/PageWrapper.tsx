@@ -1,6 +1,6 @@
 "use client";
 import { Box } from "@mui/material";
-import { HTMLMotionProps, motion } from "framer-motion";
+import { HTMLMotionProps, m } from "framer-motion";
 import React, { ReactNode } from "react";
 
 export function PageWrapper(
@@ -8,7 +8,7 @@ export function PageWrapper(
 ) {
   return (
     <Box
-      component={motion.div}
+      component={m.div}
       sx={{ paddingBottom: 4, paddingTop: 1, paddingX: 2, width: "100%" }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

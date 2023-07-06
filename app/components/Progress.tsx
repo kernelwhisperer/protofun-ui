@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React from "react";
 
 interface ProgressProps {
@@ -21,7 +21,7 @@ export function Progress(props: ProgressProps) {
       justifyContent="center"
       height={"100%"}
     >
-      <motion.svg
+      <m.svg
         width="60"
         height="4"
         viewBox="0 0 60 4"
@@ -38,7 +38,7 @@ export function Progress(props: ProgressProps) {
         }}
       >
         {loading && (
-          <motion.line
+          <m.line
             initial={{
               opacity: 0,
               pathLength: 0,
@@ -64,7 +64,7 @@ export function Progress(props: ProgressProps) {
             y2="2"
           />
         )}
-      </motion.svg>
+      </m.svg>
     </Stack>
   );
 }

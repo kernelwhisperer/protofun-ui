@@ -1,9 +1,11 @@
 import { GitHub, Twitter } from "@mui/icons-material";
 import { Link as MuiLink, MenuItem, Stack, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import * as React from "react";
 
+import { AppVerProps } from "../../../stores/app";
 import DiscordIcon from "./discord.svg";
+import { ReducedMotion } from "./ReducedMotion";
 import { ThemeMode } from "./ThemeMode";
 
 const variants = {
@@ -33,7 +35,7 @@ const childVariants = {
 };
 
 const CustomLink = ({ children, ...rest }: any) => (
-  <motion.div variants={childVariants}>
+  <m.div variants={childVariants}>
     <MenuItem component={MuiLink} {...rest}>
       <Typography
         variant="h6"
@@ -47,23 +49,27 @@ const CustomLink = ({ children, ...rest }: any) => (
         {children}
       </Typography>
     </MenuItem>
-  </motion.div>
+  </m.div>
 );
 
-export const MenuContents = () => (
+export const MenuContents = ({ appVer, gitHash }: AppVerProps) => (
   <Stack
-    marginTop={9}
+    marginTop={4}
     gap={1}
     paddingLeft={2}
     paddingRight={1}
-    component={motion.div}
+    component={m.div}
     variants={variants}
   >
-    <motion.div variants={childVariants}>
-      <Typography variant="subtitle2" letterSpacing="0.08rem">
+    <m.div variants={childVariants}>
+      <Typography
+        variant="subtitle2"
+        letterSpacing="0.08rem"
+        sx={{ marginTop: 4 }}
+      >
         SOCIAL
       </Typography>
-    </motion.div>
+    </m.div>
     <CustomLink
       target="_blank"
       rel="noopener noreferrer"
@@ -88,7 +94,7 @@ export const MenuContents = () => (
       <GitHub fontSize="small" />
       <span>GitHub</span>
     </CustomLink>
-    <motion.div variants={childVariants}>
+    <m.div variants={childVariants}>
       <Typography
         variant="subtitle2"
         letterSpacing="0.08rem"
@@ -96,9 +102,29 @@ export const MenuContents = () => (
       >
         THEME
       </Typography>
-    </motion.div>
-    <motion.div variants={childVariants}>
+    </m.div>
+    <m.div variants={childVariants}>
       <ThemeMode />
-    </motion.div>
+    </m.div>
+    <m.div variants={childVariants}>
+      <Typography
+        variant="subtitle2"
+        letterSpacing="0.08rem"
+        sx={{ marginTop: 4 }}
+      >
+        ANIMATIONS
+      </Typography>
+    </m.div>
+    <m.div variants={childVariants}>
+      <ReducedMotion />
+    </m.div>
+    <m.div variants={childVariants}>
+      <Typography sx={{ marginTop: 4, opacity: 0.5 }} variant="body2">
+        App version: {appVer}
+      </Typography>
+      <Typography sx={{ opacity: 0.5 }} variant="body2">
+        App digest: {gitHash.slice(0, 7)}
+      </Typography>
+    </m.div>
   </Stack>
 );

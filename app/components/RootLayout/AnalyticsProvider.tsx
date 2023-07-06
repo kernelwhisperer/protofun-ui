@@ -4,12 +4,10 @@ import mixpanel from "mixpanel-browser";
 import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 
-import { $fullAppVersion, $mixpanel } from "../../stores/app";
+import { $fullAppVersion, $mixpanel, AppVerProps } from "../../stores/app";
 
-interface AnalyticsProviderProps {
-  appVer: string;
+interface AnalyticsProviderProps extends AppVerProps {
   children: React.ReactNode;
-  gitHash: string;
 }
 
 export function AnalyticsProvider({

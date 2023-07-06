@@ -1,7 +1,7 @@
 import { useTheme } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import { captureException } from "@sentry/nextjs";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   IChartApi,
   ISeriesApi,
@@ -300,7 +300,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
           significantDigits={significantDigits}
         />
       )}
-      <motion.div
+      <m.div
         style={{
           height: "100%",
           width: "100%",
@@ -323,7 +323,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
           unitLabel={priceUnit}
           significantDigits={significantDigits}
         />
-      </motion.div>
+      </m.div>
     </>
   );
 }

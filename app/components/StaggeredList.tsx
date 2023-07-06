@@ -1,6 +1,6 @@
 "use client";
 import { Stack, StackProps } from "@mui/material";
-import { HTMLMotionProps, motion } from "framer-motion";
+import { HTMLMotionProps, m } from "framer-motion";
 import React, { Children, ReactNode } from "react";
 
 import { revealVariants } from "../utils/client-utils";
@@ -17,7 +17,7 @@ export function StaggeredList({
 }: StaggeredListProps) {
   return (
     <Stack
-      component={motion.div}
+      component={m.div}
       initial="hide"
       animate="show"
       variants={{
@@ -34,7 +34,7 @@ export function StaggeredList({
       {...rest}
     >
       {Children.map(children, (child) => (
-        <motion.div variants={revealVariants}>{child}</motion.div>
+        <m.div variants={revealVariants}>{child}</m.div>
       ))}
     </Stack>
   );

@@ -1,9 +1,9 @@
 import { IconButton } from "@mui/material";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React from "react";
 
 const Path = (props: any) => (
-  <motion.path
+  <m.path
     fill="transparent"
     strokeWidth="3"
     stroke="var(--mui-palette-primary-main)"
@@ -21,7 +21,7 @@ export const MenuToggle = ({ toggle }: { toggle: () => void }) => {
         zIndex: "var(--mui-zIndex-menuButton)", // open ? "var(--mui-zIndex-menuButton)" : undefined,
       }}
     >
-      <motion.svg
+      <m.svg
         width="24"
         height="24"
         viewBox="0 0 26 26"
@@ -50,7 +50,7 @@ export const MenuToggle = ({ toggle }: { toggle: () => void }) => {
             open: { d: "M 3 2.5 L 17 16.346" },
           }}
         />
-      </motion.svg>
+      </m.svg>
     </IconButton>
   );
 };
