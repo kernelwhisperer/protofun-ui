@@ -1,5 +1,6 @@
 "use client";
 import { Paper, Stack } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
 
 import {
@@ -17,10 +18,10 @@ import { SimpleBlock } from "../../utils/block-utils";
 import { Candle } from "../../utils/candle-utils";
 import { BackButton } from "../BackButton";
 import { PageTitle } from "../PageTitle";
+import { Progress } from "../Progress";
 import { StaggeredList } from "../StaggeredList";
 import { Underline } from "../Underline";
 import { ChartActionBar } from "./ChartActionBar";
-import { MetricChart } from "./MetricChart";
 import { MetricVariantSelector } from "./MetricVariantSelector";
 
 export interface MetricPageProps {
@@ -30,6 +31,10 @@ export interface MetricPageProps {
   protocolId: ProtocolId;
   searchParams: { timeframe?: string; unit?: string };
 }
+
+const MetricChart = dynamic(() => import("./MetricChart"), {
+  loading: () => <Progress loading />,
+});
 
 export function MetricPage(props: MetricPageProps) {
   const {
@@ -71,23 +76,6 @@ export function MetricPage(props: MetricPageProps) {
   }
 
   $legendTimestamp.set("");
-
-  // TODO
-  // const blockMap = blocks.reduce((acc, curr) => {
-  //   acc[curr.timestamp] = curr;
-  //   return acc;
-  // }, {} as BlockMap);
-
-  // $blocks.set(blocks);
-  // $blockMap.set(blockMap);
-
-  // const candleMap = candles.reduce((acc, curr) => {
-  //   acc[curr.timestamp] = curr;
-  //   return acc;
-  // }, {} as CandleMap);
-
-  // $minCandles.set(candles);
-  // $minCandleMap.set(candleMap);
 
   return (
     <StaggeredList>

@@ -1,11 +1,11 @@
 import { LineData, UTCTimestamp } from "lightweight-charts";
 
-import { Block, getBuiltGraphSDK } from "../../.graphclient";
+import { Block } from "../../.graphclient";
 import { TZ_OFFSET } from "./client-utils";
-import { IndexerError } from "./errors";
 
-const sdk = getBuiltGraphSDK();
-
+export type SimpleBlock = Omit<Block, "txns" | "timestamp"> & {
+  timestamp: string;
+};
 // TODO
 // declare module "../../.graphclient" {
 //   export type Scalars = TGScalars & {
@@ -15,48 +15,6 @@ const sdk = getBuiltGraphSDK();
 //     Int8: string;
 //   };
 // }
-
-export type SimpleBlock = Omit<Block, "txns" | "timestamp"> & {
-  timestamp: string;
-};
-
-export async function queryBlocks() {
-  try {
-    const res = await sdk.FetchLastBlocks();
-
-    if (res.blocks.length === 0) {
-      throw new IndexerError(
-        "Empty response. Has the subgraph finish syncing?"
-      );
-    }
-
-    return res.blocks.reverse();
-  } catch (error) {
-    let errorMessage = (error as Error).message;
-    if (errorMessage.includes("ECONNREFUSED")) {
-      errorMessage = "Connection failed";
-    }
-
-    throw new IndexerError(errorMessage);
-  }
-}
-
-export async function queryBlocksSince(timestamp: string) {
-  try {
-    const res = await sdk.FetchBlocksSince({
-      since: timestamp,
-    });
-
-    return res.blocks.reverse();
-  } catch (error) {
-    let errorMessage = (error as Error).message;
-    if (errorMessage.includes("ECONNREFUSED")) {
-      errorMessage = "Connection failed";
-    }
-
-    throw new IndexerError(errorMessage);
-  }
-}
 
 export function createBlockMapper(value: keyof SimpleBlock, precision: number) {
   return function customMapper(block: SimpleBlock): LineData {

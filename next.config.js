@@ -1,4 +1,27 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+
+/** @type {import('@sentry/nextjs/types/config/types').WebpackConfigFunction} */
+const webpack = (config) => {
+  /** @type {import('@sentry/nextjs/types/config/types').WebpackConfigObject} */
+  const overrides = {
+    ignoreWarnings: [
+      // https://github.com/graphprotocol/graph-client/issues/480
+      { module: /graphql-mesh\/utils\/esm\/defaultImportFn.js/ },
+    ],
+    module: {
+      rules: [
+        ...config.module.rules,
+        {
+          test: /\.svg$/,
+          use: ["@svgr/webpack"],
+        },
+      ],
+    },
+  };
+
+  return Object.assign({}, config, overrides);
+};
+
 /** @type {import('next').NextConfig} */
 let nextConfig = {
   modularizeImports: {
@@ -20,22 +43,7 @@ let nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  webpack: (config) =>
-    Object.assign({}, config, {
-      ignoreWarnings: [
-        // https://github.com/graphprotocol/graph-client/issues/480
-        { module: /graphql-mesh\/utils\/esm\/defaultImportFn.js/ },
-      ],
-      module: {
-        rules: [
-          ...config.module.rules,
-          {
-            test: /\.svg$/,
-            use: ["@svgr/webpack"],
-          },
-        ],
-      },
-    }),
+  webpack,
 };
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({

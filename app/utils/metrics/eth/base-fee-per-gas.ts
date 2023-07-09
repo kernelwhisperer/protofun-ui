@@ -1,8 +1,47 @@
-import { execute } from "../../../../.graphclient";
+import { execute, getBuiltGraphSDK } from "../../../../.graphclient";
 import { PriceUnit, Timeframe } from "../../../stores/metrics";
-import { queryBlocks, queryBlocksSince } from "../../block-utils";
 import { Candle } from "../../candle-utils";
 import { IndexerError } from "../../errors";
+
+const sdk = getBuiltGraphSDK();
+
+export async function queryBlocks() {
+  try {
+    const res = await sdk.FetchLastBlocks();
+
+    if (res.blocks.length === 0) {
+      throw new IndexerError(
+        "Empty response. Has the subgraph finish syncing?"
+      );
+    }
+
+    return res.blocks.reverse();
+  } catch (error) {
+    let errorMessage = (error as Error).message;
+    if (errorMessage.includes("ECONNREFUSED")) {
+      errorMessage = "Connection failed";
+    }
+
+    throw new IndexerError(errorMessage);
+  }
+}
+
+export async function queryBlocksSince(timestamp: string) {
+  try {
+    const res = await sdk.FetchBlocksSince({
+      since: timestamp,
+    });
+
+    return res.blocks.reverse();
+  } catch (error) {
+    let errorMessage = (error as Error).message;
+    if (errorMessage.includes("ECONNREFUSED")) {
+      errorMessage = "Connection failed";
+    }
+
+    throw new IndexerError(errorMessage);
+  }
+}
 
 const getEntityId = (timeframe: Timeframe) =>
   `baseFeePerGas${timeframe}Candles`;
@@ -45,6 +84,7 @@ async function queryCandles(
   return response.data[entityId].reverse();
 }
 
+// TODO enable text compression
 export default async function queryBaseFeePerGas(
   timeframe: Timeframe,
   since?: string,

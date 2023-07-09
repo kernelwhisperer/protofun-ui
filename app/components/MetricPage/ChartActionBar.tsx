@@ -67,6 +67,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             onClick={() => {
               $seriesType.set("Line");
             }}
+            aria-label="Switch to Line chart"
           >
             <ShowChart />
           </Button>
@@ -76,6 +77,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             onClick={() => {
               $seriesType.set("Candlestick");
             }}
+            aria-label="Switch to Candlestick chart"
           >
             <CandlestickChart />
           </Button>

@@ -1,7 +1,6 @@
 import { useTheme } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import { animated, useSpring } from "@react-spring/web";
-import { captureException } from "@sentry/nextjs";
 import {
   IChartApi,
   ISeriesApi,
@@ -57,7 +56,7 @@ import { Progress } from "../Progress";
 import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
 
-export function MetricChart({ metric }: { metric: Metric }) {
+export default function MetricChart({ metric }: { metric: Metric }) {
   const {
     queryFn,
     priceUnits,
@@ -113,9 +112,11 @@ export function MetricChart({ metric }: { metric: Metric }) {
       })
       .catch((error) => {
         console.error(error);
-        captureException(error);
         setError(`${error.name}: ${error.message}`);
         $loading.set(false);
+        import("@sentry/nextjs").then(({ captureException }) => {
+          captureException(error);
+        });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe, priceUnit]);

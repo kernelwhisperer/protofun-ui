@@ -38,6 +38,7 @@ export function ProtocolPage(props: ProtocolProps) {
           <LinkButton
             key={metric.id}
             iconPadding={metric.iconPadding}
+            prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well
             href={`/${protocolId}/${metric.id}`}
             label={metric.title}
             icon={METRIC_ICONS_MAP[protocolId]?.[metric.id] as SvgIconComponent}

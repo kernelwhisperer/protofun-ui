@@ -1,8 +1,8 @@
-import { OverridedMixpanel } from "mixpanel-browser";
+import { Mixpanel } from "mixpanel-browser";
 import { atom } from "nanostores";
 
 export const $fullAppVersion = atom<string>("");
-export const $mixpanel = atom<OverridedMixpanel | undefined>();
+export const $mixpanel = atom<Mixpanel | undefined>();
 
 export type ReducedMotionSetting = "always" | "never" | "user";
 export const $reducedMotion = atom<ReducedMotionSetting>("always");

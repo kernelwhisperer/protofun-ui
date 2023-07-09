@@ -28,6 +28,7 @@ export default async function MetricPageServer(props: Props) {
   const { params, searchParams } = props;
   const { protocol: protocolId, metric: metricId } = params;
 
+  // TODO
   // const [candles, blocks] = await Promise.all([
   //   queryCandles("Minute").catch((error) => {
   //     console.error(error);
