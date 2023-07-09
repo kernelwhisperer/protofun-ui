@@ -1,4 +1,4 @@
-import { Stack, useMediaQuery } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
 import React from "react";
@@ -10,7 +10,7 @@ import {
   CandleMap,
 } from "../../stores/metrics";
 import { isCandle } from "../../utils/candle-utils";
-import { formatNumber } from "../../utils/client-utils";
+import { formatNumber, isMobile } from "../../utils/client-utils";
 import { LegendLabel } from "./LegendLabel";
 import { LegendValue } from "./LegendValue";
 
@@ -22,7 +22,6 @@ export type CandleChartLegendProps = {
 
 export function CandleChartLegend(props: CandleChartLegendProps) {
   const { precision, unitLabel, significantDigits } = props;
-  const smallDevice = !useMediaQuery("(min-width:600px)");
 
   const seriesType = useStore($seriesType);
   const timestamp = useStore($legendTimestamp);
@@ -42,10 +41,11 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
             paddingTop: 1,
             position: "absolute",
             top: 0,
+            zIndex: 999,
           }}
         >
           <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
-            {smallDevice ? (
+            {isMobile ? (
               <>
                 <LegendLabel>
                   <LegendValue variant="body2">

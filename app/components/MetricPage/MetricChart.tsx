@@ -45,7 +45,12 @@ import {
   isCandle,
   isCandleArray,
 } from "../../utils/candle-utils";
-import { SPRING_CONFIGS, TZ_OFFSET, wait } from "../../utils/client-utils";
+import {
+  isMobile,
+  SPRING_CONFIGS,
+  TZ_OFFSET,
+  wait,
+} from "../../utils/client-utils";
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
@@ -201,7 +206,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
         time = lastBar?.time as Time;
       }
 
-      $legendTimestamp.set(String((time as number) + TZ_OFFSET)); // TODO: looks like legend it's behind 1hr
+      $legendTimestamp.set(String((time as number) + TZ_OFFSET));
     };
     chartRef.current?.subscribeCrosshairMove(subRef);
 
@@ -217,8 +222,7 @@ export function MetricChart({ metric }: { metric: Metric }) {
     setTimeout(() => {
       chartRef.current?.applyOptions({
         localization: {
-          // eslint-disable-next-line no-constant-condition
-          priceFormatter: false // TODO
+          priceFormatter: isMobile
             ? undefined
             : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
         },

@@ -1,10 +1,11 @@
 "use client";
 
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { createChart, CrosshairMode, IChartApi } from "lightweight-charts";
 import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
 import { $timeframe } from "../stores/metrics";
+import { isMobile } from "../utils/client-utils";
 import { RobotoMonoFF } from "./Theme/fonts";
 
 export type ChartProps = {
@@ -18,7 +19,6 @@ function Chart(props: ChartProps) {
 
   const theme = useTheme();
   const containerRef = useRef<HTMLElement>();
-  const smallDevice = !useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -60,20 +60,16 @@ function Chart(props: ChartProps) {
         textColor,
       },
       localization: {
-        priceFormatter: smallDevice
+        priceFormatter: isMobile
           ? undefined
           : (x: number) => `${x.toFixed(significantDigits)} ${unitLabel}`,
       },
       width: containerRef.current.clientWidth,
     });
 
-    console.log(
-      "📜 LOG > chartRef.current.timeScale > smallDevice:",
-      smallDevice
-    );
     chartRef.current.timeScale().applyOptions({
       borderVisible: false,
-      rightOffset: smallDevice ? 4 : 8,
+      rightOffset: isMobile ? 4 : 8,
       secondsVisible: ["Block"].includes($timeframe.get()),
       timeVisible: ["Hour", "Minute", "Block"].includes($timeframe.get()),
     });
@@ -89,14 +85,7 @@ function Chart(props: ChartProps) {
 
       chartRef.current?.remove();
     };
-  }, [
-    chartRef,
-    theme,
-    smallDevice,
-    containerRef,
-    unitLabel,
-    significantDigits,
-  ]);
+  }, [chartRef, theme, containerRef, unitLabel, significantDigits]);
 
   return (
     <Box

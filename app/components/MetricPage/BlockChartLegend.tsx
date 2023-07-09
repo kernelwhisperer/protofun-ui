@@ -34,6 +34,7 @@ export function BlockChartLegend(props: BlockChartLegendProps) {
             paddingTop: 1,
             position: "absolute",
             top: 0,
+            zIndex: 999,
           }}
         >
           <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
