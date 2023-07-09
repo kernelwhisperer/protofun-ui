@@ -226,6 +226,13 @@ export function MetricChart({ metric }: { metric: Metric }) {
     }, 333);
   }, [priceUnit]);
 
+  useEffect(() => {
+    chartRef.current?.timeScale().applyOptions({
+      secondsVisible: ["Block"].includes(timeframe),
+      timeVisible: ["Hour", "Minute", "Block"].includes(timeframe),
+    });
+  }, [timeframe]);
+
   const handleNewData = useCallback(
     (data: Candle | SimpleBlock) => {
       const precision = variants

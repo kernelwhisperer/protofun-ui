@@ -11,7 +11,6 @@ export function ThemeMode() {
   const { mode: muiMode = "system", setMode: setMuiMode } = useColorScheme();
   const [mode, setMode] = useState<Mode>("system");
   const theme = useTheme();
-  console.log("📜 LOG > ThemeMode > theme:", theme.palette.background.default);
 
   useEffect(() => {
     setMode(muiMode);

@@ -4,6 +4,7 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { createChart, CrosshairMode, IChartApi } from "lightweight-charts";
 import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
+import { $timeframe } from "../stores/metrics";
 import { RobotoMonoFF } from "./Theme/fonts";
 
 export type ChartProps = {
@@ -66,11 +67,15 @@ function Chart(props: ChartProps) {
       width: containerRef.current.clientWidth,
     });
 
+    console.log(
+      "📜 LOG > chartRef.current.timeScale > smallDevice:",
+      smallDevice
+    );
     chartRef.current.timeScale().applyOptions({
       borderVisible: false,
       rightOffset: smallDevice ? 4 : 8,
-      secondsVisible: true, // TODO: make it dissapear for higher timeframes
-      timeVisible: true,
+      secondsVisible: ["Block"].includes($timeframe.get()),
+      timeVisible: ["Hour", "Minute", "Block"].includes($timeframe.get()),
     });
 
     chartRef.current.priceScale("right").applyOptions({
