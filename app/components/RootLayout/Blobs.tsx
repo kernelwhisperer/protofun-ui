@@ -1,37 +1,54 @@
-import { Box, BoxProps, useMediaQuery } from "@mui/material";
-import { HTMLMotionProps, m } from "framer-motion";
+import { Box, BoxProps } from "@mui/material";
+import { useStore } from "@nanostores/react";
+import { animated, AnimatedProps, useSpring } from "@react-spring/web";
 import React from "react";
 
-const Blob = ({
-  sx,
-  ...rest
-}: HTMLMotionProps<"div"> & Pick<BoxProps, "sx">) => (
-  <m.div
-    style={{
-      filter: "blur(40px)",
-      // filter: "blur(40px) url(#noiseFilter) blur(5px)",
-      opacity: 0.5,
-      padding: "40px",
-      position: "absolute",
-      right: 0,
-      top: 0,
-      zIndex: -1,
-    }}
-    transition={{
-      duration: 10,
-      ease: "easeInOut",
-      repeat: Infinity,
-      repeatType: "loop",
-    }}
-    {...rest}
-  >
-    <Box sx={sx} />
-  </m.div>
-);
+import { $loopsAllowed } from "../../stores/app";
+
+const AnimatedBox = animated(Box);
+
+type BlobProps = AnimatedProps<{
+  animate: { scale: number[]; x: number[]; y: number[] };
+}> &
+  Pick<BoxProps, "sx">;
+
+const Blob = ({ sx, animate, ...rest }: BlobProps) => {
+  const loopsAllowed = useStore($loopsAllowed);
+
+  const { x } = useSpring({
+    config: {
+      duration: 10_000,
+    },
+    from: { x: 0 },
+    loop: loopsAllowed,
+    to: { x: 1 },
+  });
+
+  return (
+    <AnimatedBox
+      sx={{
+        filter: "blur(40px)",
+        // filter: "blur(40px) url(#noiseFilter) blur(5px)",
+        opacity: 0.5,
+        padding: "40px",
+        position: "absolute",
+        right: 0,
+        top: 0,
+        zIndex: -1,
+      }}
+      style={{
+        scale: x.to([0, 0.33, 0.66, 1], animate.scale),
+        x: x.to([0, 0.33, 0.66, 1], animate.x),
+        y: x.to([0, 0.33, 0.66, 1], animate.y),
+      }}
+      {...rest}
+    >
+      <Box sx={sx} />
+    </AnimatedBox>
+  );
+};
 
 export function Blobs() {
-  const smallDevice = !useMediaQuery("(min-width:600px)");
-
   return (
     <Box
       className="blobs"
@@ -56,21 +73,11 @@ export function Blobs() {
           opacity: 0.5,
           width: 200,
         }}
-        initial={{
-          x: -150,
-          y: 200,
+        animate={{
+          scale: [1, 1, 1, 1],
+          x: [-150, -200, -250, -150],
+          y: [200, 300, 100, 200],
         }}
-        animate={
-          smallDevice
-            ? {
-                x: -150,
-                y: 200,
-              }
-            : {
-                x: [-150, -200, -250, -150],
-                y: [200, 300, 100, 200],
-              }
-        }
       />
       <Blob
         sx={{
@@ -80,24 +87,11 @@ export function Blobs() {
           top: 80,
           width: 250,
         }}
-        initial={{
-          scale: 1.2,
-          x: -20,
-          y: 80,
+        animate={{
+          scale: [1.2, 1, 1, 1.2],
+          x: [-20, -20, -140, -20],
+          y: [80, 300, 200, 80],
         }}
-        animate={
-          smallDevice
-            ? {
-                scale: 1.2,
-                x: -20,
-                y: 80,
-              }
-            : {
-                scale: [1.2, 1, 1, 1.2],
-                x: [-20, -20, -140, -20],
-                y: [80, 300, 200, 80],
-              }
-        }
       />
       <Blob
         sx={{
@@ -106,22 +100,11 @@ export function Blobs() {
           height: 150,
           width: 200,
         }}
-        initial={{
-          x: 0,
-          y: 300,
+        animate={{
+          scale: [1, 1.4, 1, 1],
+          x: [0, -150, -100, 0],
+          y: [300, 150, 250, 300],
         }}
-        animate={
-          smallDevice
-            ? {
-                x: 0,
-                y: 300,
-              }
-            : {
-                scale: [1, 1.4, 1, 1],
-                x: [0, -150, -100, 0],
-                y: [300, 150, 250, 300],
-              }
-        }
       />
     </Box>
   );

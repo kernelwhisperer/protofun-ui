@@ -1,35 +1,19 @@
 "use client";
 
 import { Backdrop, Box } from "@mui/material";
-import { m, useCycle } from "framer-motion";
+import { animated, useSpring } from "@react-spring/web";
 import React, { useEffect, useState } from "react";
+import { useBoolean } from "usehooks-ts";
 
 import { AppVerProps } from "../../stores/app";
+import { SPRING_CONFIGS } from "../../utils/client-utils";
 import { MenuContents } from "./Menu/MenuContents";
 import { MenuToggle } from "./Menu/MenuToggle";
 
-const sidebar = {
-  closed: {
-    clipPath: "circle(24px at 392px 36px)",
-    transition: {
-      damping: 40,
-      delay: 0.25,
-      stiffness: 400,
-      type: "spring",
-    },
-  },
-  open: (height = 1000) => ({
-    clipPath: `circle(${height * 2 + 24}px at 392px 36px)`,
-    transition: {
-      // restDelta: 2,
-      stiffness: 20,
-      type: "spring",
-    },
-  }),
-};
+const MenuBackground = animated(Box);
 
 export function HamburgerMenu({ appVer, gitHash }: AppVerProps) {
-  const [open, toggleOpen] = useCycle(false, true);
+  const { value: open, toggle: toggleOpen } = useBoolean(false);
   const [screenHeight, setScreenHeight] = useState(0);
 
   useEffect(() => {
@@ -46,23 +30,25 @@ export function HamburgerMenu({ appVer, gitHash }: AppVerProps) {
     };
   }, []);
 
+  const { x } = useSpring({
+    config: open ? SPRING_CONFIGS.molasses : SPRING_CONFIGS.quick,
+    delay: open ? 0 : 200,
+    from: { x: 0 },
+    to: !open ? { x: 0 } : { x: screenHeight },
+  });
+
   return (
-    <m.nav
-      initial={false}
-      animate={open ? "open" : "closed"}
-      custom={screenHeight}
-    >
-      <MenuToggle toggle={toggleOpen} />
+    <nav>
+      <MenuToggle open={open} toggle={toggleOpen} />
       <Backdrop
         open={open}
         className="blurred"
         sx={{
           zIndex: "var(--mui-zIndex-menu)",
         }}
-        onClick={toggleOpen as any}
+        onClick={toggleOpen}
       />
-      <Box
-        component={m.div}
+      <MenuBackground
         sx={{
           backgroundColor: "var(--mui-palette-background-default)",
           bottom: "0",
@@ -74,10 +60,14 @@ export function HamburgerMenu({ appVer, gitHash }: AppVerProps) {
           width: "100%",
           zIndex: "var(--mui-zIndex-menu)",
         }}
-        variants={sidebar}
+        style={{
+          clipPath: x.to(
+            (value) => `circle(${value * 2 + 20}px at 390px 36px)`
+          ),
+        }}
       >
-        <MenuContents appVer={appVer} gitHash={gitHash} />
-      </Box>
-    </m.nav>
+        <MenuContents open={open} appVer={appVer} gitHash={gitHash} />
+      </MenuBackground>
+    </nav>
   );
 }

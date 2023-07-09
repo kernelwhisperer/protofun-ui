@@ -5,21 +5,12 @@ import {
 } from "@mui/icons-material";
 import { Button, ButtonGroup } from "@mui/material";
 import { useStore } from "@nanostores/react";
-import React, { useEffect } from "react";
+import React from "react";
 
-import { $reducedMotion, ReducedMotionConfig } from "../../../stores/app";
+import { $reducedMotion } from "../../../stores/app";
 
 export function ReducedMotion() {
   const reducedMotion = useStore($reducedMotion);
-  console.log("📜 LOG > ReducedMotion > reducedMotion:", reducedMotion);
-
-  useEffect(() => {
-    const preferred = localStorage.getItem("reduced-motion");
-    console.log("📜 LOG > useEffect > preferred:", preferred);
-    if (preferred) {
-      $reducedMotion.set(preferred as ReducedMotionConfig);
-    }
-  }, []);
 
   return (
     <ButtonGroup variant="outlined" size="large">

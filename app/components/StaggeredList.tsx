@@ -1,40 +1,36 @@
 "use client";
 import { Stack, StackProps } from "@mui/material";
-import { HTMLMotionProps, m } from "framer-motion";
-import React, { Children, ReactNode } from "react";
+import { animated, useTrail } from "@react-spring/web";
+import React, { Children } from "react";
 
-import { revealVariants } from "../utils/client-utils";
+import { isServerSide, SPRING_CONFIGS } from "../utils/client-utils";
 
-export type StaggeredListProps = StackProps &
-  HTMLMotionProps<"div"> & { children?: ReactNode } & {
-    staggerChildren?: number;
-  };
+export type StaggeredListProps = StackProps & {
+  show?: boolean;
+};
+
+const SHOW_STATE = { opacity: 1, y: 0 };
+const HIDE_STATE = { opacity: 0, y: 60 };
 
 export function StaggeredList({
   children,
-  staggerChildren = 0.15,
+  show = true,
   ...rest
 }: StaggeredListProps) {
+  const items = Children.toArray(children);
+  const trails = useTrail(items.length, {
+    config: SPRING_CONFIGS.quick,
+    from: isServerSide ? SHOW_STATE : HIDE_STATE,
+    reverse: !show,
+    to: show ? SHOW_STATE : HIDE_STATE,
+  });
+
   return (
-    <Stack
-      component={m.div}
-      initial="hide"
-      animate="show"
-      variants={{
-        hide: {
-          transition: {
-            staggerChildren: staggerChildren / 10,
-            staggerDirection: -1,
-          },
-        },
-        show: {
-          transition: { staggerChildren },
-        },
-      }}
-      {...rest}
-    >
-      {Children.map(children, (child) => (
-        <m.div variants={revealVariants}>{child}</m.div>
+    <Stack {...rest}>
+      {trails.map((props, index) => (
+        <animated.div key={index} style={props}>
+          {items[index]}
+        </animated.div>
       ))}
     </Stack>
   );

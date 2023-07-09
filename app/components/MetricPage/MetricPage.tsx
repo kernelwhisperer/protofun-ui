@@ -3,6 +3,7 @@ import { Paper, Stack } from "@mui/material";
 import React from "react";
 
 import {
+  $legendTimestamp,
   $priceUnitIndex,
   $seriesType,
   $timeframe,
@@ -68,6 +69,8 @@ export function MetricPage(props: MetricPageProps) {
   } else {
     $priceUnitIndex.set(0);
   }
+
+  $legendTimestamp.set("");
 
   // TODO
   // const blockMap = blocks.reduce((acc, curr) => {

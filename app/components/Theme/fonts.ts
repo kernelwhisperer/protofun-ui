@@ -4,12 +4,14 @@ import { Roboto_Flex, Roboto_Mono, Roboto_Serif } from "next/font/google";
 
 // https://v-fonts.com/fonts/roboto-flex
 const RobotoFlex = Roboto_Flex({
-  axes: ["slnt", "YTUC", "wdth", "XTRA"],
-  display: "fallback", // TODO: not sure
+  // axes: ["slnt", "YTUC", "wdth", "XTRA"],
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display
+  display: "swap", // TODO: needs more testing
   subsets: ["latin"],
 });
 
 export const RobotoFlexFF = [
+  "Roboto Flex", // TODO: needs more testing
   RobotoFlex.style.fontFamily,
   "Helvetica",
   "Arial",
@@ -18,13 +20,14 @@ export const RobotoFlexFF = [
 ].join(",");
 
 const RobotoSerif = Roboto_Serif({
-  display: "fallback", // TODO: not sure
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display
+  display: "swap", // TODO: needs more testing
   subsets: ["latin"],
 });
 
 export const RobotoSerifFF = [
+  "Roboto Serif", // TODO: needs more testing
   RobotoSerif.style.fontFamily,
-  "Roboto Mono",
   "Helvetica",
   "Arial",
   "sans-serif",
@@ -32,13 +35,14 @@ export const RobotoSerifFF = [
 ].join(",");
 
 const RobotoMono = Roboto_Mono({
-  display: "fallback", // TODO: not sure
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display
+  display: "swap", // TODO: needs more testing
   subsets: ["latin"],
 });
 
 export const RobotoMonoFF = [
+  "Roboto Mono", // TODO: needs more testing
   RobotoMono.style.fontFamily,
-  "Roboto Mono",
   "Helvetica",
   "Arial",
   "sans-serif",

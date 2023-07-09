@@ -1,5 +1,4 @@
-import { alpha } from "@mui/material";
-import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
+import { alpha, CssVarsThemeOptions } from "@mui/material";
 
 import { RobotoFlexFF } from "./fonts";
 
@@ -88,7 +87,7 @@ export const globalStyles = `
   }
 `;
 
-export const theme = extendTheme({
+export const themeOptions: CssVarsThemeOptions = {
   colorSchemes: {
     dark: {
       palette: {
@@ -208,4 +207,4 @@ export const theme = extendTheme({
     menuButton: 1601,
     title: 1350,
   },
-});
+};

@@ -1,7 +1,6 @@
 import { Stack, useMediaQuery } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
-import { AnimatePresence, m } from "framer-motion";
 import React from "react";
 
 import {
@@ -33,7 +32,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
   const candleDatetime = new Date(parseInt(timestamp || "0") * 1000);
 
   return (
-    <AnimatePresence>
+    <>
       {!!candle && isCandle(candle) && (
         <Stack
           sx={{
@@ -43,13 +42,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
             paddingTop: 1,
             position: "absolute",
             top: 0,
-            zIndex: 999,
           }}
-          component={m.div}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
         >
           <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
             {smallDevice ? (
@@ -140,6 +133,6 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
           )}
         </Stack>
       )}
-    </AnimatePresence>
+    </>
   );
 }

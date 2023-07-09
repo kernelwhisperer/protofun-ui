@@ -1,4 +1,6 @@
-import { Transition, Variants } from "framer-motion";
+"use client";
+
+import { config } from "@react-spring/web";
 
 import { getBuiltGraphSDK } from "../../.graphclient";
 
@@ -25,25 +27,18 @@ export const TZ_OFFSET = new Date().getTimezoneOffset() * 60;
 
 export const sdk = getBuiltGraphSDK();
 
-const revealTransition: Transition = {
-  duration: 0.3,
-  ease: "easeOut",
-  // damping: 40,
-  // damping: 14,
-  // mass: 100,
-  // stiffness: 220,
-  // type: "spring",
+export const SPRING_CONFIGS = {
+  ...config,
+  quick: { friction: 200, mass: 5, tension: 2000 },
+  // slow: { friction: 20, mass: 5, tension: 200 },
 };
 
-export const revealVariants: Variants = {
-  hide: {
-    opacity: 0,
-    transition: revealTransition,
-    y: 60,
-  },
-  show: {
-    opacity: 1,
-    transition: revealTransition,
-    y: 0,
-  },
-};
+export const isServerSide = typeof window === "undefined";
+
+export const isMobile = isServerSide
+  ? true
+  : Boolean(
+      window.navigator.userAgent.match(
+        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+      )
+    );

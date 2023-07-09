@@ -32,7 +32,7 @@ export function ProtocolPage(props: ProtocolProps) {
         direction="row"
         flexWrap="wrap"
         gap={2}
-        staggerChildren={0.5 / metrics.length}
+        // staggerChildren={0.5 / metrics.length}
       >
         {metrics.map((metric) => (
           <LinkButton

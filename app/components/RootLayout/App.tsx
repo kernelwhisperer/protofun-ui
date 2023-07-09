@@ -21,21 +21,6 @@ export function App({ children, appVer, gitHash }: AppProps) {
       >
         <Stack>
           {/* TODO: https://github.com/vercel/next.js/issues/49279 */}
-          {/* <AnimatePresence>
-            <m.div
-              key={pathname}
-              initial={{ opacity: 0, y: 80 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -80 }}
-     
-              transition={{
-                damping: 20,
-                stiffness: 40,
-                type: "spring",
-              }}
-            >
-            </m.div>
-          </AnimatePresence> */}
           {children}
         </Stack>
         {/* <svg

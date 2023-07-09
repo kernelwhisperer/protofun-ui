@@ -1,6 +1,8 @@
 import { Stack, Typography } from "@mui/material";
-import { m } from "framer-motion";
+import { animated, useSpring } from "@react-spring/web";
 import React from "react";
+
+import { SPRING_CONFIGS } from "../utils/client-utils";
 
 interface ProgressProps {
   errorMessage: string;
@@ -8,6 +10,13 @@ interface ProgressProps {
 
 export function ErrorOverlay(props: ProgressProps) {
   const { errorMessage } = props;
+
+  const style = useSpring({
+    config: SPRING_CONFIGS.quick,
+    from: { opacity: 0 },
+    to: errorMessage ? { opacity: 1 } : { opacity: 0 },
+  });
+  // TODO this should be using useTransition
 
   return (
     <Stack
@@ -21,19 +30,9 @@ export function ErrorOverlay(props: ProgressProps) {
       justifyContent="center"
       height={"100%"}
     >
-      <m.div
-        animate={errorMessage ? "show" : "hide"}
-        variants={{
-          hide: {
-            opacity: 0,
-          },
-          show: {
-            opacity: 1,
-          },
-        }}
-      >
+      <animated.div style={style}>
         <Typography>{errorMessage}</Typography>
-      </m.div>
+      </animated.div>
     </Stack>
   );
 }

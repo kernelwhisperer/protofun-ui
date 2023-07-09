@@ -1,7 +1,6 @@
 import { Stack } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
-import { AnimatePresence, m } from "framer-motion";
 import React from "react";
 
 import { $entryMap, $legendTimestamp, BlockMap } from "../../stores/metrics";
@@ -25,7 +24,7 @@ export function BlockChartLegend(props: BlockChartLegendProps) {
   // const blockDate = new Date(parseInt(timestamp || "0") * 1000);
 
   return (
-    <AnimatePresence>
+    <>
       {!!block && isBlock(block) && (
         <Stack
           sx={{
@@ -35,13 +34,7 @@ export function BlockChartLegend(props: BlockChartLegendProps) {
             paddingTop: 1,
             position: "absolute",
             top: 0,
-            zIndex: 999,
           }}
-          component={m.div}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
         >
           <Stack direction="row" sx={{ paddingBottom: 0.5 }}>
             <LegendLabel variant="body2">Block number </LegendLabel>
@@ -96,6 +89,6 @@ export function BlockChartLegend(props: BlockChartLegendProps) {
           {/* <Typography>{blockDate.getTime() - new Date().getTime()}</Typography> TODO: show delay */}
         </Stack>
       )}
-    </AnimatePresence>
+    </>
   );
 }

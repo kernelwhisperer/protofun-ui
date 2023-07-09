@@ -1,10 +1,24 @@
-import { m } from "framer-motion";
+import { Box } from "@mui/material";
+import { animated, easings, useSpring } from "@react-spring/web";
 import React from "react";
 
+const AnimatedBox = animated(Box);
+
 export function Underline() {
+  const styles = useSpring({
+    config: {
+      duration: 750,
+      // https://easings.net/
+      easing: easings.easeInOutQuad,
+    },
+    delay: 200,
+    from: { x: 0 },
+    to: { x: 1 },
+  });
+
   return (
-    <m.div
-      style={{
+    <AnimatedBox
+      sx={{
         background: "var(--mui-palette-secondary-main)",
         bottom: -2,
         content: '""',
@@ -15,15 +29,10 @@ export function Underline() {
         width: "100%",
         zIndex: -1,
       }}
-      animate={{
-        scaleX: [0, 1, 0],
-        x: ["-50%", "0%", "50%"],
+      style={{
+        scaleX: styles.x.to([0, 0.5, 1], [0, 1, 0]),
+        x: styles.x.to([0, 0.5, 1], ["-50%", "0%", "50%"]),
       }}
-      transition={{
-        delay: 0.2,
-        duration: 0.75,
-        ease: "easeInOut",
-      }}
-    ></m.div>
+    ></AnimatedBox>
   );
 }

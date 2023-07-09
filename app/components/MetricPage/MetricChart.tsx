@@ -1,7 +1,7 @@
 import { useTheme } from "@mui/material";
 import { useStore } from "@nanostores/react";
+import { animated, useSpring } from "@react-spring/web";
 import { captureException } from "@sentry/nextjs";
-import { m } from "framer-motion";
 import {
   IChartApi,
   ISeriesApi,
@@ -45,7 +45,7 @@ import {
   isCandle,
   isCandleArray,
 } from "../../utils/candle-utils";
-import { TZ_OFFSET, wait } from "../../utils/client-utils";
+import { SPRING_CONFIGS, TZ_OFFSET, wait } from "../../utils/client-utils";
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
@@ -282,48 +282,43 @@ export function MetricChart({ metric }: { metric: Metric }) {
     !loading && !error && data.length > 0
   );
 
+  const { opacity } = useSpring({
+    config: SPRING_CONFIGS.quick,
+    from: { opacity: 0 },
+    to: error || loading ? { opacity: 0 } : { opacity: 1 },
+  });
+
   return (
     <>
       <Progress loading={loading} />
       <ErrorOverlay errorMessage={error} />
-      {!loading && timeframe === "Block" && (
-        <BlockChartLegend
-          precision={precision}
-          unitLabel={priceUnit}
-          significantDigits={significantDigits}
-        />
-      )}
-      {!loading && timeframe !== "Block" && (
-        <CandleChartLegend
-          precision={precision}
-          unitLabel={priceUnit}
-          significantDigits={significantDigits}
-        />
-      )}
-      <m.div
+      <animated.div
         style={{
           height: "100%",
+          opacity,
           width: "100%",
         }}
-        animate={error ? "errored" : loading ? "loading" : "ready"}
-        variants={{
-          errored: {
-            opacity: 0,
-          },
-          loading: {
-            opacity: 0,
-          },
-          ready: {
-            opacity: 1,
-          },
-        }}
       >
+        {timeframe === "Block" && (
+          <BlockChartLegend
+            precision={precision}
+            unitLabel={priceUnit}
+            significantDigits={significantDigits}
+          />
+        )}
+        {timeframe !== "Block" && (
+          <CandleChartLegend
+            precision={precision}
+            unitLabel={priceUnit}
+            significantDigits={significantDigits}
+          />
+        )}
         <MemoChart
           chartRef={chartRef}
           unitLabel={priceUnit}
           significantDigits={significantDigits}
         />
-      </m.div>
+      </animated.div>
     </>
   );
 }
