@@ -26,16 +26,6 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.webmanifest" />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: light)"
-          content="#c8bb9b"
-        />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: dark)"
-          content="#1f222a"
-        />
         {/* TODO */}
         {/* <link
           href="favicon-light.png"
