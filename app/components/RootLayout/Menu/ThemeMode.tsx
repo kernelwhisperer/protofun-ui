@@ -7,6 +7,8 @@ import { Button, ButtonGroup, useColorScheme, useTheme } from "@mui/material";
 import { Mode } from "fs";
 import React, { useEffect, useState } from "react";
 
+import { RETRO_BEIGE_1 } from "../../Theme/theme";
+
 export function ThemeMode() {
   const { mode: muiMode = "system", setMode: setMuiMode } = useColorScheme();
   const [mode, setMode] = useState<Mode>("system");
@@ -16,9 +18,15 @@ export function ThemeMode() {
     setMode(muiMode);
   }, [muiMode]);
 
+  useEffect(() => {
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme.palette.background.default);
+  }, [theme.palette.background.default]);
+
   return (
     <>
-      <meta name="theme-color" content={theme.palette.background.default} />
+      <meta name="theme-color" content={RETRO_BEIGE_1} />
       <ButtonGroup variant="outlined" size="large">
         <Button
           className={mode === "light" ? "active" : ""}
