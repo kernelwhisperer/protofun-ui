@@ -1,8 +1,10 @@
 import { LineData, UTCTimestamp } from "lightweight-charts";
 
-import { Block } from "../../.graphclient";
-import { sdk, TZ_OFFSET } from "./client-utils";
+import { Block, getBuiltGraphSDK } from "../../.graphclient";
+import { TZ_OFFSET } from "./client-utils";
 import { IndexerError } from "./errors";
+
+const sdk = getBuiltGraphSDK();
 
 // TODO
 // declare module "../../.graphclient" {

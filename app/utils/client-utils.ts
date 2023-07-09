@@ -2,8 +2,6 @@
 
 import { config } from "@react-spring/web";
 
-import { getBuiltGraphSDK } from "../../.graphclient";
-
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
 
@@ -24,8 +22,6 @@ export function formatBigInt(number: number) {
 }
 
 export const TZ_OFFSET = new Date().getTimezoneOffset() * 60;
-
-export const sdk = getBuiltGraphSDK();
 
 export const SPRING_CONFIGS = {
   ...config,

@@ -1,15 +1,12 @@
 import {
   CandlestickSeriesPartialOptions,
-  PriceScaleMode,
+  // PriceScaleMode,
   SeriesType,
 } from "lightweight-charts";
 import { atom, map } from "nanostores";
 
 import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
-import { queryBaseFeePerGas } from "../utils/metrics/eth/base-fee-per-gas";
-import { queryEtherPrice } from "../utils/metrics/eth/ether-price";
-import { queryTxCost } from "../utils/metrics/eth/tx-cost";
 import { PROTOCOL_IDS, ProtocolId } from "./protocols";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
@@ -28,7 +25,15 @@ export function isTimeframe(value: string): value is Timeframe {
 
 export const $timeframe = atom<Timeframe>("Hour");
 export const $seriesType = atom<SeriesType>("Candlestick");
-export const $scaleMode = atom<PriceScaleMode>(PriceScaleMode.Logarithmic);
+/**
+ * Price scale shows prices. Price range changes linearly.
+ */
+// Normal = 0,
+/**
+ * Price scale shows prices. Price range changes logarithmically.
+ */
+// Logarithmic = 1,
+export const $scaleMode = atom<0 | 1>(1);
 export const $liveMode = atom<boolean>(true);
 export const $priceUnitIndex = atom<number>(0);
 export const $variantIndex = atom<number>(0);
@@ -79,7 +84,10 @@ export const METRICS_MAP: Partial<
       precision: 1e9,
       priceUnits: [PriceUnit.GWEI],
       protocol: "eth",
-      queryFn: queryBaseFeePerGas,
+      queryFn: (...args) =>
+        import("../utils/metrics/eth/base-fee-per-gas").then((x) =>
+          x.default(...args)
+        ),
       significantDigits: [2],
       title: "Base fee per gas",
     },
@@ -89,7 +97,10 @@ export const METRICS_MAP: Partial<
       precision: 1,
       priceUnits: [PriceUnit.USD],
       protocol: "eth",
-      queryFn: queryEtherPrice,
+      queryFn: (...args) =>
+        import("../utils/metrics/eth/ether-price").then((x) =>
+          x.default(...args)
+        ),
       significantDigits: [2],
       timeframes: ["Minute", "Hour", "Day", "Week"],
       title: "Ether price",
@@ -100,7 +111,8 @@ export const METRICS_MAP: Partial<
       precision: 1,
       priceUnits: [PriceUnit.USD, PriceUnit.ETH],
       protocol: "eth",
-      queryFn: queryTxCost,
+      queryFn: (...args) =>
+        import("../utils/metrics/eth/tx-cost").then((x) => x.default(...args)),
       significantDigits: [2, 5],
       timeframes: ["Minute", "Hour", "Day", "Week"],
       title: "Transaction cost",

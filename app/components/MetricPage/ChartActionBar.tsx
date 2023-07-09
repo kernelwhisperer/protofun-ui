@@ -47,7 +47,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
         {Object.keys(TIME_FRAMES).map((x) => (
           <Button
             key={x}
-            disabled={timeframes ? !timeframes.includes(x) : false}
+            disabled={timeframes ? !timeframes.includes(x as Timeframe) : false}
             className={timeframe === x ? "active" : undefined}
             onClick={() => {
               if (x === "Block" && seriesType !== "Line") {

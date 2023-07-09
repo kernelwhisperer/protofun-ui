@@ -1,5 +1,5 @@
 import { execute } from "../../../../.graphclient";
-import { Timeframe } from "../../../stores/metrics";
+import { PriceUnit, Timeframe } from "../../../stores/metrics";
 import { queryBlocks, queryBlocksSince } from "../../block-utils";
 import { Candle } from "../../candle-utils";
 import { IndexerError } from "../../errors";
@@ -19,7 +19,7 @@ query FetchLatest($since: BigInt!) {
 }
 `;
 
-export async function queryCandles(
+async function queryCandles(
   timeframe: Timeframe,
   since = "0"
 ): Promise<Candle[]> {
@@ -45,7 +45,11 @@ export async function queryCandles(
   return response.data[entityId].reverse();
 }
 
-export async function queryBaseFeePerGas(timeframe: Timeframe, since?: string) {
+export default async function queryBaseFeePerGas(
+  timeframe: Timeframe,
+  since?: string,
+  _priceUnit?: PriceUnit
+) {
   if (timeframe === "Block" && since) {
     return queryBlocksSince(since);
   }

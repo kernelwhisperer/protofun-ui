@@ -1,7 +1,7 @@
-import { Timeframe } from "../../../stores/metrics";
+import { PriceUnit, Timeframe } from "../../../stores/metrics";
 import { Candle } from "../../candle-utils";
 
-export const TIMEFRAME_TO_INTERVAL_MAP: Record<Timeframe, string | null> = {
+const TIMEFRAME_TO_INTERVAL_MAP: Record<Timeframe, string | null> = {
   Block: null,
   Day: "1d",
   Hour: "1h",
@@ -9,9 +9,10 @@ export const TIMEFRAME_TO_INTERVAL_MAP: Record<Timeframe, string | null> = {
   Week: "1w",
 };
 
-export async function queryEtherPrice(
+export default async function queryEtherPrice(
   timeframe: Timeframe,
-  since?: string
+  since?: string,
+  _priceUnit?: PriceUnit
 ): Promise<Candle[]> {
   const interval = TIMEFRAME_TO_INTERVAL_MAP[timeframe];
 

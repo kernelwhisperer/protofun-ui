@@ -1,9 +1,9 @@
 import { PriceUnit, Timeframe } from "../../../stores/metrics";
 import { Candle } from "../../candle-utils";
-import { queryBaseFeePerGas } from "./base-fee-per-gas";
-import { queryEtherPrice } from "./ether-price";
+import queryBaseFeePerGas from "./base-fee-per-gas";
+import queryEtherPrice from "./ether-price";
 
-export async function queryTxCost(
+export default async function queryTxCost(
   timeframe: Timeframe,
   since?: string,
   priceUnit?: PriceUnit
