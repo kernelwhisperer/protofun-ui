@@ -13,6 +13,7 @@ const CustomLink = ({ children, ...rest }: any) => (
   <MenuItem component={MuiLink} {...rest}>
     <Typography
       variant="h6"
+      component="div"
       fontWeight={600}
       sx={{
         alignItems: "center",
@@ -37,11 +38,13 @@ export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
     paddingRight={1}
     show={open}
   >
-    <div>
+    <div role="list" aria-labelledby="social-links">
       <Typography
         variant="subtitle2"
         letterSpacing="0.08rem"
         sx={{ marginTop: 4 }}
+        id="social-links"
+        role="listitem"
       >
         SOCIAL
       </Typography>
@@ -49,6 +52,7 @@ export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
         target="_blank"
         rel="noopener noreferrer"
         href="https://discord.gg/J52KU8k4Bd"
+        role="listitem"
       >
         <DiscordIcon width="20px" height="20px" />
         <span>Discord</span>
@@ -57,6 +61,7 @@ export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
         target="_blank"
         rel="noopener noreferrer"
         href="https://twitter.com/kernelwhisperer"
+        role="listitem"
       >
         <Twitter fontSize="small" />
         <span>Twitter</span>
@@ -65,6 +70,7 @@ export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
         target="_blank"
         rel="noopener noreferrer"
         href="https://github.com/kernelwhisperer/"
+        role="listitem"
       >
         <GitHub fontSize="small" />
         <span>GitHub</span>

@@ -42,6 +42,7 @@ export const MenuToggle = ({
       style={{
         zIndex: "var(--mui-zIndex-menuButton)", // open ? "var(--mui-zIndex-menuButton)" : undefined,
       }}
+      aria-label="Open Menu"
     >
       <animated.svg
         width="24"

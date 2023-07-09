@@ -53,6 +53,7 @@ export function Header({ appVer, gitHash }: AppVerProps) {
             <Blobs />
             <Button
               href="/"
+              aria-label="Homepage"
               LinkComponent={Link}
               sx={{
                 borderRadius: 8,

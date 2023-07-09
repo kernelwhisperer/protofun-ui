@@ -47,7 +47,7 @@ export function LinkButton({
           width: "100%",
         }}
       />
-      <Typography variant="h6" fontFamily={RobotoSerifFF}>
+      <Typography variant="h6" fontFamily={RobotoSerifFF} component="div">
         {label}
       </Typography>
     </Button>
