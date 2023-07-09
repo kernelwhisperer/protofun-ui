@@ -8,6 +8,7 @@ import {
 } from "@mui/material/styles";
 import { useStore } from "@nanostores/react";
 import { Globals, useReducedMotion } from "@react-spring/web";
+import throttle from "lodash.throttle";
 import React, { useEffect, useMemo } from "react";
 
 import {
@@ -19,7 +20,27 @@ import { isMobile } from "../../utils/client-utils";
 import { NextAppDirEmotionCacheProvider } from "./EmotionCache";
 import { themeOptions } from "./theme";
 
+// this only runs once, on the server
 Globals.assign({ skipAnimation: true });
+
+// TODO: Hack: investigate the loop: true and skipAnimation: true bug
+const applyAnimationSetting = throttle((skipAnimation) => {
+  if (skipAnimation === false) {
+    // 1. enable animations
+    Globals.assign({ skipAnimation: false });
+    setTimeout(() => {
+      // 2. enable loops
+      $loopsAllowed.set(true);
+    }, 200);
+  } else {
+    // 1. disable loops
+    $loopsAllowed.set(false);
+    // 2. disable animations
+    setTimeout(() => {
+      Globals.assign({ skipAnimation: true });
+    }, 200);
+  }
+}, 400);
 
 export default function ThemeProvider(props: { children: React.ReactNode }) {
   const { children } = props;
@@ -28,8 +49,10 @@ export default function ThemeProvider(props: { children: React.ReactNode }) {
   const userPreference = useReducedMotion();
 
   useEffect(() => {
+    // thi only runs once, on the client
+    Globals.assign({ skipAnimation: true });
     const localSettings = localStorage.getItem("reduced-motion");
-    if (localSettings) {
+    if (localSettings && localSettings !== $reducedMotion.get()) {
       $reducedMotion.set(localSettings as ReducedMotionSetting);
     }
   }, []);
@@ -47,15 +70,7 @@ export default function ThemeProvider(props: { children: React.ReactNode }) {
   }, [reducedMotion, userPreference]);
 
   useEffect(() => {
-    const loopsAllowed = skipAnimation === false;
-
-    if (loopsAllowed === $loopsAllowed.get()) {
-      $loopsAllowed.set(loopsAllowed);
-    }
-  }, [skipAnimation]);
-
-  useEffect(() => {
-    Globals.assign({ skipAnimation });
+    applyAnimationSetting(skipAnimation);
   }, [skipAnimation]);
 
   const extendedTheme = useMemo(

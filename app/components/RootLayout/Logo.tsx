@@ -1,22 +1,32 @@
 import { useStore } from "@nanostores/react";
 import { animated, easings, useSpring } from "@react-spring/web";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { $loopsAllowed } from "../../stores/app";
 
 export function Logo() {
   const loopsAllowed = useStore($loopsAllowed);
 
-  const { x } = useSpring({
-    config: {
-      duration: 20_000,
-      // https://easings.net/
-      easing: easings.easeInOutQuad,
-    },
-    from: { x: 0 },
-    loop: loopsAllowed,
-    to: { x: 1 },
-  });
+  const [{ x }, api] = useSpring(
+    () => ({
+      config: {
+        duration: 20_000,
+        // https://easings.net/
+        easing: easings.easeInOutQuad,
+      },
+      from: { x: 0 },
+      loop: loopsAllowed,
+      to: { x: 1 },
+    }),
+    [loopsAllowed]
+  );
+
+  // TODO: Hack: investigate the loop: true and skipAnimation: true bug
+  useEffect(() => {
+    if (!loopsAllowed) {
+      api.stop();
+    }
+  }, [loopsAllowed, api]);
 
   return (
     <>

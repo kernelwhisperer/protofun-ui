@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import { animated, AnimatedProps, useSpring } from "@react-spring/web";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { $loopsAllowed } from "../../stores/app";
 
@@ -15,14 +15,24 @@ type BlobProps = AnimatedProps<{
 const Blob = ({ sx, animate, ...rest }: BlobProps) => {
   const loopsAllowed = useStore($loopsAllowed);
 
-  const { x } = useSpring({
-    config: {
-      duration: 10_000,
-    },
-    from: { x: 0 },
-    loop: loopsAllowed,
-    to: { x: 1 },
-  });
+  const [{ x }, api] = useSpring(
+    () => ({
+      config: {
+        duration: 10_000,
+      },
+      from: { x: 0 },
+      loop: loopsAllowed,
+      to: { x: 1 },
+    }),
+    [loopsAllowed]
+  );
+
+  // TODO: Hack: investigate the loop: true and skipAnimation: true bug
+  useEffect(() => {
+    if (!loopsAllowed) {
+      api.stop();
+    }
+  }, [loopsAllowed, api]);
 
   return (
     <AnimatedBox
