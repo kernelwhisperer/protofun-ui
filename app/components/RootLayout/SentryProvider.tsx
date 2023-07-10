@@ -7,13 +7,7 @@ interface SentryProviderProps extends AppVerProps {
   children: React.ReactNode;
 }
 
-export function SentryProvider({
-  children,
-  appVer,
-  gitHash,
-}: SentryProviderProps) {
-  console.log("App version:", appVer, " git hash:", gitHash);
-
+export function SentryProvider({ children, gitHash }: SentryProviderProps) {
   useEffect(() => {
     // TODO load a subset?
     import("@sentry/nextjs").then((Sentry) => {
