@@ -1,6 +1,6 @@
 {
   "name": "protofun-ui",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
   "author": {
@@ -13,8 +13,8 @@
     "analyze": "ANALYZE=true yarn build",
     "docker:build": "docker build -t danielconstantin/protofun-ui .",
     "docker:run": "docker run -p 3000:3000 danielconstantin/protofun-ui",
-    "docker:tag": "docker image tag danielconstantin/protofun-ui danielconstantin/protofun-ui:$(cat package.json | jq -r '.version')",
-    "docker:push": "docker push danielconstantin/protofun-ui:$(cat package.json | jq -r '.version')",
+    "docker:tag": "docker image tag danielconstantin/protofun-ui danielconstantin/protofun-ui:$(cat package.json | jq -r '.version') && docker image tag danielconstantin/protofun-ui danielconstantin/protofun-ui:latest",
+    "docker:push": "docker push danielconstantin/protofun-ui:$(cat package.json | jq -r '.version') && docker push danielconstantin/protofun-ui:latest",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
