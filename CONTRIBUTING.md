@@ -4,7 +4,13 @@
 
 After commit & push:
 
-1. Push a new container
+1. Bump
+
+  ```sh
+  yarn version
+  ```
+
+2. Push a new container
 
   ```sh
   yarn docker:build
@@ -13,7 +19,7 @@ After commit & push:
   yarn docker:push
   ```
 
-2. Update the server
+3. Update the server
 
   ```sh
   make start-graph-node
