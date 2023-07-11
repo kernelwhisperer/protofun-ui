@@ -29,6 +29,7 @@ let nextConfig = {
       transform: "@mui/icons-material/{{member}}",
     },
   },
+  output: "standalone",
   // https://github.com/facebook/react/issues/24502
   reactStrictMode: false,
   async rewrites() {
