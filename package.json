@@ -15,6 +15,7 @@
     "docker:run": "docker run -p 3000:3000 danielconstantin/protofun-ui",
     "docker:tag": "docker image tag danielconstantin/protofun-ui danielconstantin/protofun-ui:$(cat package.json | jq -r '.version') && docker image tag danielconstantin/protofun-ui danielconstantin/protofun-ui:latest",
     "docker:push": "docker push danielconstantin/protofun-ui:$(cat package.json | jq -r '.version') && docker push danielconstantin/protofun-ui:latest",
+    "deploy": "yarn docker:build && yarn docker:tag && yarn docker:push",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",

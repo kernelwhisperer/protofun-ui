@@ -2,7 +2,9 @@
 
 ## Deployment
 
-1. Push a new container:
+After commit & push:
+
+1. Push a new container
 
   ```sh
   yarn docker:build
@@ -11,7 +13,7 @@
   yarn docker:push
   ```
 
-2. Update the server:
+2. Update the server
 
   ```sh
   make start-graph-node
