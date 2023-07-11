@@ -21,7 +21,7 @@ export default async function queryEtherPrice(
   let apiUrl = `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=${interval}&limit=1000`;
   if (since) {
     const timestamp = parseInt(since) * 1000;
-    apiUrl = `${apiUrl}&startTime=${timestamp}&endTime=${timestamp + 1e5}`;
+    apiUrl = `${apiUrl}&startTime=${timestamp}`;
   }
 
   const res = await fetch(apiUrl);
