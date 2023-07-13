@@ -17,10 +17,13 @@ After commit & push:
   yarn docker:run # to test
   yarn docker:tag
   yarn docker:push
+  # or 
+  yarn deploy
   ```
 
 3. Update the server
 
   ```sh
+  docker pull danielconstantin/protofun-ui:latest
   make start-graph-node
   ```
