@@ -7,7 +7,7 @@
     "display": "standalone",
     "name": "Protofun",
     "short_name": "Protofun",
-    "description": "On-chain data visualized",
+    "description": "On-chain data aggregation",
     "icons": [
         {
             "src": "/icon-192x192.png",

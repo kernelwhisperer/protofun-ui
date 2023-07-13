@@ -17,6 +17,7 @@ import React, {
 } from "react";
 
 import { useLiveData } from "../../hooks/useLiveData";
+import { $loopsAllowed } from "../../stores/app";
 import {
   $entries,
   $entryMap,
@@ -55,7 +56,6 @@ import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
 import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
-import { $loopsAllowed } from "../../stores/app";
 
 export default function MetricChart({ metric }: { metric: Metric }) {
   const {
@@ -94,7 +94,10 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     $loading.set(true);
     setError("");
 
-    Promise.all([queryFn(timeframe, undefined, priceUnit), wait($loopsAllowed.get() ? 333: 100)])
+    Promise.all([
+      queryFn(timeframe, undefined, priceUnit),
+      wait($loopsAllowed.get() ? 333 : 100),
+    ])
       .then(([data]) => {
         const map = (data as Array<Candle | SimpleBlock>).reduce(
           (acc, curr) => {
@@ -221,15 +224,18 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   }, [mainSeriesData]);
 
   useEffect(() => {
-    setTimeout(() => {
-      chartRef.current?.applyOptions({
-        localization: {
-          priceFormatter: isMobile
-            ? undefined
-            : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
-        },
-      });
-    }, 80);
+    setTimeout(
+      () => {
+        chartRef.current?.applyOptions({
+          localization: {
+            priceFormatter: isMobile
+              ? undefined
+              : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
+          },
+        });
+      },
+      $loopsAllowed.get() ? 300 : 80
+    );
   }, [priceUnit]);
 
   useEffect(() => {

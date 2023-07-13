@@ -6,7 +6,7 @@ import { PageChangeListener } from "./components/RootLayout/PageChangeListener";
 import { SentryProvider } from "./components/RootLayout/SentryProvider";
 
 export const metadata = {
-  description: "On-chain data visualized",
+  description: "On-chain data aggregation",
   title: "Protocol Fundamentals",
 };
 
