@@ -52,5 +52,40 @@ export function AnalyticsProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    import("posthog-js")
+      .then((x) => x.default)
+      .then((posthog) => {
+        import("@sentry/nextjs").then(({ captureException, setUser }) => {
+          let userId = localStorage.getItem("fun-user-uuid");
+          if (!userId) {
+            userId = uuid();
+            localStorage.setItem("fun-user-uuid", userId);
+          }
+
+          setUser({ id: userId });
+
+          if (!process.env.NEXT_PUBLIC_POSTHOG) {
+            captureException(new Error("Posthog token missing"));
+            return;
+          }
+
+          if (window.location.toString().includes("localhost")) {
+            posthog.debug();
+          }
+
+          posthog.init(process.env.NEXT_PUBLIC_POSTHOG, {
+            api_host: "/ph",
+            ui_host: "https://eu.posthog.com",
+          });
+
+          posthog.identify(userId);
+
+          // $fullAppVersion.set(`${appVer}@${gitHash}`);
+        });
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return children;
 }

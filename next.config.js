@@ -38,6 +38,10 @@ let nextConfig = {
         destination: "https://api-eu.mixpanel.com/:slug",
         source: "/mp/:slug",
       },
+      {
+        destination: "https://eu.posthog.com/:path*",
+        source: "/ph/:path*",
+      },
     ];
   },
   swcMinify: true,
