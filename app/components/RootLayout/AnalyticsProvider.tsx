@@ -80,6 +80,7 @@ export function AnalyticsProvider({
           });
 
           posthog.identify(userId);
+          // enable geoip app
 
           // $fullAppVersion.set(`${appVer}@${gitHash}`);
         });

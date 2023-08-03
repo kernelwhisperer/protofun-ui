@@ -32,6 +32,14 @@ let nextConfig = {
   output: "standalone",
   // https://github.com/facebook/react/issues/24502
   reactStrictMode: false,
+  redirects: async () => [
+    {
+      destination: "https://protocol.fun/:path*",
+      has: [{ type: "host", value: "www.protocol.fun" }],
+      permanent: true,
+      source: "/:path*",
+    },
+  ],
   async rewrites() {
     return [
       {
