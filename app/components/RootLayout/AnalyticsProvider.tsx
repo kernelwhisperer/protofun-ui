@@ -14,6 +14,10 @@ export function AnalyticsProvider({
   gitHash,
 }: AnalyticsProviderProps) {
   useEffect(() => {
+    if (window.location.toString().includes("localhost")) {
+      return;
+    }
+
     import("mixpanel-browser")
       .then((x) => x.default)
       .then((mixpanel) => {
@@ -35,9 +39,8 @@ export function AnalyticsProvider({
           // Note: This is configured to track an event for every page view automatically.
           mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL, {
             api_host: "/mp",
-            debug: process.env.NODE_ENV === "development",
-            ignore_dnt: process.env.NODE_ENV !== "development",
-            // ignore_dnt: true,
+            // debug: true,
+            ignore_dnt: true,
             track_pageview: false,
           });
 
@@ -80,7 +83,6 @@ export function AnalyticsProvider({
           });
 
           posthog.identify(userId);
-          // enable geoip app
 
           // $fullAppVersion.set(`${appVer}@${gitHash}`);
         });

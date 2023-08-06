@@ -9,27 +9,24 @@ interface SentryProviderProps extends AppVerProps {
 
 export function SentryProvider({ children, gitHash }: SentryProviderProps) {
   useEffect(() => {
+    if (window.location.toString().includes("localhost")) {
+      return;
+    }
     // TODO load a subset?
     import("@sentry/nextjs").then((Sentry) => {
       Sentry.init({
         // Setting this option to true will print useful information to the console while you're setting up Sentry.
-        debug: false,
+        // debug: true,
 
-        dsn:
-          process.env.NODE_ENV === "development"
-            ? ""
-            : "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
+        dsn: "https://672b2daf06ae4f9d8ca9956097e75502@o4505410061795328.ingest.sentry.io/4505410080931840",
 
         // You can remove this option if you're not planning to use the Sentry Session Replay feature:
-        integrations:
-          process.env.NODE_ENV === "development"
-            ? []
-            : [
-                new Sentry.Replay({
-                  blockAllMedia: false,
-                  maskAllText: false,
-                }),
-              ],
+        integrations: [
+          new Sentry.Replay({
+            blockAllMedia: false,
+            maskAllText: false,
+          }),
+        ],
         release: gitHash,
 
         replaysOnErrorSampleRate: 1.0,
