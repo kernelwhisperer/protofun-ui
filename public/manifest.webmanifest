@@ -4,7 +4,7 @@
     "scope": "/",
     "id": "protofun_0.0.1",
     "start_url": "/",
-    "display": "standalone",
+    "display": "fullscreen",
     "name": "Protofun",
     "short_name": "Protofun",
     "description": "On-chain data aggregation",
