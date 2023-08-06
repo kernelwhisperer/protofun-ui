@@ -22,7 +22,6 @@ export function LinkButton({
       component={Link}
       variant="outlined"
       size="large"
-      disableRipple
       sx={{
         justifyContent: "flex-start",
         overflow: "hidden",

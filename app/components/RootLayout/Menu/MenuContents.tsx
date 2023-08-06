@@ -3,6 +3,7 @@ import { Link as MuiLink, MenuItem, Typography } from "@mui/material";
 import * as React from "react";
 
 import { AppVerProps } from "../../../stores/app";
+import { SPRING_CONFIGS } from "../../../utils/client-utils";
 import { StaggeredList } from "../../StaggeredList";
 import { RobotoMonoFF } from "../../Theme/fonts";
 import DiscordIcon from "./discord.svg";
@@ -10,7 +11,7 @@ import { ReducedMotion } from "./ReducedMotion";
 import { ThemeMode } from "./ThemeMode";
 
 const CustomLink = ({ children, ...rest }: any) => (
-  <MenuItem component={MuiLink} {...rest}>
+  <MenuItem component={MuiLink} tabIndex={0} role="button" {...rest}>
     <Typography
       variant="h6"
       component="div"
@@ -32,11 +33,13 @@ type MenuContentsProps = AppVerProps & {
 
 export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
   <StaggeredList
+    config={open ? SPRING_CONFIGS.quick : SPRING_CONFIGS.veryQuick}
     marginTop={4}
+    marginBottom={2}
     gap={1}
-    paddingLeft={2}
-    paddingRight={1}
+    paddingX={2}
     show={open}
+    sx={{ overflow: "hidden" }}
   >
     <div role="list" aria-labelledby="social-links">
       <Typography

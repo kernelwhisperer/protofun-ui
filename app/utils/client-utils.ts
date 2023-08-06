@@ -1,6 +1,6 @@
 "use client";
 
-import { config } from "@react-spring/web";
+import { AnimationConfig, config } from "@react-spring/web";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
@@ -23,9 +23,10 @@ export function formatBigInt(number: number) {
 
 export const TZ_OFFSET = new Date().getTimezoneOffset() * 60;
 
-export const SPRING_CONFIGS = {
+export const SPRING_CONFIGS: Record<string, Partial<AnimationConfig>> = {
   ...config,
   quick: { friction: 200, mass: 5, tension: 2000 },
+  veryQuick: { friction: 100, mass: 5, tension: 2000 },
   // slow: { friction: 20, mass: 5, tension: 200 },
 };
 
