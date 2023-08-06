@@ -1,9 +1,9 @@
 import { SvgIconComponent } from "@mui/icons-material";
-import { Button, SvgIcon, Typography } from "@mui/material";
+import { Button, Chip, SvgIcon, Typography } from "@mui/material";
 import Link, { LinkProps } from "next/link";
 import React, { FunctionComponent, SVGProps } from "react";
 
-import { RobotoSerifFF } from "./Theme/fonts";
+import { RobotoMonoFF, RobotoSerifFF } from "./Theme/fonts";
 
 interface LinkButtonProps extends LinkProps {
   icon: FunctionComponent<SVGProps<SVGElement>> | SvgIconComponent;
@@ -49,6 +49,14 @@ export function LinkButton({
       <Typography variant="h6" fontFamily={RobotoSerifFF} component="div">
         {label}
       </Typography>
+      {rest.disabled && (
+        <Chip
+          label="WIP"
+          size="small"
+          disabled
+          sx={{ fontFamily: RobotoMonoFF, letterSpacing: 1, marginLeft: 1 }}
+        />
+      )}
     </Button>
   );
 }

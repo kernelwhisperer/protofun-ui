@@ -52,10 +52,7 @@ export function AnalyticsProvider({
           $mixpanel.set(mixpanel);
         });
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  useEffect(() => {
     import("posthog-js")
       .then((x) => x.default)
       .then((posthog) => {
