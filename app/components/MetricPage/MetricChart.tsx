@@ -3,6 +3,7 @@ import { useStore } from "@nanostores/react";
 import { animated, useSpring } from "@react-spring/web";
 import {
   IChartApi,
+  IPriceLine,
   ISeriesApi,
   MouseEventHandler,
   MouseEventParams,
@@ -32,6 +33,7 @@ import {
   EntryMap,
   Metric,
 } from "../../stores/metrics";
+import { AlertDraft } from "../../utils/alert-utils";
 import {
   createBlockMapper,
   isBlock,
@@ -54,6 +56,7 @@ import {
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
+import { AlertModal } from "./AlertModal";
 import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
 
@@ -64,6 +67,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     precision: defaultPrecision,
     significantDigits: significantDigitsArray,
     variants,
+    title,
   } = metric;
 
   const priceUnitIndex = useStore($priceUnitIndex);
@@ -72,6 +76,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   const theme = useTheme();
   const crosshairSubRef = useRef<MouseEventHandler>();
+  const clickSubRef = useRef<MouseEventHandler>();
   const chartRef = useRef<IChartApi>();
   const mainSeries = useRef<ISeriesApi<"Candlestick" | "Line">>();
   const loading = useStore($loading);
@@ -85,6 +90,8 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     : defaultPrecision;
 
   const [error, setError] = useState<string>("");
+  const [alertDraft, setAlertDraft] = useState<AlertDraft>();
+  const alertPreviewRef = useRef<IPriceLine>();
 
   // console.log("📜 LOG > MetricChart render", data.length, loading);
   useEffect(() => {
@@ -224,6 +231,36 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   }, [mainSeriesData]);
 
   useEffect(() => {
+    if (clickSubRef.current) {
+      chartRef.current?.unsubscribeClick(clickSubRef.current);
+    }
+
+    const subRef = ({ time, point, sourceEvent }: MouseEventParams) => {
+      if (!point || !sourceEvent) {
+        return;
+      }
+      console.log(`Click at ${point.x}, ${point.y}. The time is ${time}. `);
+      setAlertDraft({
+        clientX: sourceEvent.clientX,
+        clientY: sourceEvent.clientY,
+        value: parseFloat(
+          (mainSeries.current?.coordinateToPrice(point.y) as number).toFixed(
+            significantDigits
+          )
+        ),
+      });
+    };
+    chartRef.current?.subscribeClick(subRef);
+
+    clickSubRef.current = subRef;
+
+    const chart = chartRef.current;
+    return function cleanup() {
+      chart?.unsubscribeClick(subRef);
+    };
+  }, [mainSeriesData, chartRef.current]);
+
+  useEffect(() => {
     setTimeout(
       () => {
         chartRef.current?.applyOptions({
@@ -236,6 +273,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       },
       $loopsAllowed.get() ? 300 : 80
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceUnit]);
 
   useEffect(() => {
@@ -307,6 +345,27 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     to: error || loading ? { opacity: 0 } : { opacity: 1 },
   });
 
+  useEffect(() => {
+    if (alertPreviewRef.current) {
+      mainSeries.current?.removePriceLine(alertPreviewRef.current);
+    }
+
+    if (!alertDraft) {
+      return;
+    }
+
+    const primaryColor = theme.palette.primary.main;
+    alertPreviewRef.current = mainSeries.current?.createPriceLine({
+      // LightweightCharts.LineStyle.Dotted,
+      axisLabelVisible: true,
+      color: primaryColor,
+      lineStyle: 3,
+      lineWidth: 1,
+      price: alertDraft?.value,
+      title: "🕑",
+    });
+  }, [alertDraft]);
+
   return (
     <>
       <Progress loading={loading} />
@@ -338,6 +397,11 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           significantDigits={significantDigits}
         />
       </animated.div>
+      <AlertModal
+        metricTitle={title}
+        draft={alertDraft}
+        setDraft={setAlertDraft}
+      />
     </>
   );
 }

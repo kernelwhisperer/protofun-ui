@@ -19,7 +19,7 @@ export function Underline() {
   return (
     <AnimatedBox
       sx={{
-        background: "var(--mui-palette-secondary-main)",
+        background: "var(--mui-palette-accent-main)",
         bottom: -2,
         content: '""',
         height: 8,

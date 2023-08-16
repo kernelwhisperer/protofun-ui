@@ -2,6 +2,12 @@ import { alpha, CssVarsThemeOptions } from "@mui/material";
 
 import { RobotoFlexFF } from "./fonts";
 
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    accent: true;
+  }
+}
+
 declare module "@mui/material" {
   interface TypeBackground {
     glass: string;
@@ -10,6 +16,13 @@ declare module "@mui/material" {
     menu: number;
     menuButton: number;
     title: number;
+  }
+  interface Palette {
+    accent: Palette["primary"];
+  }
+
+  interface PaletteOptions {
+    accent?: PaletteOptions["primary"];
   }
   // interface SimplePaletteColorOptions {
   //   raw?: string;
@@ -52,7 +65,7 @@ export const globalStyles = `
   
   ::selection {
     color: white;
-    background: var(--mui-palette-secondary-main);
+    background: var(--mui-palette-accent-main);
   }
 
   html {
@@ -85,6 +98,17 @@ export const globalStyles = `
   html[data-mui-color-scheme="dark"] ::-webkit-scrollbar-thumb {
     background-color: ${RETRO_BEIGE_2};
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  input[type=number] {
+      -moz-appearance:textfield; /* Firefox */
+  }
 `;
 
 export const themeOptions: CssVarsThemeOptions = {
@@ -93,6 +117,9 @@ export const themeOptions: CssVarsThemeOptions = {
       palette: {
         TableCell: {
           border: alpha(RETRO_BEIGE_2, 0.33),
+        },
+        accent: {
+          main: "#008080",
         },
         background: {
           default: RETRO_GREY,
@@ -103,7 +130,7 @@ export const themeOptions: CssVarsThemeOptions = {
           main: RETRO_BEIGE_2,
         },
         secondary: {
-          main: "#008080",
+          main: RETRO_GREY,
         },
         text: {
           primary: RETRO_BEIGE_2,
@@ -116,6 +143,9 @@ export const themeOptions: CssVarsThemeOptions = {
         TableCell: {
           border: alpha(RETRO_GREY, 0.33),
         },
+        accent: {
+          main: RETRO_PURPLE,
+        },
         background: {
           default: RETRO_BEIGE_1,
           glass: alpha(RETRO_BEIGE_1, 0.5),
@@ -125,7 +155,7 @@ export const themeOptions: CssVarsThemeOptions = {
           main: RETRO_GREY,
         },
         secondary: {
-          main: RETRO_PURPLE,
+          main: RETRO_BEIGE_1,
         },
         text: {
           primary: RETRO_GREY,
@@ -149,24 +179,80 @@ export const themeOptions: CssVarsThemeOptions = {
     },
     MuiButton: {
       styleOverrides: {
+        // root: ({ ownerState, theme }) => { } TODO this is broken because of SSR
         root: {
-          // TODO: this is elegant, but broken
-          // "&.active": {
-          //   background: (
-          //     theme.palette[ownerState.color as keyof Palette] as PaletteColor
-          //   ).main,
-          //   color: theme.palette.getContrastText(
-          //     (theme.palette[ownerState.color as keyof Palette] as PaletteColor)
-          //       .main
-          //   ),
-          // },
+          "&.MuiButton-outlinedAccent": {
+            borderColor: "var(--mui-palette-accent-main)",
+          },
+          "&.MuiButton-outlinedSecondary": {
+            borderColor: "var(--mui-palette-secondary-main)",
+          },
           "&.active": {
             background: "var(--mui-palette-primary-main)",
             color: "var(--mui-palette-text-secondary)",
           },
+          "&:active": {
+            // transform: "translateY(0px)",
+            // transform: "scale(.95)",
+          },
+          "&:hover:not(:active)": {
+            transform: "translateY(-1px)",
+            // transform: "scale(1.05)",
+          },
           borderColor: "var(--mui-palette-primary-main)",
           borderRadius: 0,
+          boxShadow: "none !important",
           textTransform: "none",
+          transition: "0.1s",
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          boxShadow: "unset",
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          justifyContent: "flex-start",
+          paddingBottom: 8,
+          paddingLeft: 12,
+          paddingRight: 12,
+          // paddingTop: 8,
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          paddingBottom: 24,
+          paddingLeft: 12,
+          paddingRight: 12,
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          alignItems: "center",
+          display: "flex",
+          justifyContent: "space-between",
+          paddingBottom: 8,
+          paddingLeft: 12,
+          paddingRight: 12,
+          paddingTop: 4,
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&:hover:not(:active)": {
+            transform: "translateY(-1px)",
+          },
         },
       },
     },
@@ -175,6 +261,14 @@ export const themeOptions: CssVarsThemeOptions = {
         paper: {
           backgroundColor: "var(--mui-palette-background-default)",
           marginTop: 4,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          borderColor: "var(--mui-palette-background-default) !important",
+          borderRadius: 0,
         },
       },
     },
@@ -198,6 +292,9 @@ export const themeOptions: CssVarsThemeOptions = {
         },
       },
     },
+  },
+  shape: {
+    borderRadius: 4,
   },
   typography: {
     fontFamily: RobotoFlexFF,
