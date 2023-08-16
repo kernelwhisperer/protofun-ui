@@ -16,6 +16,7 @@ import {
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
 import { SimpleBlock } from "../../utils/block-utils";
 import { Candle } from "../../utils/candle-utils";
+import { isServerSide } from "../../utils/client-utils";
 import { BackButton } from "../BackButton";
 import { PageTitle } from "../PageTitle";
 import { Progress } from "../Progress";
@@ -50,32 +51,34 @@ export function MetricPage(props: MetricPageProps) {
 
   const { timeframe = "", unit = "" } = searchParams;
 
-  if (isTimeframe(timeframe)) {
-    $timeframe.set(timeframe);
-    if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
+  if (isServerSide) {
+    if (isTimeframe(timeframe)) {
+      $timeframe.set(timeframe);
+      if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
+        $timeframe.set(metric.timeframes[0]);
+      } else if (timeframe === "Block") {
+        $seriesType.set("Line");
+      }
+    } else if (
+      metric.timeframes &&
+      !metric.timeframes.includes($timeframe.get())
+    ) {
       $timeframe.set(metric.timeframes[0]);
-    } else if (timeframe === "Block") {
-      $seriesType.set("Line");
     }
-  } else if (
-    metric.timeframes &&
-    !metric.timeframes.includes($timeframe.get())
-  ) {
-    $timeframe.set(metric.timeframes[0]);
-  }
 
-  const priceUnit = parseInt(unit);
-  if (!isNaN(priceUnit)) {
-    if (metric.priceUnits.length > priceUnit) {
-      $priceUnitIndex.set(priceUnit);
+    const priceUnit = parseInt(unit);
+    if (!isNaN(priceUnit)) {
+      if (metric.priceUnits.length > priceUnit) {
+        $priceUnitIndex.set(priceUnit);
+      } else {
+        $priceUnitIndex.set(0);
+      }
     } else {
       $priceUnitIndex.set(0);
     }
-  } else {
-    $priceUnitIndex.set(0);
-  }
 
-  $legendTimestamp.set("");
+    $legendTimestamp.set("");
+  }
 
   return (
     <StaggeredList>
