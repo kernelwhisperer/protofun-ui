@@ -260,6 +260,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     return function cleanup() {
       chart?.unsubscribeClick(subRef);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainSeriesData, chartRef.current]);
 
   useEffect(() => {
@@ -366,6 +367,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       price: alertDraft?.value,
       title: "🕑",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alertDraft]);
 
   return (

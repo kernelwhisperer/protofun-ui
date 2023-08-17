@@ -33,7 +33,7 @@ export default function AlertModal(props: NotificationModalProps) {
 
   const handleClose = useCallback(() => {
     setDraft(undefined);
-  }, []);
+  }, [setDraft]);
 
   if (!draft) return;
 
