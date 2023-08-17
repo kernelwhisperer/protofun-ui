@@ -93,7 +93,6 @@ export function HamburgerMenu({ appVer, gitHash }: AppVerProps) {
     <nav>
       <MenuToggle open={open} toggle={toggleOpen} />
       <Modal
-        closeAfterTransition
         keepMounted
         onClose={toggleOpen}
         open={open}
@@ -104,6 +103,7 @@ export function HamburgerMenu({ appVer, gitHash }: AppVerProps) {
           },
         }}
         sx={{
+          pointerEvents: open ? undefined : "none",
           zIndex: "var(--mui-zIndex-menu)",
         }}
       >

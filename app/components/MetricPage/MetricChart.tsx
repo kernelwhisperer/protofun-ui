@@ -9,6 +9,7 @@ import {
   MouseEventParams,
   Time,
 } from "lightweight-charts";
+import dynamic from "next/dynamic";
 import React, {
   useCallback,
   useEffect,
@@ -56,9 +57,10 @@ import {
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
-import { AlertModal } from "./AlertModal";
 import { BlockChartLegend } from "./BlockChartLegend";
 import { CandleChartLegend } from "./CandleChartLegend";
+
+const AlertModal = dynamic(() => import("./AlertModal"));
 
 export default function MetricChart({ metric }: { metric: Metric }) {
   const {
