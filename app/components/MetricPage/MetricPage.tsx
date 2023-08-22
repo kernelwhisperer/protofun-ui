@@ -2,7 +2,7 @@
 import { Paper, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 import {
   $legendTimestamp,
@@ -15,7 +15,6 @@ import {
   METRICS_MAP,
 } from "../../stores/metrics";
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
-import { isServerSide } from "../../utils/client-utils";
 import { BackButton } from "../BackButton";
 import { PageTitle } from "../PageTitle";
 import { Progress } from "../Progress";
@@ -72,13 +71,7 @@ export function MetricPage(props: MetricPageProps) {
   const { timeframe = "", unit = "" } = searchParams;
   const searchParamsObj = useSearchParams();
 
-  if (isServerSide) {
-    configureStores(metric, timeframe, unit);
-  }
-
-  useEffect(() => {
-    configureStores(metric, timeframe, unit);
-  });
+  configureStores(metric, timeframe, unit);
 
   return (
     <StaggeredList>
