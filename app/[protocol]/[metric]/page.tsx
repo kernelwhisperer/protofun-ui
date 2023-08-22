@@ -32,12 +32,18 @@ export default async function MetricPageServer(props: Props) {
     notFound();
   }
 
+  // const metric = METRICS_MAP[protocolId]?.[metricId] as Metric;
+  // const serverFetchedData = await queryFn(timeframe, undefined, priceUnit); TODO
+  // const data = await metric.queryFn("Hour", undefined, undefined);
+  // console.log("📜 LOG > MetricChart > data:", data.length);
+
   return (
     <PageWrapper>
       <MetricPage
         protocolId={protocolId}
         metricId={metricId}
         searchParams={searchParams}
+        data={[]}
       />
     </PageWrapper>
   );
