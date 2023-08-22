@@ -28,20 +28,6 @@ export default async function MetricPageServer(props: Props) {
   const { params, searchParams } = props;
   const { protocol: protocolId, metric: metricId } = params;
 
-  // TODO
-  // const [candles, blocks] = await Promise.all([
-  //   queryCandles("Minute").catch((error) => {
-  //     console.error(error);
-  //     captureException(error);
-  //     return [];
-  //   }),
-  //   queryBlocks().catch((error) => {
-  //     console.error(error);
-  //     captureException(error);
-  //     return [];
-  //   }),
-  // ]);
-
   if (!isProtocolId(protocolId) || !isMetric(protocolId, metricId)) {
     notFound();
   }
@@ -52,8 +38,6 @@ export default async function MetricPageServer(props: Props) {
         protocolId={protocolId}
         metricId={metricId}
         searchParams={searchParams}
-        blocks={[]}
-        candles={[]}
       />
     </PageWrapper>
   );

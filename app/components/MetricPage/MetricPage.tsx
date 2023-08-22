@@ -15,8 +15,6 @@ import {
   METRICS_MAP,
 } from "../../stores/metrics";
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
-import { SimpleBlock } from "../../utils/block-utils";
-import { Candle } from "../../utils/candle-utils";
 import { isServerSide } from "../../utils/client-utils";
 import { BackButton } from "../BackButton";
 import { PageTitle } from "../PageTitle";
@@ -27,8 +25,6 @@ import { ChartActionBar } from "./ChartActionBar";
 import { MetricVariantSelector } from "./MetricVariantSelector";
 
 export interface MetricPageProps {
-  blocks: SimpleBlock[];
-  candles: Candle[];
   metricId: MetricId;
   protocolId: ProtocolId;
   searchParams: { timeframe?: string; unit?: string };
@@ -68,14 +64,8 @@ function configureStores(metric: Metric, timeframe: string, unit: string) {
 }
 
 export function MetricPage(props: MetricPageProps) {
-  const {
-    // blocks,
-    // candles,
-    metricId,
-    protocolId,
-    searchParams,
-  } = props;
   // console.log("📜 LOG > MetricPage render");
+  const { metricId, protocolId, searchParams } = props;
   const protocol = PROTOCOL_MAP[protocolId];
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric;
 

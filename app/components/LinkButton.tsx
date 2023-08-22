@@ -1,11 +1,11 @@
 import { SvgIconComponent } from "@mui/icons-material";
-import { Button, Chip, SvgIcon, Typography } from "@mui/material";
+import { Button, ButtonProps, Chip, SvgIcon, Typography } from "@mui/material";
 import Link, { LinkProps } from "next/link";
 import React, { FunctionComponent, SVGProps } from "react";
 
 import { RobotoMonoFF, RobotoSerifFF } from "./Theme/fonts";
 
-interface LinkButtonProps extends LinkProps {
+interface LinkButtonProps extends LinkProps, Pick<ButtonProps, "disabled"> {
   icon: FunctionComponent<SVGProps<SVGElement>> | SvgIconComponent;
   iconPadding?: string | number;
   label: string;
