@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import { PROTOCOLS } from "../../stores/protocols";
@@ -9,6 +10,8 @@ import { StaggeredList } from "../StaggeredList";
 import { Underline } from "../Underline";
 
 export function HomePage() {
+  const searchParams = useSearchParams();
+
   return (
     <StaggeredList sx={{ marginTop: "31px" }}>
       <PageTitle>
@@ -24,7 +27,7 @@ export function HomePage() {
         {PROTOCOLS.map((protocol) => (
           <LinkButton
             key={protocol.id}
-            href={`/${protocol.id}`}
+            href={`/${protocol.id}?${searchParams?.toString()}`}
             label={protocol.title}
             icon={protocol.icon}
             disabled={!protocol.enabled}

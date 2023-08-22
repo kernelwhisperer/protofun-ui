@@ -1,6 +1,7 @@
 "use client";
 import { Paper, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import {
@@ -50,6 +51,7 @@ export function MetricPage(props: MetricPageProps) {
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric;
 
   const { timeframe = "", unit = "" } = searchParams;
+  const searchParamsObj = useSearchParams();
 
   if (isServerSide) {
     if (isTimeframe(timeframe)) {
@@ -82,7 +84,9 @@ export function MetricPage(props: MetricPageProps) {
 
   return (
     <StaggeredList>
-      <BackButton href={`/${PROTOCOL_MAP[protocolId].id}`}>
+      <BackButton
+        href={`/${PROTOCOL_MAP[protocolId].id}?${searchParamsObj?.toString()}`}
+      >
         {protocol.title}
       </BackButton>
       <PageTitle>

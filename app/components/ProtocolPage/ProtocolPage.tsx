@@ -1,6 +1,7 @@
 "use client";
 
 import { SvgIconComponent } from "@mui/icons-material";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import { METRIC_ICONS_MAP } from "../../stores/metric-icons";
@@ -20,10 +21,11 @@ export function ProtocolPage(props: ProtocolProps) {
   const { protocolId } = props;
   const protocol = PROTOCOL_MAP[protocolId];
   const metrics = Object.values(METRICS_MAP[protocolId] || {});
+  const searchParams = useSearchParams();
 
   return (
     <StaggeredList>
-      <BackButton href="/">Home</BackButton>
+      <BackButton href={`/?${searchParams?.toString()}`}>Home</BackButton>
       <PageTitle>
         {protocol.title} metrics
         <Underline />
@@ -39,7 +41,7 @@ export function ProtocolPage(props: ProtocolProps) {
             key={metric.id}
             iconPadding={metric.iconPadding}
             prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well
-            href={`/${protocolId}/${metric.id}`}
+            href={`/${protocolId}/${metric.id}?${searchParams?.toString()}`}
             label={metric.title}
             icon={METRIC_ICONS_MAP[protocolId]?.[metric.id] as SvgIconComponent}
           />
