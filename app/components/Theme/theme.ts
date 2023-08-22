@@ -42,9 +42,9 @@ const RETRO_BEIGE_2 = "rgb(236, 225, 211)";
 const RETRO_PURPLE = "rgb(184, 119, 182)";
 
 export const globalStyles = `
-  html {
-    overflow-y: scroll;
-  }
+  // html {
+  //   overflow-y: scroll; TODO
+  // }
 
   body::before {
     // filter: url(#noiseFilter);
