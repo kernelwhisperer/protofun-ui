@@ -97,6 +97,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   // console.log("📜 LOG > MetricChart render", data.length, loading);
   useEffect(() => {
+    if (metric.timeframes && !metric.timeframes.includes(timeframe)) return;
     if ($loading.get()) return;
     // console.log("📜 LOG > MetricChart > fetching");
 

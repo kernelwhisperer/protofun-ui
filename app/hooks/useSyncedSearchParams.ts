@@ -1,17 +1,12 @@
 import { useStore } from "@nanostores/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { $priceUnitIndex, $timeframe } from "../stores/metrics";
 
-function updateSearchParams(searchParams: string) {
-  window.history.replaceState(
-    {},
-    "",
-    `${window.location.pathname}?${searchParams}`
-  );
-}
-
 export function useSyncedSearchParams() {
+  const router = useRouter();
+
   const timeframe = useStore($timeframe);
   const priceUnitIndex = useStore($priceUnitIndex);
 
@@ -27,7 +22,8 @@ export function useSyncedSearchParams() {
     }
 
     if (!window.location.search.includes(searchParams.toString())) {
-      updateSearchParams(searchParams.toString());
+      router.replace(`${window.location.pathname}?${searchParams.toString()}`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe, priceUnitIndex]);
 }

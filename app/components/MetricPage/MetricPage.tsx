@@ -2,7 +2,7 @@
 import { Paper, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   $legendTimestamp,
@@ -38,6 +38,35 @@ const MetricChart = dynamic(() => import("./MetricChart"), {
   loading: () => <Progress loading />,
 });
 
+function configureStores(metric: Metric, timeframe: string, unit: string) {
+  if (isTimeframe(timeframe)) {
+    $timeframe.set(timeframe);
+    if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
+      $timeframe.set(metric.timeframes[0]);
+    } else if (timeframe === "Block") {
+      $seriesType.set("Line");
+    }
+  } else if (
+    metric.timeframes &&
+    !metric.timeframes.includes($timeframe.get())
+  ) {
+    $timeframe.set(metric.timeframes[0]);
+  }
+
+  const priceUnit = parseInt(unit);
+  if (!isNaN(priceUnit)) {
+    if (metric.priceUnits.length > priceUnit) {
+      $priceUnitIndex.set(priceUnit);
+    } else {
+      $priceUnitIndex.set(0);
+    }
+  } else {
+    $priceUnitIndex.set(0);
+  }
+
+  $legendTimestamp.set("");
+}
+
 export function MetricPage(props: MetricPageProps) {
   const {
     // blocks,
@@ -54,33 +83,12 @@ export function MetricPage(props: MetricPageProps) {
   const searchParamsObj = useSearchParams();
 
   if (isServerSide) {
-    if (isTimeframe(timeframe)) {
-      $timeframe.set(timeframe);
-      if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
-        $timeframe.set(metric.timeframes[0]);
-      } else if (timeframe === "Block") {
-        $seriesType.set("Line");
-      }
-    } else if (
-      metric.timeframes &&
-      !metric.timeframes.includes($timeframe.get())
-    ) {
-      $timeframe.set(metric.timeframes[0]);
-    }
-
-    const priceUnit = parseInt(unit);
-    if (!isNaN(priceUnit)) {
-      if (metric.priceUnits.length > priceUnit) {
-        $priceUnitIndex.set(priceUnit);
-      } else {
-        $priceUnitIndex.set(0);
-      }
-    } else {
-      $priceUnitIndex.set(0);
-    }
-
-    $legendTimestamp.set("");
+    configureStores(metric, timeframe, unit);
   }
+
+  useEffect(() => {
+    configureStores(metric, timeframe, unit);
+  });
 
   return (
     <StaggeredList>
