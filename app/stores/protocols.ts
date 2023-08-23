@@ -4,8 +4,7 @@ import AaveIcon from "../components/HomePage/assets/aave.svg";
 import CompIcon from "../components/HomePage/assets/compound.svg";
 import EthereumIcon from "../components/HomePage/assets/ethereum.svg";
 import MakerIcon from "../components/HomePage/assets/maker.svg";
-
-export type ProtocolId = "eth" | "comp" | "mkr" | "aave";
+import { ProtocolId } from "./metric-declarations";
 
 export type Protocol = {
   enabled?: boolean;

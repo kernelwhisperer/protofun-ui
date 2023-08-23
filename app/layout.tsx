@@ -26,6 +26,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="sitemap" href="/sitemap.xml" />
         {/* TODO */}
         {/* <link
           href="favicon-light.png"

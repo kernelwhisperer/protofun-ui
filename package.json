@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "NEXT_PUBLIC_APP_VER=`npm pkg get version` NEXT_PUBLIC_GIT_HASH=`git rev-parse HEAD` next dev",
+    "prebuild": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generate-sitemap.ts > public/sitemap.xml",
     "build": "NEXT_PUBLIC_APP_VER=`npm pkg get version` NEXT_PUBLIC_GIT_HASH=`git rev-parse HEAD` next build",
     "analyze": "ANALYZE=true yarn build",
     "docker:build": "docker build -t danielconstantin/protofun-ui .",
@@ -73,6 +74,7 @@
     "next": "^13.4.7",
     "nodemon": "^2.0.22",
     "prettier": "^2.5.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
     "vitest": "^0.32.2"
   }

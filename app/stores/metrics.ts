@@ -7,7 +7,12 @@ import { atom, map } from "nanostores";
 
 import { SimpleBlock } from "../utils/block-utils";
 import { Candle } from "../utils/candle-utils";
-import { PROTOCOL_IDS, ProtocolId } from "./protocols";
+import {
+  MetricId,
+  MetricIdForProtocol,
+  ProtocolId,
+} from "./metric-declarations";
+import { PROTOCOL_IDS } from "./protocols";
 
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
 export const TIME_FRAMES: Record<Timeframe, string> = {
@@ -41,8 +46,6 @@ export const $variantIndex = atom<number>(0);
 export const $legendTimestamp = atom<string>("");
 export const $loading = atom<boolean>(false);
 
-export type MetricId = "base_fee" | "eth_price" | "tx_cost";
-
 export type QueryFn = (
   timeframe: Timeframe,
   since?: string,
@@ -74,9 +77,15 @@ export type Metric = {
   variants?: Variant[];
 };
 
-export const METRICS_MAP: Partial<
-  Record<ProtocolId, Record<MetricId, Metric>>
-> = {
+// type MapType<T extends ProtocolId> = Record<
+//   T,
+//   Record<MetricIdsOfProtocol<T>, Metric>
+// >;
+type MetricsMapType = Record<ProtocolId, Partial<Record<MetricId, Metric>>>;
+
+export const METRICS_MAP: MetricsMapType = {
+  aave: {} as Record<MetricIdForProtocol<"aave">, Metric>,
+  comp: {} as Record<MetricIdForProtocol<"comp">, Metric>,
   eth: {
     base_fee: {
       iconPadding: "16px",
@@ -126,7 +135,8 @@ export const METRICS_MAP: Partial<
         { label: "L2 Deposit", precision: 1e18 / 250_000 },
       ],
     },
-  },
+  } as Record<MetricIdForProtocol<"eth">, Metric>,
+  mkr: {} as Record<MetricIdForProtocol<"mkr">, Metric>,
 };
 
 export const METRICS = PROTOCOL_IDS.map((protocolId) =>

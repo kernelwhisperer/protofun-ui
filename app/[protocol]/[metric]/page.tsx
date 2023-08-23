@@ -18,7 +18,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
   if (isProtocolId(protocolId) && isMetric(protocolId, metricId)) {
     return {
-      title: `${METRICS_MAP[protocolId]?.[metricId].title} · ${PROTOCOL_MAP[protocolId].title} · Protocol Fundamentals`,
+      title: `${METRICS_MAP[protocolId]?.[metricId]?.title} · ${PROTOCOL_MAP[protocolId].title} · Protocol Fundamentals`,
     };
   }
 
