@@ -17,7 +17,6 @@ import {
   MetricId,
   METRICS_MAP,
   scaleModeDefault,
-  seriesTypeDefault,
 } from "../../stores/metrics";
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
 import { SimpleBlock } from "../../utils/block-utils";
@@ -48,7 +47,9 @@ function configureStores(metric: Metric, timeframe: string, unit: string) {
   $legendTimestamp.set("");
   $liveMode.set(metric.disallowLiveMode ? false : liveModeDefault);
   $scaleMode.set(metric.preferredLogScale ? 1 : scaleModeDefault);
-  $seriesType.set(seriesTypeDefault);
+  // if (timeframe !== "Block") {
+  //   $seriesType.set(seriesTypeDefault); FIXME
+  // }
 
   /**
    * Timeframe

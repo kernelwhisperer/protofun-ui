@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import bundleAnalyzer from "@next/bundle-analyzer";
+import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import('@sentry/nextjs/types/config/types').WebpackConfigFunction} */
 const webpack = (config) => {
@@ -59,15 +60,13 @@ let nextConfig = {
   webpack,
 };
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
 nextConfig = withBundleAnalyzer(nextConfig);
 
-const { withSentryConfig } = require("@sentry/nextjs");
-
-module.exports = withSentryConfig(
+nextConfig = withSentryConfig(
   nextConfig,
   {
     org: "coldpizza",
@@ -98,3 +97,10 @@ module.exports = withSentryConfig(
     widenClientFileUpload: true,
   }
 );
+
+// nextConfig = million.next(nextConfig, {
+//   // if you're using RSC:
+//   auto: { rsc: true },
+// });
+
+export default nextConfig;
