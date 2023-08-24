@@ -58,7 +58,7 @@ query FetchLatest($since: BigInt!) {
 }
 `;
 
-async function queryCandles(
+export async function queryCandles(
   timeframe: Timeframe,
   since = "0"
 ): Promise<Candle[]> {

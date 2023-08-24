@@ -1,22 +1,24 @@
 import { PriceUnit, Timeframe } from "../../../stores/metrics";
 import { Candle } from "../../candle-utils";
 
-const TIMEFRAME_TO_INTERVAL_MAP: Record<Timeframe, string | null> = {
-  Block: null,
+const timeframeMapping: Partial<Record<Timeframe, string>> = {
   Day: "1d",
   Hour: "1h",
   Minute: "1m",
   Week: "1w",
 };
 
-export default async function queryEtherPrice(
+export default async function query(
   timeframe: Timeframe,
   since?: string,
   _priceUnit?: PriceUnit
 ): Promise<Candle[]> {
-  const interval = TIMEFRAME_TO_INTERVAL_MAP[timeframe];
+  const interval = timeframeMapping[timeframe];
 
-  if (!interval) throw new Error("Timeframe unsupported for this metric.");
+  if (!interval)
+    throw new Error(
+      `Timeframe '${timeframe}' is not supported for this metric.`
+    );
 
   let apiUrl = `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=${interval}&limit=1000`;
   if (since) {

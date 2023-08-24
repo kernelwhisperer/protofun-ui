@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { queryCandles } from "../app/utils/candle-utils";
+import { queryCandles } from "../app/utils/metrics/eth/base-fee-per-gas";
 
 it("Minute candles", async () => {
   // act

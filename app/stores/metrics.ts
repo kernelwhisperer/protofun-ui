@@ -14,6 +14,8 @@ import {
 } from "./metric-declarations";
 import { PROTOCOL_IDS } from "./protocols";
 
+export type { MetricId };
+
 export type Timeframe = "Block" | "Minute" | "Hour" | "Day" | "Week";
 export const TIME_FRAMES: Record<Timeframe, string> = {
   Block: "Block",
@@ -28,6 +30,10 @@ export function isTimeframe(value: string): value is Timeframe {
   return Object.keys(TIME_FRAMES).includes(value);
 }
 
+export const scaleModeDefault = 0;
+export const liveModeDefault = true;
+export const seriesTypeDefault: SeriesType = "Candlestick";
+
 export const $timeframe = atom<Timeframe>("Hour");
 export const $seriesType = atom<SeriesType>("Candlestick");
 /**
@@ -38,8 +44,8 @@ export const $seriesType = atom<SeriesType>("Candlestick");
  * Price scale shows prices. Price range changes logarithmically.
  */
 // Logarithmic = 1,
-export const $scaleMode = atom<0 | 1>(1);
-export const $liveMode = atom<boolean>(true);
+export const $scaleMode = atom<0 | 1>(scaleModeDefault);
+export const $liveMode = atom<boolean>(liveModeDefault);
 export const $priceUnitIndex = atom<number>(0);
 export const $variantIndex = atom<number>(0);
 
@@ -65,9 +71,13 @@ export enum PriceUnit {
 }
 
 export type Metric = {
+  allowCompactPriceScale?: boolean;
+  disallowCandleType?: boolean;
+  disallowLiveMode?: boolean;
   iconPadding?: string;
   id: MetricId;
   precision: number;
+  preferredLogScale?: boolean;
   priceUnits: PriceUnit[];
   protocol: ProtocolId;
   queryFn: QueryFn;
@@ -85,12 +95,30 @@ type MetricsMapType = Record<ProtocolId, Partial<Record<MetricId, Metric>>>;
 
 export const METRICS_MAP: MetricsMapType = {
   aave: {} as Record<MetricIdForProtocol<"aave">, Metric>,
-  comp: {} as Record<MetricIdForProtocol<"comp">, Metric>,
+  comp: {
+    tvl: {
+      allowCompactPriceScale: true,
+      disallowCandleType: true,
+      disallowLiveMode: true,
+      iconPadding: "16px",
+      id: "tvl",
+      precision: 1,
+      priceUnits: [PriceUnit.USD],
+      protocol: "comp",
+      queryFn: (...args) =>
+        import("../utils/metrics/comp/tvl").then((x) => x.default(...args)),
+      significantDigits: [0],
+      timeframes: ["Hour", "Day"],
+      title: "Total value locked",
+      variants: [{ label: "Compound V3 USDC - Wrapped Ether", precision: 1 }],
+    },
+  } as Record<MetricIdForProtocol<"comp">, Metric>,
   eth: {
     base_fee: {
       iconPadding: "16px",
       id: "base_fee",
       precision: 1e9,
+      preferredLogScale: true,
       priceUnits: [PriceUnit.GWEI],
       protocol: "eth",
       queryFn: (...args) =>
@@ -104,6 +132,7 @@ export const METRICS_MAP: MetricsMapType = {
       iconPadding: "16px",
       id: "eth_price",
       precision: 1,
+      preferredLogScale: true,
       priceUnits: [PriceUnit.USD],
       protocol: "eth",
       queryFn: (...args) =>
@@ -118,6 +147,7 @@ export const METRICS_MAP: MetricsMapType = {
       iconPadding: "16px",
       id: "tx_cost",
       precision: 1,
+      preferredLogScale: true,
       priceUnits: [PriceUnit.USD, PriceUnit.ETH],
       protocol: "eth",
       queryFn: (...args) =>

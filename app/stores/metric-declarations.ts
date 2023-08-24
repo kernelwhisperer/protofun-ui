@@ -1,6 +1,6 @@
 export const METRIC_DECLARATIONS = {
   aave: [],
-  comp: [],
+  comp: ["tvl"],
   eth: ["base_fee", "eth_price", "tx_cost"],
   mkr: [],
 } as const;

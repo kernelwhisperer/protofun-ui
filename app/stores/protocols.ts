@@ -6,6 +6,8 @@ import EthereumIcon from "../components/HomePage/assets/ethereum.svg";
 import MakerIcon from "../components/HomePage/assets/maker.svg";
 import { ProtocolId } from "./metric-declarations";
 
+export type { ProtocolId };
+
 export type Protocol = {
   enabled?: boolean;
   icon: SvgIconComponent;
@@ -29,6 +31,7 @@ export const PROTOCOL_MAP: Record<ProtocolId, Protocol> = {
   //   title: "Bitcoin",
   // },
   comp: {
+    enabled: true,
     icon: CompIcon,
     iconPadding: "12px",
     id: "comp",

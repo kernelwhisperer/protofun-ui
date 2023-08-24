@@ -72,7 +72,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             <ShowChart />
           </Button>
           <Button
-            disabled={timeframe === "Block"}
+            disabled={timeframe === "Block" || metric.disallowCandleType}
             className={seriesType === "Candlestick" ? "active" : undefined}
             onClick={() => {
               $seriesType.set("Candlestick");
@@ -93,16 +93,18 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
         >
           Log scale
         </Button>
-        <Button
-          size="small"
-          className={liveMode ? "active" : undefined}
-          variant="outlined"
-          onClick={() => {
-            $liveMode.set(!liveMode);
-          }}
-        >
-          Live data
-        </Button>
+        {!metric.disallowLiveMode && (
+          <Button
+            size="small"
+            className={liveMode ? "active" : undefined}
+            variant="outlined"
+            onClick={() => {
+              $liveMode.set(!liveMode);
+            }}
+          >
+            Live data
+          </Button>
+        )}
         {priceUnits.length > 1 && (
           <Select
             sx={{

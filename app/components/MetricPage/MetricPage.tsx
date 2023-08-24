@@ -6,13 +6,18 @@ import React from "react";
 
 import {
   $legendTimestamp,
+  $liveMode,
   $priceUnitIndex,
+  $scaleMode,
   $seriesType,
   $timeframe,
   isTimeframe,
+  liveModeDefault,
   Metric,
   MetricId,
   METRICS_MAP,
+  scaleModeDefault,
+  seriesTypeDefault,
 } from "../../stores/metrics";
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
 import { SimpleBlock } from "../../utils/block-utils";
@@ -37,6 +42,17 @@ const MetricChart = dynamic(() => import("./MetricChart"), {
 });
 
 function configureStores(metric: Metric, timeframe: string, unit: string) {
+  /**
+   * Reset
+   */
+  $legendTimestamp.set("");
+  $liveMode.set(metric.disallowLiveMode ? false : liveModeDefault);
+  $scaleMode.set(metric.preferredLogScale ? 1 : scaleModeDefault);
+  $seriesType.set(seriesTypeDefault);
+
+  /**
+   * Timeframe
+   */
   if (isTimeframe(timeframe)) {
     $timeframe.set(timeframe);
     if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
@@ -51,6 +67,16 @@ function configureStores(metric: Metric, timeframe: string, unit: string) {
     $timeframe.set(metric.timeframes[0]);
   }
 
+  /**
+   * Series type
+   */
+  if (metric.disallowCandleType && $seriesType.get() === "Candlestick") {
+    $seriesType.set("Line");
+  }
+
+  /**
+   * Price unit
+   */
   const priceUnit = parseInt(unit);
   if (!isNaN(priceUnit)) {
     if (metric.priceUnits.length > priceUnit) {
@@ -61,8 +87,6 @@ function configureStores(metric: Metric, timeframe: string, unit: string) {
   } else {
     $priceUnitIndex.set(0);
   }
-
-  $legendTimestamp.set("");
 }
 
 export function MetricPage(props: MetricPageProps) {

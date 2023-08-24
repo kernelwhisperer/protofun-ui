@@ -26,8 +26,6 @@ type NotificationModalProps = {
 const DIALOG_WIDTH = 240;
 
 export default function AlertModal(props: NotificationModalProps) {
-  // const [open, setOpen] = useState(false);
-
   const { metricTitle, draft, setDraft } = props;
   const inputRef = useRef<HTMLInputElement>();
 

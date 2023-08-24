@@ -5,17 +5,20 @@ import { createChart, CrosshairMode, IChartApi } from "lightweight-charts";
 import React, { memo, MutableRefObject, useEffect, useRef } from "react";
 
 import { $timeframe } from "../stores/metrics";
+import { createPriceFormatter } from "../utils/chart";
 import { isMobile } from "../utils/client-utils";
 import { RobotoMonoFF } from "./Theme/fonts";
 
 export type ChartProps = {
+  allowCompactPriceScale?: boolean;
   chartRef: MutableRefObject<IChartApi | undefined>;
   significantDigits: number;
   unitLabel: string;
 };
 
 function Chart(props: ChartProps) {
-  const { chartRef, unitLabel, significantDigits } = props;
+  const { chartRef, unitLabel, significantDigits, allowCompactPriceScale } =
+    props;
 
   const theme = useTheme();
   const containerRef = useRef<HTMLElement>();
@@ -60,9 +63,11 @@ function Chart(props: ChartProps) {
         textColor,
       },
       localization: {
-        priceFormatter: isMobile
-          ? undefined
-          : (x: number) => `${x.toFixed(significantDigits)} ${unitLabel}`,
+        priceFormatter: createPriceFormatter(
+          significantDigits,
+          unitLabel,
+          allowCompactPriceScale
+        ),
       },
       width: containerRef.current.clientWidth,
     });
@@ -85,7 +90,14 @@ function Chart(props: ChartProps) {
 
       chartRef.current?.remove();
     };
-  }, [chartRef, theme, containerRef, unitLabel, significantDigits]);
+  }, [
+    chartRef,
+    theme,
+    containerRef,
+    unitLabel,
+    significantDigits,
+    allowCompactPriceScale,
+  ]);
 
   return (
     <Box

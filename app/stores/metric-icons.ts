@@ -10,8 +10,11 @@ import { MetricId } from "./metrics";
 import { ProtocolId } from "./protocols";
 
 export const METRIC_ICONS_MAP: Partial<
-  Record<ProtocolId, Record<MetricId, SvgIconComponent>>
+  Record<ProtocolId, Partial<Record<MetricId, SvgIconComponent>>>
 > = {
+  comp: {
+    tvl: AttachMoney,
+  },
   eth: {
     base_fee: LocalGasStationOutlined,
     eth_price: AttachMoney,

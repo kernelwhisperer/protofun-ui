@@ -1,7 +1,7 @@
 import { PriceUnit, Timeframe } from "../../../stores/metrics";
 import { Candle } from "../../candle-utils";
 import queryBaseFeePerGas from "./base-fee-per-gas";
-import queryEtherPrice from "./ether-price";
+import query from "./ether-price";
 
 export default async function queryTxCost(
   timeframe: Timeframe,
@@ -16,7 +16,7 @@ export default async function queryTxCost(
     queryBaseFeePerGas(timeframe, since),
     priceUnit === PriceUnit.ETH
       ? Promise.resolve([])
-      : queryEtherPrice(timeframe, since),
+      : query(timeframe, since),
   ]);
 
   if (priceUnit === PriceUnit.ETH) {

@@ -1,10 +1,12 @@
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import React, { useCallback } from "react";
+import { useBoolean } from "usehooks-ts";
 
 import { $variantIndex, Metric } from "../../stores/metrics";
 
 export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
+  const { value: open, toggle: toggleOpen } = useBoolean(false);
   const variantIndex = useStore($variantIndex);
 
   const handleChange = useCallback((event: SelectChangeEvent) => {
@@ -15,6 +17,7 @@ export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
 
   return (
     <Select
+      open={open}
       sx={{
         "& .MuiSelect-select": {
           borderRadius: "32px !important",
@@ -23,6 +26,7 @@ export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
         borderRadius: 8,
         verticalAlign: "text-bottom",
       }}
+      onClick={toggleOpen}
       variant="filled"
       value={String(variantIndex)}
       onChange={handleChange}

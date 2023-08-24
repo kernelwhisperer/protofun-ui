@@ -15,13 +15,14 @@ import { LegendLabel } from "./LegendLabel";
 import { LegendValue } from "./LegendValue";
 
 export type CandleChartLegendProps = {
+  metricTitle: string;
   precision: number;
   significantDigits: number;
   unitLabel: string;
 };
 
 export function CandleChartLegend(props: CandleChartLegendProps) {
-  const { precision, unitLabel, significantDigits } = props;
+  const { precision, unitLabel, metricTitle, significantDigits } = props;
 
   const seriesType = useStore($seriesType);
   const timestamp = useStore($legendTimestamp);
@@ -121,7 +122,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
             </>
           ) : (
             <Stack direction="row">
-              <LegendLabel>Base fee per gas</LegendLabel>
+              <LegendLabel>{metricTitle}</LegendLabel>
               <LegendValue>
                 {formatNumber(
                   new Decimal(candle.close).div(precision).toNumber(),

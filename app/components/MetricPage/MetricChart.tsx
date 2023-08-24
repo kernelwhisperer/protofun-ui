@@ -48,12 +48,8 @@ import {
   isCandle,
   isCandleArray,
 } from "../../utils/candle-utils";
-import {
-  isMobile,
-  SPRING_CONFIGS,
-  TZ_OFFSET,
-  wait,
-} from "../../utils/client-utils";
+import { createPriceFormatter } from "../../utils/chart";
+import { SPRING_CONFIGS, TZ_OFFSET, wait } from "../../utils/client-utils";
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
@@ -70,6 +66,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     significantDigits: significantDigitsArray,
     variants,
     title,
+    allowCompactPriceScale,
   } = metric;
 
   const priceUnitIndex = useStore($priceUnitIndex);
@@ -269,9 +266,11 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       () => {
         chartRef.current?.applyOptions({
           localization: {
-            priceFormatter: isMobile
-              ? undefined
-              : (x: number) => `${x.toFixed(significantDigits)} ${priceUnit}`,
+            priceFormatter: createPriceFormatter(
+              significantDigits,
+              priceUnit,
+              allowCompactPriceScale
+            ),
           },
         });
       },
@@ -394,12 +393,14 @@ export default function MetricChart({ metric }: { metric: Metric }) {
             precision={precision}
             unitLabel={priceUnit}
             significantDigits={significantDigits}
+            metricTitle={title}
           />
         )}
         <MemoChart
           chartRef={chartRef}
           unitLabel={priceUnit}
           significantDigits={significantDigits}
+          allowCompactPriceScale={allowCompactPriceScale}
         />
       </animated.div>
       <AlertModal
