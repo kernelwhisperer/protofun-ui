@@ -85,7 +85,7 @@ function Chart(props: ChartProps) {
 
     window.addEventListener("resize", handleResize);
 
-    return () => {
+    return function cleanup() {
       window.removeEventListener("resize", handleResize);
 
       chartRef.current?.remove();

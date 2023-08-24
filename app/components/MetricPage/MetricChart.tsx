@@ -152,11 +152,13 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   }, [data, precision, seriesType]);
 
   useEffect(() => {
-    $scaleMode.subscribe((mode) => {
+    const cleanup = $scaleMode.subscribe((mode) => {
       chartRef.current?.priceScale("right").applyOptions({
         mode,
       });
     });
+
+    return cleanup;
   }, []);
 
   useEffect(() => {
