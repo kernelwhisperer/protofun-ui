@@ -9,10 +9,14 @@ import {
   DialogTitle,
   IconButton,
   InputAdornment,
+  PaperProps,
+  Popover,
+  PopoverProps,
+  PopoverVirtualElement,
   Stack,
   TextField,
 } from "@mui/material";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 
 import { AlertDraft } from "../../utils/alert-utils";
 import { RobotoMonoFF } from "../Theme/fonts";
@@ -25,6 +29,33 @@ type NotificationModalProps = {
 
 const DIALOG_WIDTH = 240;
 
+type EnhancedPaperProps = PaperProps & { popoverProps: PopoverProps };
+
+function EnhancedPaper({
+  popoverProps,
+  children,
+  ...paperProps
+}: EnhancedPaperProps) {
+  return (
+    <Popover
+      {...popoverProps}
+      transformOrigin={{
+        horizontal: "right",
+        vertical: "top",
+      }}
+      slotProps={{ paper: paperProps }}
+    >
+      {children}
+      {/* <Draggable
+        handle="#alert-dialog-title"
+        cancel={'[class*="MuiDialogContent-root"]'}
+      > */}
+      {/* {children} */}
+      {/* </Draggable> */}
+    </Popover>
+  );
+}
+
 export default function AlertModal(props: NotificationModalProps) {
   const { metricTitle, draft, setDraft } = props;
   const inputRef = useRef<HTMLInputElement>();
@@ -32,6 +63,29 @@ export default function AlertModal(props: NotificationModalProps) {
   const handleClose = useCallback(() => {
     setDraft(undefined);
   }, [setDraft]);
+
+  const virtualElement: PopoverVirtualElement | null = useMemo(
+    () =>
+      !draft
+        ? null
+        : {
+            getBoundingClientRect: function () {
+              return {
+                bottom: draft.clientY,
+                height: 1,
+                left: draft.clientX - 16,
+                right: draft.clientX - 16,
+                toJSON: () => "",
+                top: draft.clientY,
+                width: 1,
+                x: draft.clientX - 16,
+                y: draft.clientY,
+              };
+            },
+            nodeType: 1,
+          },
+    [draft]
+  );
 
   if (!draft) return;
 
@@ -42,23 +96,28 @@ export default function AlertModal(props: NotificationModalProps) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        slotProps={{ backdrop: { style: { opacity: 0 } } }}
-        style={{
-          bottom: "unset",
-          left: `${draft?.clientX - DIALOG_WIDTH - 16}px`,
-          position: "absolute",
-          right: "unset",
-          top: `${draft?.clientY}px`,
-        }}
-        PaperProps={{
-          sx: {
-            background: "var(--mui-palette-primary-main)",
-            margin: 1,
-            width: DIALOG_WIDTH,
-          },
-        }}
+        hideBackdrop
+        PaperProps={
+          {
+            popoverProps: {
+              anchorEl: virtualElement,
+              onClose: handleClose,
+              open: true,
+            },
+            sx: {
+              background: "var(--mui-palette-primary-main)",
+              margin: 1,
+              width: DIALOG_WIDTH,
+            },
+          } as EnhancedPaperProps
+        }
+        PaperComponent={EnhancedPaper as never}
       >
-        <DialogTitle color="text.secondary" fontFamily={RobotoMonoFF}>
+        <DialogTitle
+          id="alert-dialog-title"
+          color="text.secondary"
+          fontFamily={RobotoMonoFF}
+        >
           <span>Create alert</span>
           <IconButton
             sx={{ marginRight: -1 }}
