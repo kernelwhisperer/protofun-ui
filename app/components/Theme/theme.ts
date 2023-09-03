@@ -118,6 +118,9 @@ export const themeOptions: CssVarsThemeOptions = {
         TableCell: {
           border: alpha(RETRO_BEIGE_2, 0.33),
         },
+        Tooltip: {
+          bg: RETRO_BEIGE_2,
+        },
         accent: {
           main: "#008080",
         },
@@ -142,6 +145,9 @@ export const themeOptions: CssVarsThemeOptions = {
       palette: {
         TableCell: {
           border: alpha(RETRO_GREY, 0.33),
+        },
+        Tooltip: {
+          bg: RETRO_GREY,
         },
         accent: {
           main: RETRO_PURPLE,
@@ -203,7 +209,8 @@ export const themeOptions: CssVarsThemeOptions = {
           borderRadius: 0,
           boxShadow: "none !important",
           textTransform: "none",
-          transition: "0.1s",
+          transition: "transform 100ms ease-in-out 0ms",
+          willChange: "transform",
         },
       },
     },

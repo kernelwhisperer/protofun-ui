@@ -4,6 +4,7 @@ import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider";
 import { App } from "./components/RootLayout/App";
 import { PageChangeListener } from "./components/RootLayout/PageChangeListener";
 import { SentryProvider } from "./components/RootLayout/SentryProvider";
+import ThemeProvider from "./components/Theme/ThemeProvider";
 
 export const metadata = {
   description: "On-chain data aggregation",
@@ -42,9 +43,11 @@ export default function RootLayout({
       <body>
         <AnalyticsProvider appVer={appVer} gitHash={gitHash}>
           <SentryProvider appVer={appVer} gitHash={gitHash}>
-            <App appVer={appVer} gitHash={gitHash}>
-              {children}
-            </App>
+            <ThemeProvider>
+              <App appVer={appVer} gitHash={gitHash}>
+                {children}
+              </App>
+            </ThemeProvider>
           </SentryProvider>
           <PageChangeListener />
         </AnalyticsProvider>

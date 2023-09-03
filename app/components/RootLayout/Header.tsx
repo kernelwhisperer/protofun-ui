@@ -22,12 +22,12 @@ function StyledAppBar(props: AppBarProps) {
       position="static"
       color="transparent"
       elevation={0}
-      sx={(theme) => ({
+      sx={{
         border: "none",
-        borderBottom: "1px solid transparent",
         boxShadow: { xs: "none" },
-        transition: theme.transitions.create("background"),
-      })}
+        // transition: theme.transitions.create("background"),
+        // willChange: "background"
+      }}
       {...props}
     />
   );

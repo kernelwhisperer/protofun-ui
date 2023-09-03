@@ -1,9 +1,10 @@
 "use client";
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 
+import { METRIC_DESC_MAP } from "../../stores/metric-descriptions";
 import {
   $legendTimestamp,
   $liveMode,
@@ -120,13 +121,17 @@ export function MetricPage(props: MetricPageProps) {
       >
         {protocol.title}
       </BackButton>
-      <PageTitle>
+      <PageTitle sx={{ marginBottom: 1 }}>
         <span style={{ marginRight: 12, position: "relative" }}>
           {metric.title}
           <Underline />
         </span>
         <MetricVariantSelector variants={metric.variants} />
       </PageTitle>
+      <Typography variant="body1" marginBottom={3}>
+        {METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}{" "}
+        {/* {METRIC_DESC_MAP[protocolId]?.[metric.id]?.descriptionExtra} */}
+      </Typography>
       <Stack gap={1} style={{ width: "100%" }}>
         <ChartActionBar metric={metric} />
         <Paper

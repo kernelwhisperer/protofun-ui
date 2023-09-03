@@ -4,7 +4,6 @@ import { Container, Stack } from "@mui/material";
 import React from "react";
 
 import { AppVerProps } from "../../stores/app";
-import ThemeProvider from "../Theme/ThemeProvider";
 import { Header } from "./Header";
 
 interface AppProps extends AppVerProps {
@@ -13,7 +12,7 @@ interface AppProps extends AppVerProps {
 
 export function App({ children, appVer, gitHash }: AppProps) {
   return (
-    <ThemeProvider>
+    <>
       <Header appVer={appVer} gitHash={gitHash} />
       <Container
         maxWidth="lg"
@@ -47,6 +46,6 @@ export function App({ children, appVer, gitHash }: AppProps) {
           </filter>
         </svg> */}
       </Container>
-    </ThemeProvider>
+    </>
   );
 }

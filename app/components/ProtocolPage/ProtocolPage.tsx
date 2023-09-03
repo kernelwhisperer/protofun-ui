@@ -4,6 +4,7 @@ import { SvgIconComponent } from "@mui/icons-material";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 
+import { METRIC_DESC_MAP } from "../../stores/metric-descriptions";
 import { METRIC_ICONS_MAP } from "../../stores/metric-icons";
 import { METRICS_MAP } from "../../stores/metrics";
 import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols";
@@ -11,6 +12,7 @@ import { BackButton } from "../BackButton";
 import { LinkButton } from "../LinkButton";
 import { PageTitle } from "../PageTitle";
 import { StaggeredList } from "../StaggeredList";
+import { Tooltip } from "../Tooltip";
 import { Underline } from "../Underline";
 
 interface ProtocolProps {
@@ -37,14 +39,21 @@ export function ProtocolPage(props: ProtocolProps) {
         // staggerChildren={0.5 / metrics.length}
       >
         {metrics.map((metric) => (
-          <LinkButton
+          <Tooltip
             key={metric.id}
-            iconPadding={metric.iconPadding}
-            prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well
-            href={`/${protocolId}/${metric.id}?${searchParams?.toString()}`}
-            label={metric.title}
-            icon={METRIC_ICONS_MAP[protocolId]?.[metric.id] as SvgIconComponent}
-          />
+            title={METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}
+            disableInteractive
+          >
+            <LinkButton
+              iconPadding={metric.iconPadding}
+              prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well
+              href={`/${protocolId}/${metric.id}?${searchParams?.toString()}`}
+              label={metric.title}
+              icon={
+                METRIC_ICONS_MAP[protocolId]?.[metric.id] as SvgIconComponent
+              }
+            />
+          </Tooltip>
         ))}
       </StaggeredList>
     </StaggeredList>
