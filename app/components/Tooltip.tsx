@@ -28,7 +28,7 @@ export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
   [`& .${tooltipClasses.tooltip}`]: {
     borderRadius: 0,
     color: "var(--mui-palette-text-secondary)",
-    fontSize: theme.typography.body1,
+    fontSize: theme.typography.body2.fontSize,
     maxWidth: 280,
     padding: 12,
   },

@@ -1,5 +1,6 @@
 "use client";
-import { Paper, Stack, Typography } from "@mui/material";
+import { InfoOutlined } from "@mui/icons-material";
+import { Paper, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import React from "react";
@@ -26,6 +27,7 @@ import { BackButton } from "../BackButton";
 import { PageTitle } from "../PageTitle";
 import { Progress } from "../Progress";
 import { StaggeredList } from "../StaggeredList";
+import { Tooltip } from "../Tooltip";
 import { Underline } from "../Underline";
 import { ChartActionBar } from "./ChartActionBar";
 import { MetricVariantSelector } from "./MetricVariantSelector";
@@ -121,17 +123,39 @@ export function MetricPage(props: MetricPageProps) {
       >
         {protocol.title}
       </BackButton>
-      <PageTitle sx={{ marginBottom: 1 }}>
+      <PageTitle>
         <span style={{ marginRight: 12, position: "relative" }}>
           {metric.title}
           <Underline />
         </span>
-        <MetricVariantSelector variants={metric.variants} />
+        <MetricVariantSelector
+          variants={metric.variants}
+          sx={{
+            marginRight: "12px",
+          }}
+        />
+        {METRIC_DESC_MAP[protocolId]?.[metric.id]?.description && (
+          <Tooltip
+            title={
+              <>
+                {METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}
+                <br />
+                <br />
+                {METRIC_DESC_MAP[protocolId]?.[metric.id]?.descriptionExtra}
+              </>
+            }
+            disableInteractive
+          >
+            <InfoOutlined
+              sx={{
+                "&:not(:hover)": {
+                  color: "var(--mui-palette-action-focus)",
+                },
+              }}
+            />
+          </Tooltip>
+        )}
       </PageTitle>
-      <Typography variant="body1" marginBottom={3}>
-        {METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}{" "}
-        {/* {METRIC_DESC_MAP[protocolId]?.[metric.id]?.descriptionExtra} */}
-      </Typography>
       <Stack gap={1} style={{ width: "100%" }}>
         <ChartActionBar metric={metric} />
         <Paper

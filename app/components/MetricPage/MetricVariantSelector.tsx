@@ -1,11 +1,20 @@
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SelectProps,
+} from "@mui/material";
 import { useStore } from "@nanostores/react";
 import React, { useCallback } from "react";
 import { useBoolean } from "usehooks-ts";
 
 import { $variantIndex, Metric } from "../../stores/metrics";
 
-export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
+export function MetricVariantSelector({
+  variants,
+  sx,
+  ...rest
+}: Pick<Metric, "variants"> & SelectProps) {
   const { value: open, toggle: toggleOpen } = useBoolean(false);
   const variantIndex = useStore($variantIndex);
 
@@ -25,6 +34,7 @@ export function MetricVariantSelector({ variants }: Pick<Metric, "variants">) {
         },
         borderRadius: 8,
         verticalAlign: "text-bottom",
+        ...sx,
       }}
       onClick={toggleOpen}
       variant="filled"

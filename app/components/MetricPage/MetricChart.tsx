@@ -367,7 +367,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       lineStyle: 3,
       lineWidth: 1,
       price: alertDraft?.value,
-      title: "🕑",
+      title: "🔔",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alertDraft]);

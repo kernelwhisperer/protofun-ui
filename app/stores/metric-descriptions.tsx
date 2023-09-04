@@ -22,8 +22,17 @@ export const METRIC_DESC_MAP: Partial<
           considered valid and processed by the network.
         </React.Fragment>
       ),
-      descriptionExtra:
-        "It adjusts based on network activity: if many people are transacting, it can go up, but it's designed to stabilize over time. Unlike the tip you might add to get your transaction processed faster, this fee is burned and removed from circulation, ensuring a predictable and fair transaction cost.",
+      descriptionExtra: (
+        <React.Fragment>
+          It adjusts based on network activity: if many people are transacting,
+          it can go up, but it&apos;s designed to stabilize over time.
+          <br />
+          <br />
+          Unlike the tip you might add to get your transaction processed faster,
+          this fee is burned and removed from circulation, ensuring a
+          predictable and fair transaction cost.
+        </React.Fragment>
+      ),
     },
   },
 };

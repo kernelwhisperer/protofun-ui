@@ -9,9 +9,6 @@ import {
   DialogTitle,
   IconButton,
   InputAdornment,
-  PaperProps,
-  Popover,
-  PopoverProps,
   PopoverVirtualElement,
   Stack,
   TextField,
@@ -19,6 +16,7 @@ import {
 import React, { useCallback, useMemo, useRef } from "react";
 
 import { AlertDraft } from "../../utils/alert-utils";
+import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper";
 import { RobotoMonoFF } from "../Theme/fonts";
 
 type NotificationModalProps = {
@@ -28,33 +26,6 @@ type NotificationModalProps = {
 };
 
 const DIALOG_WIDTH = 240;
-
-type EnhancedPaperProps = PaperProps & { popoverProps: PopoverProps };
-
-function EnhancedPaper({
-  popoverProps,
-  children,
-  ...paperProps
-}: EnhancedPaperProps) {
-  return (
-    <Popover
-      {...popoverProps}
-      transformOrigin={{
-        horizontal: "right",
-        vertical: "top",
-      }}
-      slotProps={{ paper: paperProps }}
-    >
-      {children}
-      {/* <Draggable
-        handle="#alert-dialog-title"
-        cancel={'[class*="MuiDialogContent-root"]'}
-      > */}
-      {/* {children} */}
-      {/* </Draggable> */}
-    </Popover>
-  );
-}
 
 export default function AlertModal(props: NotificationModalProps) {
   const { metricTitle, draft, setDraft } = props;
@@ -109,9 +80,9 @@ export default function AlertModal(props: NotificationModalProps) {
               margin: 1,
               width: DIALOG_WIDTH,
             },
-          } as EnhancedPaperProps
+          } as PopoverPaperProps
         }
-        PaperComponent={EnhancedPaper as never}
+        PaperComponent={PopoverPaper as never}
       >
         <DialogTitle
           id="alert-dialog-title"
