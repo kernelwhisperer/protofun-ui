@@ -19,7 +19,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
     <SnackbarProvider
       domRoot={isMobile ? undefined : (anchorEl as HTMLElement)}
       TransitionComponent={Fade}
-      // autoHideDuration={500000}
+      // autoHideDuration={50000000}
       anchorOrigin={{
         horizontal: isMobile ? "center" : "right",
         vertical: isMobile ? "bottom" : "top",

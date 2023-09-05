@@ -117,6 +117,39 @@ export const globalStyles = `
     right: 0 !important;
     margin-right: 16px;
   }
+
+  .notistack-MuiContent {
+    border-radius: 0;
+    box-shadow: 3px 3px 0px 0px ${alpha(RETRO_GREY, 0.33)};
+    background-color: ${alpha(RETRO_GREY, 0.9)};
+    color: ${RETRO_BEIGE_2};
+  }
+
+  .notistack-CollapseWrapper {
+    padding: 4px 0px !important;
+  }
+
+  html[data-mui-color-scheme="dark"] .notistack-MuiContent {
+    box-shadow: 3px 3px 0px 0px ${alpha(RETRO_BEIGE_2, 0.33)};
+    background-color: ${alpha(RETRO_BEIGE_2, 0.9)};
+    color: ${RETRO_GREY};
+  }
+
+  .notistack-MuiContent-info svg {
+    color: #2196f3;
+    // color: #2ca1ff;
+  }
+  .notistack-MuiContent-success svg {
+    color: #43a047;
+    // color: #38936f;
+  }
+  .notistack-MuiContent-error svg {
+    color: #d32f2f;
+    // color: #d14b4a;
+  }
+  .notistack-MuiContent-warning svg {
+    color: #ff9800;
+  }
 `;
 
 export const themeOptions: CssVarsThemeOptions = {
