@@ -18,6 +18,7 @@ import { HamburgerMenu } from "./HamburgerMenu";
 import { Logo } from "./Logo";
 
 const Notifications = dynamic(() => import("./Notifications"));
+const Profile = dynamic(() => import("./Profile"));
 
 function StyledAppBar(props: AppBarProps) {
   return (
@@ -60,14 +61,16 @@ export function Header({ appVer, gitHash }: AppVerProps) {
               LinkComponent={Link}
               sx={{
                 borderRadius: 8,
+                marginLeft: -1,
                 padding: 1,
                 textTransform: "none",
               }}
             >
               <Logo />
             </Button>
-            <Stack direction="row">
+            <Stack direction="row" sx={{ marginRight: -1 }}>
               <Notifications />
+              <Profile />
               <HamburgerMenu appVer={appVer} gitHash={gitHash} />
             </Stack>
           </Stack>

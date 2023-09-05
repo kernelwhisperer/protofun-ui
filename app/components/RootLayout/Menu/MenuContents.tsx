@@ -42,6 +42,26 @@ export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
     sx={{ overflow: "hidden" }}
   >
     <div role="list" aria-labelledby="social-links">
+      <div>
+        <Typography
+          variant="subtitle2"
+          letterSpacing="0.08rem"
+          sx={{ marginTop: 4 }}
+        >
+          THEME
+        </Typography>
+        <ThemeMode />
+      </div>
+      <div>
+        <Typography
+          variant="subtitle2"
+          letterSpacing="0.08rem"
+          sx={{ marginTop: 4 }}
+        >
+          ANIMATIONS
+        </Typography>
+        <ReducedMotion />
+      </div>
       <Typography
         variant="subtitle2"
         letterSpacing="0.08rem"
@@ -78,26 +98,6 @@ export const MenuContents = ({ appVer, gitHash, open }: MenuContentsProps) => (
         <GitHub fontSize="small" />
         <span>GitHub</span>
       </CustomLink>
-    </div>
-    <div>
-      <Typography
-        variant="subtitle2"
-        letterSpacing="0.08rem"
-        sx={{ marginTop: 4 }}
-      >
-        THEME
-      </Typography>
-      <ThemeMode />
-    </div>
-    <div>
-      <Typography
-        variant="subtitle2"
-        letterSpacing="0.08rem"
-        sx={{ marginTop: 4 }}
-      >
-        ANIMATIONS
-      </Typography>
-      <ReducedMotion />
     </div>
     <div>
       <Typography

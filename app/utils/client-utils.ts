@@ -50,3 +50,10 @@ export const isMobile = isServerSide
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
       )
     );
+
+export function logError(error: Error) {
+  console.error(error);
+  import("@sentry/nextjs").then(({ captureException }) => {
+    captureException(error);
+  });
+}

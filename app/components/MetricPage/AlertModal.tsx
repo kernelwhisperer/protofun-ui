@@ -9,6 +9,7 @@ import {
   DialogTitle,
   IconButton,
   InputAdornment,
+  outlinedInputClasses,
   PopoverVirtualElement,
   Stack,
   TextField,
@@ -147,8 +148,16 @@ export default function AlertModal(props: NotificationModalProps) {
                 </InputAdornment>
               ),
               sx: {
+                [`& .${outlinedInputClasses.notchedOutline}`]: {
+                  borderColor: "var(--mui-palette-secondary-main) !important",
+                },
                 color: "text.secondary",
                 fontFamily: RobotoMonoFF,
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                color: "var(--mui-palette-secondary-main)",
               },
             }}
             type="number"

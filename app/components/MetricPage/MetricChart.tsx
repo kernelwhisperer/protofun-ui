@@ -49,7 +49,12 @@ import {
   isCandleArray,
 } from "../../utils/candle-utils";
 import { createPriceFormatter } from "../../utils/chart";
-import { SPRING_CONFIGS, TZ_OFFSET, wait } from "../../utils/client-utils";
+import {
+  logError,
+  SPRING_CONFIGS,
+  TZ_OFFSET,
+  wait,
+} from "../../utils/client-utils";
 import { MemoChart } from "../Chart";
 import { ErrorOverlay } from "../ErrorOverlay";
 import { Progress } from "../Progress";
@@ -125,9 +130,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
         console.error(error);
         setError(`${error.name}: ${error.message}`);
         $loading.set(false);
-        import("@sentry/nextjs").then(({ captureException }) => {
-          captureException(error);
-        });
+        logError(error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe, priceUnit]);
@@ -241,7 +244,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       if (!point || !sourceEvent) {
         return;
       }
-      console.log(`Click at ${point.x}, ${point.y}. The time is ${time}. `);
+      // console.log(`Click at ${point.x}, ${point.y}. The time is ${time}. `);
       setAlertDraft({
         clientX: sourceEvent.clientX,
         clientY: sourceEvent.clientY,

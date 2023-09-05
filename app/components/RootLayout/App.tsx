@@ -1,9 +1,11 @@
 "use client";
 
-import { Container, Stack } from "@mui/material";
-import React from "react";
+import { Container, Fade, Stack } from "@mui/material";
+import { SnackbarProvider } from "notistack";
+import React, { useState } from "react";
 
 import { AppVerProps } from "../../stores/app";
+import { isMobile } from "../../utils/client-utils";
 import { Header } from "./Header";
 
 interface AppProps extends AppVerProps {
@@ -11,10 +13,22 @@ interface AppProps extends AppVerProps {
 }
 
 export function App({ children, appVer, gitHash }: AppProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   return (
-    <>
+    <SnackbarProvider
+      domRoot={isMobile ? undefined : (anchorEl as HTMLElement)}
+      TransitionComponent={Fade}
+      // autoHideDuration={500000}
+      anchorOrigin={{
+        horizontal: isMobile ? "center" : "right",
+        vertical: isMobile ? "bottom" : "top",
+      }}
+      maxSnack={isMobile ? 3 : 6}
+    >
       <Header appVer={appVer} gitHash={gitHash} />
       <Container
+        ref={setAnchorEl}
         maxWidth="lg"
         sx={{ padding: { xs: 0 }, position: "relative" }}
       >
@@ -46,6 +60,6 @@ export function App({ children, appVer, gitHash }: AppProps) {
           </filter>
         </svg> */}
       </Container>
-    </>
+    </SnackbarProvider>
   );
 }

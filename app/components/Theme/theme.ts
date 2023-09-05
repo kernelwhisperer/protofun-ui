@@ -1,4 +1,4 @@
-import { alpha, CssVarsThemeOptions } from "@mui/material";
+import { alpha, CssVarsThemeOptions, Fade } from "@mui/material";
 
 import { RobotoFlexFF } from "./fonts";
 
@@ -15,6 +15,7 @@ declare module "@mui/material" {
   interface ZIndex {
     menu: number;
     menuButton: number;
+    popover: number;
     title: number;
   }
   interface Palette {
@@ -101,13 +102,20 @@ export const globalStyles = `
 
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
-      /* display: none; <- Crashes Chrome on hover */
-      -webkit-appearance: none;
-      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
   }
 
   input[type=number] {
-      -moz-appearance:textfield; /* Firefox */
+    -moz-appearance:textfield; /* Firefox */
+  }
+
+  .notistack-SnackbarContainer {
+    position: absolute !important;
+    top: -6px !important;
+    right: 0 !important;
+    margin-right: 16px;
   }
 `;
 
@@ -115,6 +123,9 @@ export const themeOptions: CssVarsThemeOptions = {
   colorSchemes: {
     dark: {
       palette: {
+        Avatar: {
+          defaultBg: RETRO_BEIGE_2,
+        },
         TableCell: {
           border: alpha(RETRO_BEIGE_2, 0.33),
         },
@@ -143,6 +154,9 @@ export const themeOptions: CssVarsThemeOptions = {
     },
     light: {
       palette: {
+        Avatar: {
+          defaultBg: RETRO_GREY,
+        },
         TableCell: {
           border: alpha(RETRO_GREY, 0.33),
         },
@@ -254,6 +268,13 @@ export const themeOptions: CssVarsThemeOptions = {
         },
       },
     },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--mui-palette-primary-main)",
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         root: {
@@ -264,17 +285,24 @@ export const themeOptions: CssVarsThemeOptions = {
       },
     },
     MuiMenu: {
+      defaultProps: {
+        TransitionComponent: Fade,
+      },
       styleOverrides: {
         paper: {
           backgroundColor: "var(--mui-palette-background-default)",
+          boxShadow: "none",
           marginTop: 4,
+        },
+        root: {
+          zIndex: "var(--mui-zIndex-popover)",
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         notchedOutline: {
-          borderColor: "var(--mui-palette-background-default) !important",
+          borderColor: "var(--mui-palette-primary-main)",
           borderRadius: 0,
         },
       },
@@ -309,6 +337,7 @@ export const themeOptions: CssVarsThemeOptions = {
   zIndex: {
     menu: 1600,
     menuButton: 1601,
+    popover: 2000,
     title: 1350,
   },
 };
