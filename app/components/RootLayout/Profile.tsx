@@ -80,6 +80,8 @@ export default function Profile() {
       >
         <Typography variant="subtitle2" marginX={2} marginBottom={1}>
           Email: {user?.email}
+          <br />
+          User ID: {user?.id}
         </Typography>
         <MenuItem onClick={noop} disabled>
           Profile

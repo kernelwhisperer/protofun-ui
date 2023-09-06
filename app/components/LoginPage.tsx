@@ -34,7 +34,7 @@ export function Login() {
         })
         .catch((error) => {
           logError(error);
-          enqueueSnackbar(`Cannot login: ${String(error)}`, {
+          enqueueSnackbar(`Error: ${String(error)}`, {
             variant: "error",
           });
         })

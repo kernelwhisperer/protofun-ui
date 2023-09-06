@@ -38,10 +38,10 @@ export function NotifContents({ toggleOpen }) {
             <Tab label="Alerts" value="2" />
           </TabList>
         </Box>
-        <TabPanel sx={{ padding: 0 }} value="1">
+        <TabPanel sx={{ overflow: "auto", padding: 0 }} value="1">
           <NotifPanel />
         </TabPanel>
-        <TabPanel sx={{ padding: 0 }} value="2">
+        <TabPanel sx={{ overflow: "auto", padding: 0 }} value="2">
           <AlertsPanel />
         </TabPanel>
       </TabContext>

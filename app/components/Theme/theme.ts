@@ -10,6 +10,7 @@ declare module "@mui/material/Button" {
 
 declare module "@mui/material" {
   interface TypeBackground {
+    disabled: string;
     glass: string;
   }
   interface ZIndex {
@@ -116,6 +117,7 @@ export const globalStyles = `
     top: -6px !important;
     right: 0 !important;
     margin-right: 16px;
+    z-index: 2001;
   }
 
   .notistack-MuiContent {
@@ -170,6 +172,7 @@ export const themeOptions: CssVarsThemeOptions = {
         },
         background: {
           default: RETRO_GREY,
+          disabled: alpha(RETRO_GREY, 0.2),
           glass: alpha(RETRO_GREY, 0.5),
         },
         mode: "dark",
@@ -201,6 +204,7 @@ export const themeOptions: CssVarsThemeOptions = {
         },
         background: {
           default: RETRO_BEIGE_1,
+          disabled: alpha(RETRO_BEIGE_1, 0.2),
           glass: alpha(RETRO_BEIGE_1, 0.5),
         },
         divider: alpha(RETRO_GREY, 0.12),
@@ -282,7 +286,7 @@ export const themeOptions: CssVarsThemeOptions = {
     MuiDialogContent: {
       styleOverrides: {
         root: {
-          paddingBottom: 24,
+          paddingBottom: 16,
           paddingLeft: 12,
           paddingRight: 12,
         },

@@ -28,6 +28,16 @@ ${PROTOCOL_IDS.map((protocol) => {
     )
     .join("");
 }).join("")}
+  <url>
+    <loc>https://protocol.fun/login</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://protocol.fun/sign-up</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
 </urlset>
  `;
 }

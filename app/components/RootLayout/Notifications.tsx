@@ -1,17 +1,24 @@
 import { NotificationsNoneRounded } from "@mui/icons-material";
 import { Badge, Dialog, Fade, IconButton } from "@mui/material";
+import { useStore } from "@nanostores/react";
 import React, { useState } from "react";
 import { useBoolean } from "usehooks-ts";
 
+import { $user } from "../../stores/user";
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper";
 import { NotifContents } from "./Notifications/NotifContents";
 
-const DIALOG_WIDTH = 360;
+const DIALOG_WIDTH = 380;
 const DIALOG_HEIGHT = 500;
 
 export default function Notifications() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { value: open, toggle: toggleOpen } = useBoolean(false);
+  const user = useStore($user);
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <>

@@ -1,10 +1,8 @@
-import {
-  HighlightOffRounded,
-  LocalGasStationOutlined,
-} from "@mui/icons-material";
+import { ClearOutlined } from "@mui/icons-material";
 import {
   Avatar,
   avatarClasses,
+  Badge,
   IconButton,
   List,
   ListItem,
@@ -13,94 +11,151 @@ import {
   ListItemButton,
   ListItemText,
   listItemTextClasses,
+  SvgIcon,
+  Typography,
 } from "@mui/material";
-import React from "react";
+import { useStore } from "@nanostores/react";
+import Decimal from "decimal.js";
+import { useSnackbar } from "notistack";
+import React, { useCallback } from "react";
+
+import { $alerts, Alert, removeAlert } from "../../../api/alerts-api";
+import { METRIC_ICONS_MAP } from "../../../stores/metric-icons";
+import { METRICS_MAP } from "../../../stores/metrics";
+import { PROTOCOL_MAP } from "../../../stores/protocols";
+import { formatNumber, logError } from "../../../utils/client-utils";
+import { RobotoMonoFF } from "../../Theme/fonts";
+
+function formatValue(alert: Alert) {
+  const metric = METRICS_MAP[alert.protocolId][alert.metricId];
+  if (!metric) {
+    throw new Error("Metric should not be undefined");
+  }
+
+  const { precision, significantDigits, priceUnits } = metric;
+  const unitLabel = priceUnits[0];
+
+  const value = formatNumber(
+    new Decimal(alert.triggerValue).div(precision).toNumber(),
+    significantDigits[0],
+    "compact"
+  );
+
+  return { metric, unitLabel, value };
+}
 
 export function AlertsPanel() {
+  const { enqueueSnackbar } = useSnackbar();
+  const alerts = useStore($alerts);
+
+  const handleRemove = useCallback(
+    (alert: Alert) => {
+      removeAlert(alert)
+        .then(() => {
+          enqueueSnackbar("Alert deleted");
+        })
+        .catch((error) => {
+          logError(error);
+          enqueueSnackbar(`Error: ${String(error)}`, {
+            variant: "error",
+          });
+        });
+    },
+    [enqueueSnackbar]
+  );
+
   return (
     <>
       <List
-        sx={{
+        sx={(theme) => ({
+          [`& .${listItemTextClasses.primary}`]: {
+            // fontSize: theme.typography.body2.fontSize,
+          },
           [`& .${listItemTextClasses.secondary}`]: {
-            color: "text.primary",
+            color: "var(--mui-palette-text-disabled)",
+            fontSize: theme.typography.caption.fontSize,
           },
           [`& .${listItemAvatarClasses.root} .${avatarClasses.root}`]: {
             bgcolor: "var(--mui-palette-primary-main)",
           },
-        }}
+        })}
       >
-        <ListItem
-          secondaryAction={
-            <IconButton edge="end" color="inherit" tabIndex={2}>
-              <HighlightOffRounded />
-            </IconButton>
-          }
-          disablePadding
-        >
-          <ListItemButton dense>
-            <ListItemAvatar>
-              <Avatar>
-                <LocalGasStationOutlined />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <span>
-                  Base fee per gas <b>crossed</b> 29.22 Gwei
-                </span>
+        {alerts.map((alert) => {
+          const { value, unitLabel, metric } = formatValue(alert);
+          const Icon = METRIC_ICONS_MAP[metric.protocol][metric.id];
+          const protocol = PROTOCOL_MAP[metric.protocol];
+
+          return (
+            <ListItem
+              dense
+              key={alert.id}
+              secondaryAction={
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  tabIndex={2}
+                  onClick={() => handleRemove(alert)}
+                >
+                  <ClearOutlined fontSize="small" />
+                </IconButton>
               }
-              secondary="Jan 7, 16:50:32 "
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          secondaryAction={
-            <IconButton edge="end" color="inherit" tabIndex={2}>
-              <HighlightOffRounded />
-            </IconButton>
-          }
-          disablePadding
-        >
-          <ListItemButton dense>
-            <ListItemAvatar>
-              <Avatar>
-                <LocalGasStationOutlined />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <span>
-                  Base fee per gas <b>crossed</b> 29.22 Gwei
-                </span>
-              }
-              secondary="Jan 7, 16:50:32 "
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          secondaryAction={
-            <IconButton edge="end" color="inherit" tabIndex={2}>
-              <HighlightOffRounded />
-            </IconButton>
-          }
-          disablePadding
-        >
-          <ListItemButton dense>
-            <ListItemAvatar>
-              <Avatar>
-                <LocalGasStationOutlined />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <span>
-                  Base fee per gas <b>crossed</b> 29.22 Gwei
-                </span>
-              }
-              secondary="Jan 7, 16:50:32 "
-            />
-          </ListItemButton>
-        </ListItem>
+              disablePadding
+            >
+              <ListItemButton dense>
+                <ListItemAvatar>
+                  <Badge
+                    overlap="circular"
+                    anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                    badgeContent={
+                      <Avatar
+                        sx={{
+                          border: `2px solid var(--mui-palette-background-default)`,
+                          fontSize: "1.25rem",
+                          height: 28,
+                          marginLeft: 1,
+                          width: 28,
+                        }}
+                      >
+                        <Icon fontSize={"1.25rem"} />
+                      </Avatar>
+                    }
+                  >
+                    <Avatar sx={{ height: 32, width: 32 }}>
+                      <SvgIcon
+                        inheritViewBox
+                        component={protocol.icon}
+                        width="100%"
+                        height="100%"
+                        sx={{
+                          fontSize: "50px",
+                          height: "100%",
+                          padding: `calc(${protocol.iconPadding} / 4)`,
+                          width: "100%",
+                        }}
+                      />
+                    </Avatar>
+                  </Badge>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <span>
+                      {metric.title} to cross{" "}
+                      <Typography
+                        fontFamily={RobotoMonoFF}
+                        variant="body2"
+                        component={"span"}
+                      >
+                        {value}
+                      </Typography>{" "}
+                      {unitLabel}
+                    </span>
+                  }
+                  secondary="Jan 7, 16:50:32"
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
     </>
   );

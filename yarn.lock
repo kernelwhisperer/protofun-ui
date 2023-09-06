@@ -7978,6 +7978,27 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     pg "^8.11.1"
     winston "^3.10.0"
 
+"protofun-service@http://localhost:3030/protofun-service-0.0.2.tgz":
+  version "0.0.2"
+  resolved "http://localhost:3030/protofun-service-0.0.2.tgz#39e95a4a50f17e7954c09c42897092adfe02a6c9"
+  dependencies:
+    "@feathersjs/adapter-commons" "^5.0.8"
+    "@feathersjs/authentication" "^5.0.8"
+    "@feathersjs/authentication-client" "^5.0.8"
+    "@feathersjs/authentication-local" "^5.0.8"
+    "@feathersjs/authentication-oauth" "^5.0.8"
+    "@feathersjs/configuration" "^5.0.8"
+    "@feathersjs/errors" "^5.0.8"
+    "@feathersjs/feathers" "^5.0.8"
+    "@feathersjs/knex" "^5.0.8"
+    "@feathersjs/koa" "^5.0.8"
+    "@feathersjs/schema" "^5.0.8"
+    "@feathersjs/socketio" "^5.0.8"
+    "@feathersjs/transport-commons" "^5.0.8"
+    knex "^2.5.1"
+    pg "^8.11.1"
+    winston "^3.10.0"
+
 proxy-addr@~2.0.7:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.7.tgz#f19fe69ceab311eeb94b42e70e8c2070f9ba1025"

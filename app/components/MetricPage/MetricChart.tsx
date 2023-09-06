@@ -1,6 +1,7 @@
 import { useTheme } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import { animated, useSpring } from "@react-spring/web";
+import Decimal from "decimal.js";
 import {
   IChartApi,
   IPriceLine,
@@ -18,6 +19,7 @@ import React, {
   useState,
 } from "react";
 
+import { $alerts, findAlertsForMetric } from "../../api/alerts-api";
 import { useLiveData } from "../../hooks/useLiveData";
 import { $loopsAllowed } from "../../stores/app";
 import {
@@ -82,6 +84,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const crosshairSubRef = useRef<MouseEventHandler>();
   const clickSubRef = useRef<MouseEventHandler>();
   const chartRef = useRef<IChartApi>();
+  const alertPriceLinesRef = useRef<IPriceLine[]>([]);
   const mainSeries = useRef<ISeriesApi<"Candlestick" | "Line">>();
   const loading = useStore($loading);
 
@@ -370,10 +373,64 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       lineStyle: 3,
       lineWidth: 1,
       price: alertDraft?.value,
-      title: "🔔",
+      title: "🕒",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alertDraft]);
+
+  useEffect(() => {
+    const cleanup = $alerts.subscribe(() => {
+      // delete existing
+      alertPriceLinesRef.current.forEach((line) => {
+        mainSeries.current?.removePriceLine(line);
+      });
+      alertPriceLinesRef.current = [];
+      // re-create all
+      if (!mainSeries.current) {
+        return;
+      }
+      const primaryColor = theme.palette.primary.main;
+      findAlertsForMetric(metric.id).forEach((alert) => {
+        const line = mainSeries.current?.createPriceLine({
+          // LightweightCharts.LineStyle.Dotted,
+          axisLabelVisible: true,
+          color: primaryColor,
+          lineStyle: 3,
+          lineWidth: 1,
+          price: new Decimal(alert.triggerValue).div(precision).toNumber(),
+          title: "🕒",
+        });
+        if (line) {
+          alertPriceLinesRef.current.push(line);
+        }
+      });
+    });
+
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!mainSeries.current) {
+      return;
+    }
+    const primaryColor = theme.palette.primary.main;
+    findAlertsForMetric(metric.id).forEach((alert) => {
+      const line = mainSeries.current?.createPriceLine({
+        // LightweightCharts.LineStyle.Dotted,
+        axisLabelVisible: true,
+        color: primaryColor,
+        lineStyle: 3,
+        lineWidth: 1,
+        price: new Decimal(alert.triggerValue).div(precision).toNumber(),
+        title: "🕒",
+      });
+      if (line) {
+        alertPriceLinesRef.current.push(line);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainSeries.current]);
 
   return (
     <>
@@ -408,11 +465,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           allowCompactPriceScale={allowCompactPriceScale}
         />
       </animated.div>
-      <AlertModal
-        metricTitle={title}
-        draft={alertDraft}
-        setDraft={setAlertDraft}
-      />
+      <AlertModal metric={metric} draft={alertDraft} setDraft={setAlertDraft} />
     </>
   );
 }

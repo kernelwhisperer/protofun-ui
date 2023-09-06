@@ -34,7 +34,7 @@ export function SignUp() {
         })
         .catch((error) => {
           logError(error);
-          enqueueSnackbar(`Cannot sign up: ${String(error)}`, {
+          enqueueSnackbar(`Error: ${String(error)}`, {
             variant: "error",
           });
         })

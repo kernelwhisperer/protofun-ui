@@ -1,7 +1,6 @@
 import { AddRounded, CloseRounded, RemoveRounded } from "@mui/icons-material";
+import { LoadingButton, loadingButtonClasses } from "@mui/lab";
 import {
-  Button,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,27 +13,59 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import React, { useCallback, useMemo, useRef } from "react";
+import { useSnackbar } from "notistack";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
+import { createAlert } from "../../api/alerts-api";
+import { Metric } from "../../stores/metrics";
 import { AlertDraft } from "../../utils/alert-utils";
+import { logError } from "../../utils/client-utils";
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper";
 import { RobotoMonoFF } from "../Theme/fonts";
 
 type NotificationModalProps = {
   draft?: AlertDraft;
-  metricTitle: string;
+  metric: Metric;
   setDraft: (draft?: AlertDraft) => void;
 };
 
 const DIALOG_WIDTH = 240;
 
 export default function AlertModal(props: NotificationModalProps) {
-  const { metricTitle, draft, setDraft } = props;
+  const { metric, draft, setDraft } = props;
   const inputRef = useRef<HTMLInputElement>();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   const handleClose = useCallback(() => {
     setDraft(undefined);
   }, [setDraft]);
+
+  const handleSubmit = useCallback(() => {
+    if (!draft) {
+      return;
+    }
+
+    setLoading(true);
+    createAlert({
+      metricId: metric.id,
+      protocolId: metric.protocol,
+      triggerValue: String(draft.value * metric.precision),
+    })
+      .then(() => {
+        enqueueSnackbar("Alert created");
+        setDraft(undefined);
+      })
+      .catch((error) => {
+        logError(error);
+        enqueueSnackbar(`Error: ${String(error)}`, {
+          variant: "error",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [draft, enqueueSnackbar, metric, setDraft]);
 
   const virtualElement: PopoverVirtualElement | null = useMemo(
     () =>
@@ -101,7 +132,7 @@ export default function AlertModal(props: NotificationModalProps) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" marginBottom={3}>
-            Get a push notification when <b>{metricTitle}</b> crosses a certain
+            Get a push notification when <b>{metric.title}</b> crosses a certain
             value.
           </DialogContentText>
           <TextField
@@ -175,21 +206,24 @@ export default function AlertModal(props: NotificationModalProps) {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            // fullWidth
-            // onClick={handleClose}
+          <LoadingButton
+            loading={loading}
+            onClick={handleSubmit}
             color="accent"
             variant="contained"
-            // endIcon={<AddAlarmRounded />}
+            sx={{
+              [`&.${loadingButtonClasses.root}`]: {
+                bgcolor: loading
+                  ? "var(--mui-palette-background-disabled)"
+                  : undefined,
+              },
+              [`& .${loadingButtonClasses.loadingIndicator}`]: {
+                color: "var(--mui-palette-secondary-main)",
+              },
+            }}
           >
             Create alert
-            <Chip
-              label="WIP"
-              size="small"
-              disabled
-              sx={{ fontFamily: RobotoMonoFF, letterSpacing: 1, marginLeft: 1 }}
-            />
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </>

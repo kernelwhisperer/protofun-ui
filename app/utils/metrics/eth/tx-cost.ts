@@ -14,9 +14,7 @@ export default async function queryTxCost(
 
   let [baseFeePerGas, etherPrice] = await Promise.all([
     queryBaseFeePerGas(timeframe, since),
-    priceUnit === PriceUnit.ETH
-      ? Promise.resolve([])
-      : query(timeframe, since),
+    priceUnit === PriceUnit.ETH ? Promise.resolve([]) : query(timeframe, since),
   ]);
 
   if (priceUnit === PriceUnit.ETH) {
