@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Decimal from "decimal.js";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import React, { useCallback } from "react";
 
@@ -47,6 +49,7 @@ function formatValue(alert: Alert) {
 export function AlertsPanel() {
   const { enqueueSnackbar } = useSnackbar();
   const alerts = useStore($alerts);
+  const searchParams = useSearchParams();
 
   const handleRemove = useCallback(
     (alert: Alert) => {
@@ -101,7 +104,13 @@ export function AlertsPanel() {
               }
               disablePadding
             >
-              <ListItemButton dense>
+              <ListItemButton
+                dense
+                component={Link}
+                href={`/${metric.protocol}/${
+                  metric.id
+                }?${searchParams?.toString()}`}
+              >
                 <ListItemAvatar>
                   <Badge
                     overlap="circular"

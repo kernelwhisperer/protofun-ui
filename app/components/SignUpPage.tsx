@@ -4,7 +4,7 @@ import { LoadingButton } from "@mui/lab";
 import { Link as MuiLink, TextField, Typography } from "@mui/material";
 import { useStore } from "@nanostores/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 
@@ -16,6 +16,7 @@ import { $user } from "../stores/user";
 import { logError } from "../utils/client-utils";
 
 export function SignUp() {
+  const searchParams = useSearchParams();
   const user = useStore($user);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -30,7 +31,7 @@ export function SignUp() {
 
       signUp(email, pass)
         .then(() => {
-          router.push("/");
+          router.push(`/?${searchParams?.toString()}`);
         })
         .catch((error) => {
           logError(error);
@@ -42,14 +43,14 @@ export function SignUp() {
           setLoading(false);
         });
     },
-    [enqueueSnackbar, router]
+    [enqueueSnackbar, router, searchParams]
   );
 
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push(`/?${searchParams?.toString()}`);
     }
-  }, [router, user]);
+  }, [router, searchParams, user]);
 
   return (
     <>
@@ -81,7 +82,10 @@ export function SignUp() {
           </LoadingButton>
           <Typography variant="body2">
             Already have an account?{" "}
-            <MuiLink component={Link} href="/login">
+            <MuiLink
+              component={Link}
+              href={`/login?${searchParams?.toString()}`}
+            >
               Login
             </MuiLink>
           </Typography>

@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useStore } from "@nanostores/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { useBoolean } from "usehooks-ts";
 
@@ -17,6 +17,7 @@ import { $user } from "../../stores/user";
 import { noop } from "../../utils/client-utils";
 
 export default function Profile() {
+  const searchParams = useSearchParams();
   const user = useStore($user);
   const router = useRouter();
 
@@ -24,8 +25,8 @@ export default function Profile() {
   const { value: open, toggle: toggleOpen } = useBoolean(false);
 
   const handleLogin = useCallback(() => {
-    router.push("/login");
-  }, [router]);
+    router.push(`/login?${searchParams?.toString()}`);
+  }, [router, searchParams]);
 
   const handleLogout = useCallback(() => {
     logout().then();

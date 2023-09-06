@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import { AppVerProps } from "../../stores/app";
@@ -38,6 +39,7 @@ function StyledAppBar(props: AppBarProps) {
 }
 
 export function Header({ appVer, gitHash }: AppVerProps) {
+  const searchParams = useSearchParams();
   return (
     <StyledAppBar>
       <Toolbar disableGutters>
@@ -56,7 +58,7 @@ export function Header({ appVer, gitHash }: AppVerProps) {
           >
             <Blobs />
             <Button
-              href="/"
+              href={`/?${searchParams?.toString()}`}
               aria-label="Homepage"
               LinkComponent={Link}
               sx={{
