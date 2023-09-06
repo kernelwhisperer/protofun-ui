@@ -81,7 +81,7 @@ export const globalStyles = `
 
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-thumb {
-    border-radius: 2px;
+    border-radius: 8px;
     width: 10px;
   }
 
@@ -94,11 +94,19 @@ export const globalStyles = `
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${RETRO_GREY};
+    background-color: ${alpha(RETRO_GREY, 0.66)};
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${alpha(RETRO_GREY, 1)};
   }
 
   html[data-mui-color-scheme="dark"] ::-webkit-scrollbar-thumb {
-    background-color: ${RETRO_BEIGE_2};
+    background-color: ${alpha(RETRO_BEIGE_2, 0.66)};
+  }
+
+  html[data-mui-color-scheme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background-color: ${alpha(RETRO_BEIGE_2, 1)};
   }
 
   input::-webkit-outer-spin-button,
@@ -328,6 +336,7 @@ export const themeOptions: CssVarsThemeOptions = {
       styleOverrides: {
         paper: {
           backgroundColor: "var(--mui-palette-background-default)",
+          borderColor: "var(--mui-palette-TableCell-border)",
           boxShadow: "none",
           marginTop: 4,
         },

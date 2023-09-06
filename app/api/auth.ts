@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 import { $user } from "../stores/user";
 import { app } from "./feathers-app";
 
@@ -31,3 +33,25 @@ export async function signUp(email: string, password: string) {
 
   await login(email, password);
 }
+
+app.on("login", ({ user }) => {
+  if (window.location.toString().includes("localhost")) {
+    return;
+  }
+
+  import("posthog-js")
+    .then((x) => x.default)
+    .then((posthog) => {
+      let userId = localStorage.getItem("fun-user-uuid");
+      if (!userId) {
+        userId = uuid();
+        localStorage.setItem("fun-user-uuid", userId);
+      }
+
+      // if (window.location.toString().includes("localhost")) {
+      //   posthog.debug();
+      // }
+
+      posthog.identify(userId, { email: user.email });
+    });
+});

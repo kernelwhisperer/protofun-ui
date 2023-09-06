@@ -70,9 +70,9 @@ export function AnalyticsProvider({
             return;
           }
 
-          if (window.location.toString().includes("localhost")) {
-            posthog.debug();
-          }
+          // if (window.location.toString().includes("localhost")) {
+          //   posthog.debug();
+          // }
 
           posthog.init(process.env.NEXT_PUBLIC_POSTHOG, {
             api_host: "/ph",

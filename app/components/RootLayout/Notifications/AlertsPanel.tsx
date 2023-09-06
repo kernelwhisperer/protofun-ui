@@ -46,7 +46,7 @@ function formatValue(alert: Alert) {
   return { metric, unitLabel, value };
 }
 
-export function AlertsPanel() {
+export function AlertsPanel({ toggleOpen }) {
   const { enqueueSnackbar } = useSnackbar();
   const alerts = useStore($alerts);
   const searchParams = useSearchParams();
@@ -110,6 +110,7 @@ export function AlertsPanel() {
                 href={`/${metric.protocol}/${
                   metric.id
                 }?${searchParams?.toString()}`}
+                onClick={toggleOpen}
               >
                 <ListItemAvatar>
                   <Badge

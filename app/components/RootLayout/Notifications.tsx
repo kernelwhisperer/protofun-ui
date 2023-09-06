@@ -40,6 +40,7 @@ export default function Notifications() {
         </IconButton>
       </Fade>
       <Dialog
+        keepMounted
         open={open}
         onClose={toggleOpen}
         aria-labelledby="notif-dialog-title"
@@ -63,6 +64,7 @@ export default function Notifications() {
                 horizontal: "right",
                 vertical: "bottom",
               },
+              keepMounted: true,
               onClose: toggleOpen,
               open,
               sx: {
@@ -75,7 +77,7 @@ export default function Notifications() {
             },
             sx: {
               background: "var(--mui-palette-secondary-main)",
-              border: "1px solid var(--mui-palette-primary-main)",
+              border: "1px solid var(--mui-palette-TableCell-border)",
               height: DIALOG_HEIGHT,
               margin: 0,
               width: DIALOG_WIDTH,
