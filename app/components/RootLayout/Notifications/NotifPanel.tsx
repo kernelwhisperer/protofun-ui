@@ -3,9 +3,11 @@ import React from "react";
 
 export function NotifPanel() {
   return (
-    <Box marginTop={3}>
-      <Typography sx={{ paddingX: 2 }} variant="caption">
-        Nothing to see here yet.
+    <Box marginY={3} marginX={2}>
+      <Typography variant="caption">
+        Nothing to see here.
+        <br />
+        None of your alerts went off.
       </Typography>
     </Box>
   );

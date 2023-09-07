@@ -3,6 +3,7 @@ import {
   Avatar,
   avatarClasses,
   Badge,
+  Box,
   IconButton,
   List,
   ListItem,
@@ -57,9 +58,9 @@ export function AlertsPanel({ toggleOpen }: any) {
         .then(() => {
           enqueueSnackbar("Alert deleted");
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           logError(error);
-          enqueueSnackbar(`Error: ${String(error)}`, {
+          enqueueSnackbar(`Error: ${error.message}`, {
             variant: "error",
           });
         });
@@ -69,6 +70,15 @@ export function AlertsPanel({ toggleOpen }: any) {
 
   return (
     <>
+      {alerts.length === 0 && (
+        <Box marginY={3} marginX={2}>
+          <Typography variant="caption">
+            Nothing to see here.
+            <br />
+            Visit a metric and click on its chart to create an alert.
+          </Typography>
+        </Box>
+      )}
       <List
         sx={(theme) => ({
           [`& .${listItemTextClasses.primary}`]: {

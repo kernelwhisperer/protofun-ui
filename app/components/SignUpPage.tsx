@@ -33,9 +33,9 @@ export function SignUp() {
         .then(() => {
           router.push(`/?${searchParams?.toString()}`);
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           logError(error);
-          enqueueSnackbar(`Error: ${String(error)}`, {
+          enqueueSnackbar(`Error: ${error.message}`, {
             variant: "error",
           });
         })

@@ -56,9 +56,9 @@ export default function AlertModal(props: NotificationModalProps) {
         enqueueSnackbar("Alert created");
         setDraft(undefined);
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         logError(error);
-        enqueueSnackbar(`Error: ${String(error)}`, {
+        enqueueSnackbar(`Error: ${error.message}`, {
           variant: "error",
         });
       })

@@ -8,7 +8,6 @@ import {
   Stack,
   Toolbar,
 } from "@mui/material";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
@@ -17,9 +16,7 @@ import { AppVerProps } from "../../stores/app";
 import { Blobs } from "./Blobs";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { Logo } from "./Logo";
-
-const Notifications = dynamic(() => import("./Notifications"));
-const Profile = dynamic(() => import("./Profile"));
+import Notifications from "./Notifications";
 
 function StyledAppBar(props: AppBarProps) {
   return (
@@ -72,7 +69,6 @@ export function Header({ appVer, gitHash }: AppVerProps) {
             </Button>
             <Stack direction="row" sx={{ marginRight: -1 }}>
               <Notifications />
-              <Profile />
               <HamburgerMenu appVer={appVer} gitHash={gitHash} />
             </Stack>
           </Stack>

@@ -10,6 +10,7 @@ declare module "@mui/material/Button" {
 
 declare module "@mui/material" {
   interface TypeBackground {
+    backdrop: string;
     disabled: string;
     glass: string;
   }
@@ -32,12 +33,12 @@ declare module "@mui/material" {
 }
 
 // https://colorhunt.co/palette/ff6d60f7d060f3e99f98d8aa
-const RETRO_GREY = "rgb(31, 34, 42)";
-const RETRO_GREY_AF = "rgb(48, 51, 59)";
+const RETRO_GREY = "rgb(41, 44, 52)";
+// const RETRO_GREY_AF = "rgb(48, 51, 59)";
 // const RETRO_GREY = "rgb(57, 65, 73)";
 
 export const RETRO_BEIGE_1 = "rgb(200, 187, 155)";
-const RETRO_BEIGE_1_AF = "rgb(209, 200, 178)";
+// const RETRO_BEIGE_1_AF = "rgb(209, 200, 178)";
 // const RETRO_YELLOW = "rgb(238, 187, 95)";
 
 const RETRO_BEIGE_2 = "rgb(236, 225, 211)";
@@ -179,6 +180,7 @@ export const themeOptions: CssVarsThemeOptions = {
           main: "#008080",
         },
         background: {
+          backdrop: "rgba(0,0,0, 0.5)",
           default: RETRO_GREY,
           disabled: alpha(RETRO_GREY, 0.2),
           glass: alpha(RETRO_GREY, 0.5),
@@ -211,11 +213,11 @@ export const themeOptions: CssVarsThemeOptions = {
           main: RETRO_PURPLE,
         },
         background: {
+          backdrop: alpha(RETRO_GREY, 0.12),
           default: RETRO_BEIGE_1,
           disabled: alpha(RETRO_BEIGE_1, 0.2),
           glass: alpha(RETRO_BEIGE_1, 0.5),
         },
-        divider: alpha(RETRO_GREY, 0.12),
         primary: {
           main: RETRO_GREY,
         },
@@ -237,6 +239,7 @@ export const themeOptions: CssVarsThemeOptions = {
             "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
               {
                 backdropFilter: "blur(8px)",
+                backgroundColor: "var(--mui-palette-background-backdrop)",
               },
           },
         },

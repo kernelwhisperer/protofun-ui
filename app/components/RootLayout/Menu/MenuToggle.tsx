@@ -2,6 +2,8 @@ import { IconButton } from "@mui/material";
 import { animated, AnimatedProps, useSpring } from "@react-spring/web";
 import React, { CSSProperties } from "react";
 
+import { PopoverToggleProps } from "../../../utils/client-utils";
+
 const Path = (props: AnimatedProps<{ d: string; style?: CSSProperties }>) => (
   <animated.path
     fill="transparent"
@@ -23,13 +25,7 @@ const X_SHAPE = {
   opacity: 0,
 };
 
-export const MenuToggle = ({
-  toggle,
-  open,
-}: {
-  open: boolean;
-  toggle: () => void;
-}) => {
+export const MenuToggle = ({ toggleOpen, open }: PopoverToggleProps) => {
   const { d1, opacity, d3 } = useSpring({
     from: BURGER_SHAPE,
     to: open ? X_SHAPE : BURGER_SHAPE,
@@ -37,7 +33,7 @@ export const MenuToggle = ({
 
   return (
     <IconButton
-      onClick={toggle}
+      onClick={toggleOpen}
       disableTouchRipple
       style={{
         zIndex: "var(--mui-zIndex-menuButton)", // open ? "var(--mui-zIndex-menuButton)" : undefined,

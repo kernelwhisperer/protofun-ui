@@ -57,3 +57,8 @@ export function logError(error: Error) {
     captureException(error);
   });
 }
+
+export interface PopoverToggleProps {
+  open: boolean;
+  toggleOpen: () => void;
+}
