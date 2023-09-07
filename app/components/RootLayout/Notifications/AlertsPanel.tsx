@@ -46,7 +46,7 @@ function formatValue(alert: Alert) {
   return { metric, unitLabel, value };
 }
 
-export function AlertsPanel({ toggleOpen }) {
+export function AlertsPanel({ toggleOpen }: any) {
   const { enqueueSnackbar } = useSnackbar();
   const alerts = useStore($alerts);
   const searchParams = useSearchParams();

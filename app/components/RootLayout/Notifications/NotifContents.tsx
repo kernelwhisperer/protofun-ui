@@ -8,7 +8,7 @@ import { RobotoMonoFF } from "../../Theme/fonts";
 import { AlertsPanel } from "./AlertsPanel";
 import { NotifPanel } from "./NotifPanel";
 
-export function NotifContents({ toggleOpen }) {
+export function NotifContents({ toggleOpen }: any) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
