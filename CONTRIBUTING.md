@@ -13,6 +13,8 @@ After commit & push:
 2. Push a new container
 
   ```sh
+  # Update NEXT_PUBLIC_PROTOFUN_SERVICE in .env.local
+  #
   yarn docker:build
   yarn docker:run # to test
   yarn docker:tag
@@ -24,6 +26,5 @@ After commit & push:
 3. Update the server
 
   ```sh
-  docker pull danielconstantin/protofun-ui:latest
-  make start-graph-node
+  docker pull danielconstantin/protofun-ui:latest && make start-graph-node
   ```

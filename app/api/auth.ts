@@ -48,9 +48,9 @@ app.on("login", ({ user }) => {
         localStorage.setItem("fun-user-uuid", userId);
       }
 
-      // if (window.location.toString().includes("localhost")) {
-      //   posthog.debug();
-      // }
+      if (window.location.toString().includes("localhost")) {
+        posthog.debug();
+      }
 
       posthog.identify(userId, { email: user.email });
     });
