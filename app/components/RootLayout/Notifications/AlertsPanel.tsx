@@ -26,7 +26,11 @@ import { $alerts, Alert, removeAlert } from "../../../api/alerts-api";
 import { METRIC_ICONS_MAP } from "../../../stores/metric-icons";
 import { METRICS_MAP } from "../../../stores/metrics";
 import { PROTOCOL_MAP } from "../../../stores/protocols";
-import { formatNumber, logError } from "../../../utils/client-utils";
+import {
+  formatNumber,
+  logError,
+  PopoverToggleProps,
+} from "../../../utils/client-utils";
 import { RobotoMonoFF } from "../../Theme/fonts";
 
 function formatValue(alert: Alert) {
@@ -47,7 +51,9 @@ function formatValue(alert: Alert) {
   return { metric, unitLabel, value };
 }
 
-export function AlertsPanel({ toggleOpen }: any) {
+export function AlertsPanel({
+  toggleOpen,
+}: Pick<PopoverToggleProps, "toggleOpen">) {
   const { enqueueSnackbar } = useSnackbar();
   const alerts = useStore($alerts);
   const searchParams = useSearchParams();
