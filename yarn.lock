@@ -7957,30 +7957,9 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-"protofun-service@http://localhost:3030/protofun-service-0.0.1.tgz":
-  version "0.0.1"
-  resolved "http://localhost:3030/protofun-service-0.0.1.tgz#38a4e6ffd8ab5f416f042ce055cf3575ddfa3cd1"
-  dependencies:
-    "@feathersjs/adapter-commons" "^5.0.8"
-    "@feathersjs/authentication" "^5.0.8"
-    "@feathersjs/authentication-client" "^5.0.8"
-    "@feathersjs/authentication-local" "^5.0.8"
-    "@feathersjs/authentication-oauth" "^5.0.8"
-    "@feathersjs/configuration" "^5.0.8"
-    "@feathersjs/errors" "^5.0.8"
-    "@feathersjs/feathers" "^5.0.8"
-    "@feathersjs/knex" "^5.0.8"
-    "@feathersjs/koa" "^5.0.8"
-    "@feathersjs/schema" "^5.0.8"
-    "@feathersjs/socketio" "^5.0.8"
-    "@feathersjs/transport-commons" "^5.0.8"
-    knex "^2.5.1"
-    pg "^8.11.1"
-    winston "^3.10.0"
-
-"protofun-service@http://localhost:3030/protofun-service-0.0.2.tgz":
+"protofun-service@https://service.protocol.fun/protofun-service-0.0.2.tgz":
   version "0.0.2"
-  resolved "http://localhost:3030/protofun-service-0.0.2.tgz#39e95a4a50f17e7954c09c42897092adfe02a6c9"
+  resolved "https://service.protocol.fun/protofun-service-0.0.2.tgz#39e95a4a50f17e7954c09c42897092adfe02a6c9"
   dependencies:
     "@feathersjs/adapter-commons" "^5.0.8"
     "@feathersjs/authentication" "^5.0.8"
