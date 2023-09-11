@@ -119,6 +119,7 @@ export function AlertsPanel({
                 </IconButton>
               }
               disablePadding
+              sx={{ minWidth: 280 }}
             >
               <ListItemButton
                 dense

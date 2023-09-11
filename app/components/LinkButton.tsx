@@ -27,6 +27,16 @@ const LinkButton = forwardRef(
         variant="outlined"
         size="large"
         sx={{
+          // background: "#c00", /* fallback */
+          // background: `
+          // -webkit-linear-gradient(45deg,  transparent 10px, gray 10px),
+          // -webkit-linear-gradient(135deg, transparent 10px, gray 10px),
+          // -webkit-linear-gradient(225deg, transparent 10px, gray 10px),
+          // -webkit-linear-gradient(315deg, transparent 10px, gray 10px)`,
+          // backgroundPosition: "bottom left, bottom right, top right, top left",
+          // backgroundRepeat: "no-repeat",
+          // backgroundSize: "50% 50%",
+          // border: "0px !important",
           justifyContent: "flex-start",
           overflow: "hidden",
           // width: 240,

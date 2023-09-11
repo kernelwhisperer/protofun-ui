@@ -62,7 +62,6 @@ export const MenuContents = ({
       padding={2}
       gap={4}
       show={open}
-      sx={{ overflow: "hidden" }}
     >
       <div>
         <SectionTitle>Account</SectionTitle>

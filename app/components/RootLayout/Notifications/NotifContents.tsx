@@ -25,11 +25,14 @@ export function NotifContents({ toggleOpen }: any) {
         >
           <TabList
             onChange={handleChange}
+            variant="scrollable"
+            // scrollButtons
             aria-label="lab API tabs example"
             sx={{
+              // overflowX: "auto",
               [`& .${tabClasses.root}`]: {
                 color: "var(--mui-palette-primary-main)",
-                fontFamily: RobotoMonoFF,
+                letterSpacing: "0.05rem",
                 textTransform: "none",
               },
               [`& .${tabClasses.root}:not(.${tabClasses.selected})`]: {

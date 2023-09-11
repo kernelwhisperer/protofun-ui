@@ -56,7 +56,7 @@ export default function NotificationsDialog({
               border: "1px solid var(--mui-palette-TableCell-border)",
               height: DIALOG_HEIGHT,
               margin: 0,
-              width: DIALOG_WIDTH,
+              width: `min(calc(100vw - 16px), ${DIALOG_WIDTH}px) !important`,
             },
           } as PopoverPaperProps
         }

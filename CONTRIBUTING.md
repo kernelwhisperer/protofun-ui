@@ -26,5 +26,5 @@ After commit & push:
 3. Update the server
 
   ```sh
-  docker pull danielconstantin/protofun-ui:latest && make start-graph-node
+  cd repos/protofun-indexer && docker pull danielconstantin/protofun-ui:latest && make start-graph-node
   ```

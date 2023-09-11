@@ -82,8 +82,9 @@ export const globalStyles = `
 
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    width: 10px;
+    // border-radius: 8px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar {
