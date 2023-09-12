@@ -44,4 +44,4 @@ export const markets = [
     id: "0xa17581a9e3356d9a858b789d68b4d866e593ae94c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     name: "Compound V3 WETH - Wrapped Ether",
   },
-];
+]

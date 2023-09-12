@@ -1,7 +1,7 @@
-import { useTheme } from "@mui/material";
-import { useStore } from "@nanostores/react";
-import { animated, useSpring } from "@react-spring/web";
-import Decimal from "decimal.js";
+import { useTheme } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import { animated, useSpring } from "@react-spring/web"
+import Decimal from "decimal.js"
 import {
   IChartApi,
   IPriceLine,
@@ -9,19 +9,13 @@ import {
   MouseEventHandler,
   MouseEventParams,
   Time,
-} from "lightweight-charts";
-import dynamic from "next/dynamic";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+} from "lightweight-charts"
+import dynamic from "next/dynamic"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-import { $alerts, findAlertsForMetric } from "../../api/alerts-api";
-import { useLiveData } from "../../hooks/useLiveData";
-import { $loopsAllowed } from "../../stores/app";
+import { $alerts, findAlertsForMetric } from "../../api/alerts-api"
+import { useLiveData } from "../../hooks/useLiveData"
+import { $loopsAllowed } from "../../stores/app"
 import {
   $entries,
   $entryMap,
@@ -35,35 +29,25 @@ import {
   candleStickOptions,
   EntryMap,
   Metric,
-} from "../../stores/metrics";
-import { AlertDraft } from "../../utils/alert-utils";
-import {
-  createBlockMapper,
-  isBlock,
-  isBlockArray,
-  SimpleBlock,
-} from "../../utils/block-utils";
+} from "../../stores/metrics"
+import { AlertDraft } from "../../utils/alert-utils"
+import { createBlockMapper, isBlock, isBlockArray, SimpleBlock } from "../../utils/block-utils"
 import {
   Candle,
   createCandleMapper,
   createLineMapper,
   isCandle,
   isCandleArray,
-} from "../../utils/candle-utils";
-import { createPriceFormatter } from "../../utils/chart";
-import {
-  logError,
-  SPRING_CONFIGS,
-  TZ_OFFSET,
-  wait,
-} from "../../utils/client-utils";
-import { MemoChart } from "../Chart";
-import { ErrorOverlay } from "../ErrorOverlay";
-import { Progress } from "../Progress";
-import { BlockChartLegend } from "./BlockChartLegend";
-import { CandleChartLegend } from "./CandleChartLegend";
+} from "../../utils/candle-utils"
+import { createPriceFormatter } from "../../utils/chart"
+import { logError, SPRING_CONFIGS, TZ_OFFSET, wait } from "../../utils/client-utils"
+import { MemoChart } from "../Chart"
+import { ErrorOverlay } from "../ErrorOverlay"
+import { Progress } from "../Progress"
+import { BlockChartLegend } from "./BlockChartLegend"
+import { CandleChartLegend } from "./CandleChartLegend"
 
-const AlertModal = dynamic(() => import("./AlertModal"));
+const AlertModal = dynamic(() => import("./AlertModal"))
 
 export default function MetricChart({ metric }: { metric: Metric }) {
   const {
@@ -74,102 +58,94 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     variants,
     title,
     allowCompactPriceScale,
-  } = metric;
+  } = metric
 
-  const priceUnitIndex = useStore($priceUnitIndex);
-  const priceUnit = priceUnits[priceUnitIndex];
-  const significantDigits = significantDigitsArray[priceUnitIndex];
+  const priceUnitIndex = useStore($priceUnitIndex)
+  const priceUnit = priceUnits[priceUnitIndex]
+  const significantDigits = significantDigitsArray[priceUnitIndex]
 
-  const theme = useTheme();
-  const crosshairSubRef = useRef<MouseEventHandler>();
-  const clickSubRef = useRef<MouseEventHandler>();
-  const chartRef = useRef<IChartApi>();
-  const alertPriceLinesRef = useRef<IPriceLine[]>([]);
-  const mainSeries = useRef<ISeriesApi<"Candlestick" | "Line">>();
-  const loading = useStore($loading);
+  const theme = useTheme()
+  const crosshairSubRef = useRef<MouseEventHandler>()
+  const clickSubRef = useRef<MouseEventHandler>()
+  const chartRef = useRef<IChartApi>()
+  const alertPriceLinesRef = useRef<IPriceLine[]>([])
+  const mainSeries = useRef<ISeriesApi<"Candlestick" | "Line">>()
+  const loading = useStore($loading)
 
-  const timeframe = useStore($timeframe);
-  const data = useStore($entries);
-  const seriesType = useStore($seriesType);
-  const variantIndex = useStore($variantIndex);
-  const precision = variants
-    ? variants[variantIndex].precision
-    : defaultPrecision;
+  const timeframe = useStore($timeframe)
+  const data = useStore($entries)
+  const seriesType = useStore($seriesType)
+  const variantIndex = useStore($variantIndex)
+  const precision = variants ? variants[variantIndex].precision : defaultPrecision
 
-  const [error, setError] = useState<string>("");
-  const [alertDraft, setAlertDraft] = useState<AlertDraft>();
-  const alertPreviewRef = useRef<IPriceLine>();
+  const [error, setError] = useState<string>("")
+  const [alertDraft, setAlertDraft] = useState<AlertDraft>()
+  const alertPreviewRef = useRef<IPriceLine>()
 
   // console.log("📜 LOG > MetricChart render", data.length, loading);
   useEffect(() => {
-    if (metric.timeframes && !metric.timeframes.includes(timeframe)) return;
-    if ($loading.get()) return;
+    if (metric.timeframes && !metric.timeframes.includes(timeframe)) return
+    if ($loading.get()) return
     // console.log("📜 LOG > MetricChart > fetching");
 
-    $loading.set(true);
-    setError("");
+    $loading.set(true)
+    setError("")
 
-    Promise.all([
-      queryFn(timeframe, undefined, priceUnit),
-      wait($loopsAllowed.get() ? 333 : 100),
-    ])
+    Promise.all([queryFn(timeframe, undefined, priceUnit), wait($loopsAllowed.get() ? 333 : 100)])
       .then(([data]) => {
-        const map = (data as Array<Candle | SimpleBlock>).reduce(
-          (acc, curr) => {
-            acc[curr.timestamp] = curr;
-            return acc;
-          },
-          {} as EntryMap
-        );
+        const map = (data as Array<Candle | SimpleBlock>).reduce((acc, curr) => {
+          acc[curr.timestamp] = curr
+          return acc
+        }, {} as EntryMap)
 
-        $entryMap.set(map);
-        $entries.set(data);
+        $entryMap.set(map)
+        $entries.set(data)
         // console.log("📜 LOG > MetricChart > fetching finished");
       })
       .then(() => {
-        $loading.set(false);
+        $loading.set(false)
       })
       .catch((error) => {
-        console.error(error);
-        setError(`${error.name}: ${error.message}`);
-        $loading.set(false);
-        logError(error);
-      });
+        console.error(error)
+        setError(`${error.name}: ${error.message}`)
+        $loading.set(false)
+        logError(error)
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeframe, priceUnit]);
+  }, [timeframe, priceUnit])
 
   const mainSeriesData = useMemo(() => {
-    if (data.length === 0) return [];
+    if (data.length === 0) return []
 
     if (isBlockArray(data)) {
-      const mapBlockToLine = createBlockMapper("baseFeePerGas", precision);
-      return data.map(mapBlockToLine);
+      const mapBlockToLine = createBlockMapper("baseFeePerGas", precision)
+      return data.map(mapBlockToLine)
     }
 
     if (!isCandleArray(data)) {
-      throw new Error("This should never happen!");
+      throw new Error("This should never happen!")
     }
 
-    const mapCandleToCandleData = createCandleMapper(precision);
-    const mapCandleToLineData = createLineMapper(precision);
+    const mapCandleToCandleData = createCandleMapper(precision)
+    const mapCandleToLineData = createLineMapper(precision)
     return seriesType === "Candlestick"
       ? data.map(mapCandleToCandleData)
-      : data.map(mapCandleToLineData);
-  }, [data, precision, seriesType]);
+      : data.map(mapCandleToLineData)
+  }, [data, precision, seriesType])
 
   useEffect(() => {
     const cleanup = $scaleMode.subscribe((mode) => {
       chartRef.current?.priceScale("right").applyOptions({
         mode,
-      });
-    });
+      })
+    })
 
-    return cleanup;
-  }, []);
+    return cleanup
+  }, [])
 
   useEffect(() => {
-    $legendTimestamp.set(data[data.length - 1]?.timestamp);
-  }, [data]);
+    $legendTimestamp.set(data[data.length - 1]?.timestamp)
+  }, [data])
 
   useEffect(() => {
     // console.log(
@@ -178,96 +154,87 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     //   !!chartRef.current,
     //   mainSeriesData.length
     // );
-    if (mainSeriesData.length === 0) return;
+    if (mainSeriesData.length === 0) return
     if (mainSeries.current) {
       try {
-        chartRef.current?.removeSeries(mainSeries.current);
+        chartRef.current?.removeSeries(mainSeries.current)
       } catch (e) {}
     }
 
     if (seriesType === "Candlestick") {
-      mainSeries.current =
-        chartRef.current?.addCandlestickSeries(candleStickOptions);
+      mainSeries.current = chartRef.current?.addCandlestickSeries(candleStickOptions)
     } else {
-      const primaryColor = theme.palette.primary.main;
+      const primaryColor = theme.palette.primary.main
       mainSeries.current = chartRef.current?.addLineSeries({
         color: primaryColor,
         lineType: 2,
-      });
+      })
     }
 
-    mainSeries.current?.setData(mainSeriesData);
+    mainSeries.current?.setData(mainSeriesData)
     mainSeries.current?.applyOptions({
       priceFormat: {
         minMove: 1 / 10 ** significantDigits,
       },
-    });
+    })
     chartRef.current?.priceScale("right").applyOptions({
       mode: $scaleMode.get(),
-    });
-  }, [mainSeriesData, theme, seriesType, significantDigits]);
+    })
+  }, [mainSeriesData, theme, seriesType, significantDigits])
 
   useEffect(() => {
     if (crosshairSubRef.current) {
-      chartRef.current?.unsubscribeCrosshairMove(crosshairSubRef.current);
+      chartRef.current?.unsubscribeCrosshairMove(crosshairSubRef.current)
     }
 
     const subRef = ({ time, point }: MouseEventParams) => {
-      const validCrosshairPoint = !(
-        !time ||
-        !point?.x ||
-        !point?.y ||
-        point.x < 0 ||
-        point.y < 0
-      );
+      const validCrosshairPoint = !(!time || !point?.x || !point?.y || point.x < 0 || point.y < 0)
 
       if (!validCrosshairPoint) {
-        const lastBar = mainSeries.current?.dataByIndex(Infinity, -1);
-        time = lastBar?.time as Time;
+        const lastBar = mainSeries.current?.dataByIndex(Infinity, -1)
+        time = lastBar?.time as Time
       }
 
-      $legendTimestamp.set(String((time as number) + TZ_OFFSET));
-    };
-    chartRef.current?.subscribeCrosshairMove(subRef);
+      $legendTimestamp.set(String((time as number) + TZ_OFFSET))
+    }
+    chartRef.current?.subscribeCrosshairMove(subRef)
 
-    crosshairSubRef.current = subRef;
+    crosshairSubRef.current = subRef
 
-    const chart = chartRef.current;
+    const chart = chartRef.current
     return function cleanup() {
-      chart?.unsubscribeCrosshairMove(subRef);
-    };
-  }, [mainSeriesData]);
+      chart?.unsubscribeCrosshairMove(subRef)
+    }
+  }, [mainSeriesData])
 
   useEffect(() => {
     if (clickSubRef.current) {
-      chartRef.current?.unsubscribeClick(clickSubRef.current);
+      chartRef.current?.unsubscribeClick(clickSubRef.current)
     }
 
     const subRef = ({ time, point, sourceEvent }: MouseEventParams) => {
       if (!point || !sourceEvent) {
-        return;
+        return
       }
       // console.log(`Click at ${point.x}, ${point.y}. The time is ${time}. `);
       setAlertDraft({
         clientX: sourceEvent.clientX,
         clientY: sourceEvent.clientY,
         value: parseFloat(
-          (mainSeries.current?.coordinateToPrice(point.y) as number).toFixed(
-            significantDigits
-          )
+          (mainSeries.current?.coordinateToPrice(point.y) as number).toFixed(significantDigits)
         ),
-      });
-    };
-    chartRef.current?.subscribeClick(subRef);
+      })
+    }
+    chartRef.current?.subscribeClick(subRef)
 
-    clickSubRef.current = subRef;
+    clickSubRef.current = subRef
 
-    const chart = chartRef.current;
+    const chart = chartRef.current
     return function cleanup() {
-      chart?.unsubscribeClick(subRef);
-    };
+      chart?.unsubscribeClick(subRef)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mainSeriesData, chartRef.current]);
+  }, [mainSeriesData, chartRef.current])
 
   useEffect(() => {
     setTimeout(
@@ -280,67 +247,65 @@ export default function MetricChart({ metric }: { metric: Metric }) {
               allowCompactPriceScale
             ),
           },
-        });
+        })
       },
       $loopsAllowed.get() ? 300 : 80
-    );
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [priceUnit]);
+  }, [priceUnit])
 
   useEffect(() => {
     chartRef.current?.timeScale().applyOptions({
       secondsVisible: ["Block"].includes(timeframe),
       timeVisible: ["Hour", "Minute", "Block"].includes(timeframe),
-    });
-  }, [timeframe]);
+    })
+  }, [timeframe])
 
   const handleNewData = useCallback(
     (data: Candle | SimpleBlock) => {
-      const precision = variants
-        ? variants[$variantIndex.get()].precision
-        : defaultPrecision;
+      const precision = variants ? variants[$variantIndex.get()].precision : defaultPrecision
 
       if (priceUnit !== priceUnits[$priceUnitIndex.get()]) {
-        return;
+        return
       }
 
-      const entries = $entries.get();
-      if (entries.length === 0) return;
+      const entries = $entries.get()
+      if (entries.length === 0) return
       if (entries[entries.length - 1].timestamp > data.timestamp) {
-        return;
+        return
       }
 
       if (isBlockArray(entries) && isBlock(data)) {
         if (entries[entries.length - 1].timestamp !== data.timestamp) {
-          entries.push(data);
-          $entryMap.setKey(data.timestamp, data);
-          $legendTimestamp.set(data.timestamp);
-          const mapBlockToLine = createBlockMapper("baseFeePerGas", precision);
-          mainSeries.current?.update(mapBlockToLine(data));
+          entries.push(data)
+          $entryMap.setKey(data.timestamp, data)
+          $legendTimestamp.set(data.timestamp)
+          const mapBlockToLine = createBlockMapper("baseFeePerGas", precision)
+          mainSeries.current?.update(mapBlockToLine(data))
         }
       }
 
       if (isCandleArray(entries) && isCandle(data)) {
         // for candles we want to update the last value because high/low/close has likely changed
         if (entries[entries.length - 1].timestamp !== data.timestamp) {
-          entries.push(data);
+          entries.push(data)
         } else {
-          entries[entries.length - 1] = data;
+          entries[entries.length - 1] = data
         }
-        $entryMap.setKey(data.timestamp, data);
-        $legendTimestamp.set(data.timestamp);
+        $entryMap.setKey(data.timestamp, data)
+        $legendTimestamp.set(data.timestamp)
 
-        const mapCandleToCandleData = createCandleMapper(precision);
-        const mapCandleToLineData = createLineMapper(precision);
+        const mapCandleToCandleData = createCandleMapper(precision)
+        const mapCandleToLineData = createLineMapper(precision)
         if ($seriesType.get() === "Line") {
-          mainSeries.current?.update(mapCandleToLineData(data));
+          mainSeries.current?.update(mapCandleToLineData(data))
         } else {
-          mainSeries.current?.update(mapCandleToCandleData(data));
+          mainSeries.current?.update(mapCandleToCandleData(data))
         }
       }
     },
     [defaultPrecision, priceUnit, priceUnits, variants]
-  );
+  )
 
   useLiveData(
     data[data.length - 1]?.timestamp,
@@ -348,24 +313,24 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     priceUnit,
     handleNewData,
     !loading && !error && data.length > 0
-  );
+  )
 
   const { opacity } = useSpring({
     config: SPRING_CONFIGS.quick,
     from: { opacity: 0 },
     to: error || loading ? { opacity: 0 } : { opacity: 1 },
-  });
+  })
 
   useEffect(() => {
     if (alertPreviewRef.current) {
-      mainSeries.current?.removePriceLine(alertPreviewRef.current);
+      mainSeries.current?.removePriceLine(alertPreviewRef.current)
     }
 
     if (!alertDraft) {
-      return;
+      return
     }
 
-    const primaryColor = theme.palette.primary.main;
+    const primaryColor = theme.palette.primary.main
     alertPreviewRef.current = mainSeries.current?.createPriceLine({
       // LightweightCharts.LineStyle.Dotted,
       axisLabelVisible: true,
@@ -374,22 +339,22 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       lineWidth: 1,
       price: alertDraft?.value,
       title: "🕒",
-    });
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alertDraft]);
+  }, [alertDraft])
 
   useEffect(() => {
     const cleanup = $alerts.subscribe(() => {
       // delete existing
       alertPriceLinesRef.current.forEach((line) => {
-        mainSeries.current?.removePriceLine(line);
-      });
-      alertPriceLinesRef.current = [];
+        mainSeries.current?.removePriceLine(line)
+      })
+      alertPriceLinesRef.current = []
       // re-create all
       if (!mainSeries.current) {
-        return;
+        return
       }
-      const primaryColor = theme.palette.primary.main;
+      const primaryColor = theme.palette.primary.main
       findAlertsForMetric(metric.id).forEach((alert) => {
         const line = mainSeries.current?.createPriceLine({
           // LightweightCharts.LineStyle.Dotted,
@@ -399,22 +364,22 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           lineWidth: 1,
           price: new Decimal(alert.triggerValue).div(precision).toNumber(),
           title: "🕒",
-        });
+        })
         if (line) {
-          alertPriceLinesRef.current.push(line);
+          alertPriceLinesRef.current.push(line)
         }
-      });
-    });
+      })
+    })
 
-    return cleanup;
+    return cleanup
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (!mainSeries.current) {
-      return;
+      return
     }
-    const primaryColor = theme.palette.primary.main;
+    const primaryColor = theme.palette.primary.main
     findAlertsForMetric(metric.id).forEach((alert) => {
       const line = mainSeries.current?.createPriceLine({
         // LightweightCharts.LineStyle.Dotted,
@@ -424,13 +389,13 @@ export default function MetricChart({ metric }: { metric: Metric }) {
         lineWidth: 1,
         price: new Decimal(alert.triggerValue).div(precision).toNumber(),
         title: "🕒",
-      });
+      })
       if (line) {
-        alertPriceLinesRef.current.push(line);
+        alertPriceLinesRef.current.push(line)
       }
-    });
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mainSeries.current]);
+  }, [mainSeries.current])
 
   return (
     <>
@@ -474,5 +439,5 @@ export default function MetricChart({ metric }: { metric: Metric }) {
         setDraft={setAlertDraft}
       />
     </>
-  );
+  )
 }

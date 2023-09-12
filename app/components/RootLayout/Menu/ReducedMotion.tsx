@@ -1,16 +1,12 @@
-import {
-  Animation,
-  DisplaySettings,
-  RadioButtonUnchecked,
-} from "@mui/icons-material";
-import { Button, ButtonGroup } from "@mui/material";
-import { useStore } from "@nanostores/react";
-import React from "react";
+import { Animation, DisplaySettings, RadioButtonUnchecked } from "@mui/icons-material"
+import { Button, ButtonGroup } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import React from "react"
 
-import { $reducedMotion } from "../../../stores/app";
+import { $reducedMotion } from "../../../stores/app"
 
 export function ReducedMotion() {
-  const reducedMotion = useStore($reducedMotion);
+  const reducedMotion = useStore($reducedMotion)
 
   return (
     <ButtonGroup variant="outlined" size="large">
@@ -24,8 +20,8 @@ export function ReducedMotion() {
           />
         }
         onClick={() => {
-          $reducedMotion.set("always");
-          localStorage.setItem("reduced-motion", "always");
+          $reducedMotion.set("always")
+          localStorage.setItem("reduced-motion", "always")
         }}
       >
         Fewer
@@ -34,8 +30,8 @@ export function ReducedMotion() {
         className={reducedMotion === "user" ? "active" : ""}
         startIcon={<DisplaySettings />}
         onClick={() => {
-          $reducedMotion.set("user");
-          localStorage.setItem("reduced-motion", "user");
+          $reducedMotion.set("user")
+          localStorage.setItem("reduced-motion", "user")
         }}
       >
         System
@@ -44,12 +40,12 @@ export function ReducedMotion() {
         className={reducedMotion === "never" ? "active" : ""}
         startIcon={<Animation />}
         onClick={() => {
-          $reducedMotion.set("never");
-          localStorage.setItem("reduced-motion", "never");
+          $reducedMotion.set("never")
+          localStorage.setItem("reduced-motion", "never")
         }}
       >
         More
       </Button>
     </ButtonGroup>
-  );
+  )
 }

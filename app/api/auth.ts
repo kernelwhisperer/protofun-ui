@@ -1,12 +1,12 @@
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from "uuid"
 
-import { $user } from "../stores/user";
-import { app } from "./feathers-app";
+import { $user } from "../stores/user"
+import { app } from "./feathers-app"
 
 export async function checkLogin() {
   try {
-    const { user } = await app.reAuthenticate();
-    $user.set(user);
+    const { user } = await app.reAuthenticate()
+    $user.set(user)
   } catch (error) {}
 }
 
@@ -15,43 +15,43 @@ export async function login(email: string, password: string) {
     email,
     password,
     strategy: "local",
-  });
+  })
 
-  $user.set(user);
+  $user.set(user)
 }
 
 export async function logout() {
-  await app.logout();
-  $user.set(null);
+  await app.logout()
+  $user.set(null)
 }
 
 export async function signUp(email: string, password: string) {
   await app.service("users").create({
     email,
     password,
-  });
+  })
 
-  await login(email, password);
+  await login(email, password)
 }
 
 app.on("login", ({ user }) => {
   if (window.location.toString().includes("localhost")) {
-    return;
+    return
   }
 
   import("posthog-js")
     .then((x) => x.default)
     .then((posthog) => {
-      let userId = localStorage.getItem("fun-user-uuid");
+      let userId = localStorage.getItem("fun-user-uuid")
       if (!userId) {
-        userId = uuid();
-        localStorage.setItem("fun-user-uuid", userId);
+        userId = uuid()
+        localStorage.setItem("fun-user-uuid", userId)
       }
 
       if (window.location.toString().includes("localhost")) {
-        posthog.debug();
+        posthog.debug()
       }
 
-      posthog.identify(userId, { email: user.email });
-    });
-});
+      posthog.identify(userId, { email: user.email })
+    })
+})

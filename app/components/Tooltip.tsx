@@ -1,10 +1,7 @@
-import { Fade } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import MuiTooltip, {
-  tooltipClasses,
-  TooltipProps,
-} from "@mui/material/Tooltip";
-import * as React from "react";
+import { Fade } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import MuiTooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip"
+import * as React from "react"
 
 export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
   <MuiTooltip
@@ -32,4 +29,4 @@ export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
     maxWidth: 280,
     padding: 12,
   },
-}));
+}))

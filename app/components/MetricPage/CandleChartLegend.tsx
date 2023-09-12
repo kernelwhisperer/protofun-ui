@@ -1,35 +1,30 @@
-import { Stack } from "@mui/material";
-import { useStore } from "@nanostores/react";
-import Decimal from "decimal.js";
-import React from "react";
+import { Stack } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import Decimal from "decimal.js"
+import React from "react"
 
-import {
-  $entryMap,
-  $legendTimestamp,
-  $seriesType,
-  CandleMap,
-} from "../../stores/metrics";
-import { isCandle } from "../../utils/candle-utils";
-import { formatNumber, isMobile } from "../../utils/client-utils";
-import { LegendLabel } from "./LegendLabel";
-import { LegendValue } from "./LegendValue";
+import { $entryMap, $legendTimestamp, $seriesType, CandleMap } from "../../stores/metrics"
+import { isCandle } from "../../utils/candle-utils"
+import { formatNumber, isMobile } from "../../utils/client-utils"
+import { LegendLabel } from "./LegendLabel"
+import { LegendValue } from "./LegendValue"
 
 export type CandleChartLegendProps = {
-  metricTitle: string;
-  precision: number;
-  significantDigits: number;
-  unitLabel: string;
-};
+  metricTitle: string
+  precision: number
+  significantDigits: number
+  unitLabel: string
+}
 
 export function CandleChartLegend(props: CandleChartLegendProps) {
-  const { precision, unitLabel, metricTitle, significantDigits } = props;
+  const { precision, unitLabel, metricTitle, significantDigits } = props
 
-  const seriesType = useStore($seriesType);
-  const timestamp = useStore($legendTimestamp);
-  const candleMap = useStore($entryMap) as CandleMap;
+  const seriesType = useStore($seriesType)
+  const timestamp = useStore($legendTimestamp)
+  const candleMap = useStore($entryMap) as CandleMap
 
-  const candle = candleMap[timestamp];
-  const candleDatetime = new Date(parseInt(timestamp || "0") * 1000);
+  const candle = candleMap[timestamp]
+  const candleDatetime = new Date(parseInt(timestamp || "0") * 1000)
 
   return (
     <>
@@ -135,5 +130,5 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
         </Stack>
       )}
     </>
-  );
+  )
 }

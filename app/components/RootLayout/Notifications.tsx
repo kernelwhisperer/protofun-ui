@@ -1,20 +1,18 @@
-import { NotificationsNoneRounded } from "@mui/icons-material";
-import { Badge, IconButton } from "@mui/material";
-import { useStore } from "@nanostores/react";
-import dynamic from "next/dynamic";
-import React, { useState } from "react";
-import { useBoolean } from "usehooks-ts";
+import { NotificationsNoneRounded } from "@mui/icons-material"
+import { Badge, IconButton } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import dynamic from "next/dynamic"
+import React, { useState } from "react"
+import { useBoolean } from "usehooks-ts"
 
-import { $user } from "../../stores/user";
+import { $user } from "../../stores/user"
 
-const NotificationsDialog = dynamic(
-  () => import("./Notifications/NotificationsDialog")
-);
+const NotificationsDialog = dynamic(() => import("./Notifications/NotificationsDialog"))
 
 export default function Notifications() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { value: open, toggle: toggleOpen } = useBoolean(false);
-  const user = useStore($user);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const { value: open, toggle: toggleOpen } = useBoolean(false)
+  const user = useStore($user)
 
   return (
     <>
@@ -33,11 +31,7 @@ export default function Notifications() {
           <NotificationsNoneRounded fontSize="medium" />
         </Badge>
       </IconButton>
-      <NotificationsDialog
-        anchorEl={anchorEl}
-        open={open}
-        toggleOpen={toggleOpen}
-      />
+      <NotificationsDialog anchorEl={anchorEl} open={open} toggleOpen={toggleOpen} />
     </>
-  );
+  )
 }

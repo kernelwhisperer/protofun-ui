@@ -1,16 +1,16 @@
-import { Stack } from "@mui/material";
-import { useStore } from "@nanostores/react";
-import { animated, easings, useSpring } from "@react-spring/web";
-import React, { useEffect } from "react";
+import { Stack } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import { animated, easings, useSpring } from "@react-spring/web"
+import React, { useEffect } from "react"
 
-import { $loopsAllowed } from "../stores/app";
+import { $loopsAllowed } from "../stores/app"
 
 interface ProgressProps {
-  loading: boolean;
+  loading: boolean
 }
 
 const Line = () => {
-  const loopsAllowed = useStore($loopsAllowed);
+  const loopsAllowed = useStore($loopsAllowed)
 
   const [{ x }, api] = useSpring(
     () => ({
@@ -24,14 +24,14 @@ const Line = () => {
       to: { x: 1 },
     }),
     [loopsAllowed]
-  );
+  )
 
   // TODO: Hack: investigate the loop: true and skipAnimation: true bug
   useEffect(() => {
     if (!loopsAllowed) {
-      api.stop();
+      api.stop()
     }
-  }, [loopsAllowed, api]);
+  }, [loopsAllowed, api])
 
   return (
     <animated.line
@@ -44,16 +44,14 @@ const Line = () => {
       y2="2"
       pathLength={1}
       strokeDashoffset={x.to([0, 0.33, 0.66, 1], [0, -6, -6, -6])}
-      strokeDasharray={x
-        .to([0, 0.33, 0.66, 1], [0, 1, 1, 1])
-        .to((x) => `${x}px 1px`)}
+      strokeDasharray={x.to([0, 0.33, 0.66, 1], [0, 1, 1, 1]).to((x) => `${x}px 1px`)}
       opacity={loopsAllowed ? x.to([0, 0.33, 0.66, 1], [1, 1, 1, 0]) : 1}
     />
-  );
-};
+  )
+}
 
 export function Progress(props: ProgressProps) {
-  const { loading } = props;
+  const { loading } = props
 
   return (
     <Stack
@@ -77,5 +75,5 @@ export function Progress(props: ProgressProps) {
         {loading && <Line />}
       </animated.svg>
     </Stack>
-  );
+  )
 }

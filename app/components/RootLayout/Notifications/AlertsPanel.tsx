@@ -1,4 +1,4 @@
-import { ClearOutlined } from "@mui/icons-material";
+import { ClearOutlined } from "@mui/icons-material"
 import {
   Avatar,
   avatarClasses,
@@ -14,65 +14,59 @@ import {
   listItemTextClasses,
   SvgIcon,
   Typography,
-} from "@mui/material";
-import { useStore } from "@nanostores/react";
-import Decimal from "decimal.js";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useSnackbar } from "notistack";
-import React, { useCallback } from "react";
+} from "@mui/material"
+import { useStore } from "@nanostores/react"
+import Decimal from "decimal.js"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import { useSnackbar } from "notistack"
+import React, { useCallback } from "react"
 
-import { $alerts, Alert, removeAlert } from "../../../api/alerts-api";
-import { METRIC_ICONS_MAP } from "../../../stores/metric-icons";
-import { METRICS_MAP } from "../../../stores/metrics";
-import { PROTOCOL_MAP } from "../../../stores/protocols";
-import {
-  formatNumber,
-  logError,
-  PopoverToggleProps,
-} from "../../../utils/client-utils";
-import { RobotoMonoFF } from "../../Theme/fonts";
+import { $alerts, Alert, removeAlert } from "../../../api/alerts-api"
+import { METRIC_ICONS_MAP } from "../../../stores/metric-icons"
+import { METRICS_MAP } from "../../../stores/metrics"
+import { PROTOCOL_MAP } from "../../../stores/protocols"
+import { formatNumber, logError, PopoverToggleProps } from "../../../utils/client-utils"
+import { RobotoMonoFF } from "../../Theme/fonts"
 
 function formatValue(alert: Alert) {
-  const metric = METRICS_MAP[alert.protocolId][alert.metricId];
+  const metric = METRICS_MAP[alert.protocolId][alert.metricId]
   if (!metric) {
-    throw new Error("Metric should not be undefined");
+    throw new Error("Metric should not be undefined")
   }
 
-  const { precision, significantDigits, priceUnits } = metric;
-  const unitLabel = priceUnits[0];
+  const { precision, significantDigits, priceUnits } = metric
+  const unitLabel = priceUnits[0]
 
   const value = formatNumber(
     new Decimal(alert.triggerValue).div(precision).toNumber(),
     significantDigits[0],
     "compact"
-  );
+  )
 
-  return { metric, unitLabel, value };
+  return { metric, unitLabel, value }
 }
 
-export function AlertsPanel({
-  toggleOpen,
-}: Pick<PopoverToggleProps, "toggleOpen">) {
-  const { enqueueSnackbar } = useSnackbar();
-  const alerts = useStore($alerts);
-  const searchParams = useSearchParams();
+export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
+  const { enqueueSnackbar } = useSnackbar()
+  const alerts = useStore($alerts)
+  const searchParams = useSearchParams()
 
   const handleRemove = useCallback(
     (alert: Alert) => {
       removeAlert(alert)
         .then(() => {
-          enqueueSnackbar("Alert deleted");
+          enqueueSnackbar("Alert deleted")
         })
         .catch((error: Error) => {
-          logError(error);
+          logError(error)
           enqueueSnackbar(`Error: ${error.message}`, {
             variant: "error",
-          });
-        });
+          })
+        })
     },
     [enqueueSnackbar]
-  );
+  )
 
   return (
     <>
@@ -100,9 +94,9 @@ export function AlertsPanel({
         })}
       >
         {alerts.map((alert) => {
-          const { value, unitLabel, metric } = formatValue(alert);
-          const Icon = METRIC_ICONS_MAP[metric.protocol][metric.id];
-          const protocol = PROTOCOL_MAP[metric.protocol];
+          const { value, unitLabel, metric } = formatValue(alert)
+          const Icon = METRIC_ICONS_MAP[metric.protocol][metric.id]
+          const protocol = PROTOCOL_MAP[metric.protocol]
 
           return (
             <ListItem
@@ -124,9 +118,7 @@ export function AlertsPanel({
               <ListItemButton
                 dense
                 component={Link}
-                href={`/${metric.protocol}/${
-                  metric.id
-                }?${searchParams?.toString()}`}
+                href={`/${metric.protocol}/${metric.id}?${searchParams?.toString()}`}
                 onClick={toggleOpen}
               >
                 <ListItemAvatar>
@@ -167,11 +159,7 @@ export function AlertsPanel({
                   primary={
                     <span>
                       {metric.title} to cross{" "}
-                      <Typography
-                        fontFamily={RobotoMonoFF}
-                        variant="body2"
-                        component={"span"}
-                      >
+                      <Typography fontFamily={RobotoMonoFF} variant="body2" component={"span"}>
                         {value}
                       </Typography>{" "}
                       {unitLabel}
@@ -181,9 +169,9 @@ export function AlertsPanel({
                 />
               </ListItemButton>
             </ListItem>
-          );
+          )
         })}
       </List>
     </>
-  );
+  )
 }

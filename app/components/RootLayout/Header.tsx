@@ -1,22 +1,15 @@
-"use client";
+"use client"
 
-import {
-  AppBar,
-  AppBarProps,
-  Button,
-  Container,
-  Stack,
-  Toolbar,
-} from "@mui/material";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React from "react";
+import { AppBar, AppBarProps, Button, Container, Stack, Toolbar } from "@mui/material"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import React from "react"
 
-import { AppVerProps } from "../../stores/app";
-import { Blobs } from "./Blobs";
-import { HamburgerMenu } from "./HamburgerMenu";
-import { Logo } from "./Logo";
-import Notifications from "./Notifications";
+import { AppVerProps } from "../../stores/app"
+import { Blobs } from "./Blobs"
+import { HamburgerMenu } from "./HamburgerMenu"
+import { Logo } from "./Logo"
+import Notifications from "./Notifications"
 
 function StyledAppBar(props: AppBarProps) {
   return (
@@ -32,18 +25,15 @@ function StyledAppBar(props: AppBarProps) {
       }}
       {...props}
     />
-  );
+  )
 }
 
 export function Header({ appVer, gitHash }: AppVerProps) {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
   return (
     <StyledAppBar>
       <Toolbar disableGutters>
-        <Container
-          maxWidth="lg"
-          sx={{ padding: { xs: 0 }, position: "relative" }}
-        >
+        <Container maxWidth="lg" sx={{ padding: { xs: 0 }, position: "relative" }}>
           <Stack
             gap={1}
             flexDirection="row"
@@ -75,5 +65,5 @@ export function Header({ appVer, gitHash }: AppVerProps) {
         </Container>
       </Toolbar>
     </StyledAppBar>
-  );
+  )
 }

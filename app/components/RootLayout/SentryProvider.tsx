@@ -1,16 +1,16 @@
-"use client";
-import React, { useEffect } from "react";
+"use client"
+import React, { useEffect } from "react"
 
-import { AppVerProps } from "../../stores/app";
+import { AppVerProps } from "../../stores/app"
 
 interface SentryProviderProps extends AppVerProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export function SentryProvider({ children, gitHash }: SentryProviderProps) {
   useEffect(() => {
     if (window.location.toString().includes("localhost")) {
-      return;
+      return
     }
     // TODO load a subset?
     import("@sentry/nextjs").then((Sentry) => {
@@ -22,10 +22,10 @@ export function SentryProvider({ children, gitHash }: SentryProviderProps) {
         // Adjust this value in production, or use tracesSampler for greater control
         tracesSampleRate: 1,
         tunnel: "/monitoring?o=4505410061795328&p=4505410080931840",
-      });
-    });
+      })
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
-  return children;
+  return children
 }

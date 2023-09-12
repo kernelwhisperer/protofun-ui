@@ -1,13 +1,9 @@
-import { Fade, PaperProps, Popover, PopoverProps } from "@mui/material";
-import React from "react";
+import { Fade, PaperProps, Popover, PopoverProps } from "@mui/material"
+import React from "react"
 
-export type PopoverPaperProps = PaperProps & { popoverProps: PopoverProps };
+export type PopoverPaperProps = PaperProps & { popoverProps: PopoverProps }
 
-export function PopoverPaper({
-  popoverProps,
-  children,
-  ...paperProps
-}: PopoverPaperProps) {
+export function PopoverPaper({ popoverProps, children, ...paperProps }: PopoverPaperProps) {
   return (
     <Popover
       transformOrigin={{
@@ -26,5 +22,5 @@ export function PopoverPaper({
       {/* {children} */}
       {/* </Draggable> */}
     </Popover>
-  );
+  )
 }

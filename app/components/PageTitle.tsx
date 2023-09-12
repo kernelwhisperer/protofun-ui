@@ -1,7 +1,7 @@
-import { Typography, TypographyProps } from "@mui/material";
-import React from "react";
+import { Typography, TypographyProps } from "@mui/material"
+import React from "react"
 
-import { RobotoSerifFF } from "./Theme/fonts";
+import { RobotoSerifFF } from "./Theme/fonts"
 
 export function PageTitle({ sx, ...rest }: TypographyProps) {
   return (
@@ -19,5 +19,5 @@ export function PageTitle({ sx, ...rest }: TypographyProps) {
       fontFamily={RobotoSerifFF}
       {...rest}
     />
-  );
+  )
 }

@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { useSearchParams } from "next/navigation";
-import React from "react";
+import { useSearchParams } from "next/navigation"
+import React from "react"
 
-import { PROTOCOLS } from "../../stores/protocols";
-import { LinkButton } from "../LinkButton";
-import { PageTitle } from "../PageTitle";
-import { StaggeredList } from "../StaggeredList";
-import { Underline } from "../Underline";
+import { PROTOCOLS } from "../../stores/protocols"
+import { LinkButton } from "../LinkButton"
+import { PageTitle } from "../PageTitle"
+import { StaggeredList } from "../StaggeredList"
+import { Underline } from "../Underline"
 
 export function HomePage() {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
 
   return (
     <StaggeredList sx={{ marginTop: "31px" }}>
@@ -36,5 +36,5 @@ export function HomePage() {
         ))}
       </StaggeredList>
     </StaggeredList>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-import { IconButton } from "@mui/material";
-import { animated, AnimatedProps, useSpring } from "@react-spring/web";
-import React, { CSSProperties } from "react";
+import { IconButton } from "@mui/material"
+import { animated, AnimatedProps, useSpring } from "@react-spring/web"
+import React, { CSSProperties } from "react"
 
-import { PopoverToggleProps } from "../../../utils/client-utils";
+import { PopoverToggleProps } from "../../../utils/client-utils"
 
 const Path = (props: AnimatedProps<{ d: string; style?: CSSProperties }>) => (
   <animated.path
@@ -12,24 +12,24 @@ const Path = (props: AnimatedProps<{ d: string; style?: CSSProperties }>) => (
     strokeLinecap="round"
     {...props}
   />
-);
+)
 
 const BURGER_SHAPE = {
   d1: "M 2 2.5 L 20 2.5",
   d3: "M 2 16.346 L 20 16.346",
   opacity: 1,
-};
+}
 const X_SHAPE = {
   d1: "M 3 16.5 L 17 2.5",
   d3: "M 3 2.5 L 17 16.346",
   opacity: 0,
-};
+}
 
 export const MenuToggle = ({ toggleOpen, open }: PopoverToggleProps) => {
   const { d1, opacity, d3 } = useSpring({
     from: BURGER_SHAPE,
     to: open ? X_SHAPE : BURGER_SHAPE,
-  });
+  })
 
   return (
     <IconButton
@@ -51,5 +51,5 @@ export const MenuToggle = ({ toggleOpen, open }: PopoverToggleProps) => {
         <Path d={d3} />
       </animated.svg>
     </IconButton>
-  );
-};
+  )
+}

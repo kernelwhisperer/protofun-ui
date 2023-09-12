@@ -1,20 +1,20 @@
-"use client";
+"use client"
 
-import { Container, Fade, Stack } from "@mui/material";
-import { SnackbarProvider } from "notistack";
-import React, { useState } from "react";
+import { Container, Fade, Stack } from "@mui/material"
+import { SnackbarProvider } from "notistack"
+import React, { useState } from "react"
 
-import { AppVerProps } from "../../stores/app";
-import { isMobile } from "../../utils/client-utils";
-import { DismissButton } from "../DismissButton";
-import { Header } from "./Header";
+import { AppVerProps } from "../../stores/app"
+import { isMobile } from "../../utils/client-utils"
+import { DismissButton } from "../DismissButton"
+import { Header } from "./Header"
 
 interface AppProps extends AppVerProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export function App({ children, appVer, gitHash }: AppProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   return (
     <SnackbarProvider
@@ -29,11 +29,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
       action={(snackKey) => <DismissButton snackKey={snackKey} />}
     >
       <Header appVer={appVer} gitHash={gitHash} />
-      <Container
-        ref={setAnchorEl}
-        maxWidth="lg"
-        sx={{ padding: { xs: 0 }, position: "relative" }}
-      >
+      <Container ref={setAnchorEl} maxWidth="lg" sx={{ padding: { xs: 0 }, position: "relative" }}>
         <Stack>
           {/* TODO: https://github.com/vercel/next.js/issues/49279 */}
           {children}
@@ -63,5 +59,5 @@ export function App({ children, appVer, gitHash }: AppProps) {
         </svg> */}
       </Container>
     </SnackbarProvider>
-  );
+  )
 }

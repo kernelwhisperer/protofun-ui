@@ -1,11 +1,11 @@
-import { useStore } from "@nanostores/react";
-import { animated, easings, useSpring } from "@react-spring/web";
-import React, { useEffect } from "react";
+import { useStore } from "@nanostores/react"
+import { animated, easings, useSpring } from "@react-spring/web"
+import React, { useEffect } from "react"
 
-import { $loopsAllowed } from "../../stores/app";
+import { $loopsAllowed } from "../../stores/app"
 
 export function Logo() {
-  const loopsAllowed = useStore($loopsAllowed);
+  const loopsAllowed = useStore($loopsAllowed)
 
   const [{ x }, api] = useSpring(
     () => ({
@@ -19,14 +19,14 @@ export function Logo() {
       to: { x: 1 },
     }),
     [loopsAllowed]
-  );
+  )
 
   // TODO: Hack: investigate the loop: true and skipAnimation: true bug
   useEffect(() => {
     if (!loopsAllowed) {
-      api.stop();
+      api.stop()
     }
-  }, [loopsAllowed, api]);
+  }, [loopsAllowed, api])
 
   return (
     <>
@@ -54,9 +54,7 @@ export function Logo() {
           y2="13"
           pathLength={1}
           strokeDashoffset={x.to([0, 0.99, 0.99, 1], [-6, -6, 0, -6])}
-          strokeDasharray={x
-            .to([0, 0.99, 0.99, 1], [1, 1, 0, 1])
-            .to((x) => `${x}px 1px`)}
+          strokeDasharray={x.to([0, 0.99, 0.99, 1], [1, 1, 0, 1]).to((x) => `${x}px 1px`)}
         />
         <path
           fillRule="evenodd"
@@ -65,5 +63,5 @@ export function Logo() {
         />
       </svg>
     </>
-  );
+  )
 }

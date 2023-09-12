@@ -1,20 +1,20 @@
-import { SvgIconComponent } from "@mui/icons-material";
+import { SvgIconComponent } from "@mui/icons-material"
 
-import AaveIcon from "../components/HomePage/assets/aave.svg";
-import CompIcon from "../components/HomePage/assets/compound.svg";
-import EthereumIcon from "../components/HomePage/assets/ethereum.svg";
-import MakerIcon from "../components/HomePage/assets/maker.svg";
-import { ProtocolId } from "./metric-declarations";
+import AaveIcon from "../components/HomePage/assets/aave.svg"
+import CompIcon from "../components/HomePage/assets/compound.svg"
+import EthereumIcon from "../components/HomePage/assets/ethereum.svg"
+import MakerIcon from "../components/HomePage/assets/maker.svg"
+import { ProtocolId } from "./metric-declarations"
 
-export type { ProtocolId };
+export type { ProtocolId }
 
 export type Protocol = {
-  enabled?: boolean;
-  icon: SvgIconComponent;
-  iconPadding?: string;
-  id: ProtocolId;
-  title: string;
-};
+  enabled?: boolean
+  icon: SvgIconComponent
+  iconPadding?: string
+  id: ProtocolId
+  title: string
+}
 
 export const PROTOCOL_MAP: Record<ProtocolId, Protocol> = {
   aave: {
@@ -50,18 +50,18 @@ export const PROTOCOL_MAP: Record<ProtocolId, Protocol> = {
     id: "mkr",
     title: "MakerDAO",
   },
-};
-export const PROTOCOL_IDS = Object.keys(PROTOCOL_MAP) as ProtocolId[];
+}
+export const PROTOCOL_IDS = Object.keys(PROTOCOL_MAP) as ProtocolId[]
 export const PROTOCOLS = Object.values(PROTOCOL_MAP).sort((a, b) => {
   if (a.enabled === b.enabled) {
-    return 0;
+    return 0
   } else if (a.enabled && !b.enabled) {
-    return -1;
+    return -1
   } else {
-    return 1;
+    return 1
   }
-});
+})
 
 export function isProtocolId(value: string): value is ProtocolId {
-  return value in PROTOCOL_MAP;
+  return value in PROTOCOL_MAP
 }

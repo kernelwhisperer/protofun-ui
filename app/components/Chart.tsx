@@ -1,40 +1,39 @@
-"use client";
+"use client"
 
-import { Box, useTheme } from "@mui/material";
-import { createChart, CrosshairMode, IChartApi } from "lightweight-charts";
-import React, { memo, MutableRefObject, useEffect, useRef } from "react";
+import { Box, useTheme } from "@mui/material"
+import { createChart, CrosshairMode, IChartApi } from "lightweight-charts"
+import React, { memo, MutableRefObject, useEffect, useRef } from "react"
 
-import { $timeframe } from "../stores/metrics";
-import { createPriceFormatter } from "../utils/chart";
-import { isMobile } from "../utils/client-utils";
-import { RobotoMonoFF } from "./Theme/fonts";
+import { $timeframe } from "../stores/metrics"
+import { createPriceFormatter } from "../utils/chart"
+import { isMobile } from "../utils/client-utils"
+import { RobotoMonoFF } from "./Theme/fonts"
 
 export type ChartProps = {
-  allowCompactPriceScale?: boolean;
-  chartRef: MutableRefObject<IChartApi | undefined>;
-  significantDigits: number;
-  unitLabel: string;
-};
+  allowCompactPriceScale?: boolean
+  chartRef: MutableRefObject<IChartApi | undefined>
+  significantDigits: number
+  unitLabel: string
+}
 
 function Chart(props: ChartProps) {
-  const { chartRef, unitLabel, significantDigits, allowCompactPriceScale } =
-    props;
+  const { chartRef, unitLabel, significantDigits, allowCompactPriceScale } = props
 
-  const theme = useTheme();
-  const containerRef = useRef<HTMLElement>();
+  const theme = useTheme()
+  const containerRef = useRef<HTMLElement>()
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return
 
     const handleResize = () => {
       chartRef.current?.applyOptions({
         height: containerRef.current?.clientHeight,
         width: containerRef.current?.clientWidth,
-      });
-    };
-    const primaryColor = theme.palette.primary.main;
-    const textColor = theme.palette.text.primary;
-    const borderColor = theme.palette.divider;
+      })
+    }
+    const primaryColor = theme.palette.primary.main
+    const textColor = theme.palette.text.primary
+    const borderColor = theme.palette.divider
 
     chartRef.current = createChart(containerRef.current, {
       crosshair: {
@@ -63,41 +62,30 @@ function Chart(props: ChartProps) {
         textColor,
       },
       localization: {
-        priceFormatter: createPriceFormatter(
-          significantDigits,
-          unitLabel,
-          allowCompactPriceScale
-        ),
+        priceFormatter: createPriceFormatter(significantDigits, unitLabel, allowCompactPriceScale),
       },
       width: containerRef.current.clientWidth,
-    });
+    })
 
     chartRef.current.timeScale().applyOptions({
       borderVisible: false,
       rightOffset: isMobile ? 4 : 8,
       secondsVisible: ["Block"].includes($timeframe.get()),
       timeVisible: ["Hour", "Minute", "Block"].includes($timeframe.get()),
-    });
+    })
 
     chartRef.current.priceScale("right").applyOptions({
       borderVisible: false,
-    });
+    })
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize)
 
     return function cleanup() {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResize)
 
-      chartRef.current?.remove();
-    };
-  }, [
-    chartRef,
-    theme,
-    containerRef,
-    unitLabel,
-    significantDigits,
-    allowCompactPriceScale,
-  ]);
+      chartRef.current?.remove()
+    }
+  }, [chartRef, theme, containerRef, unitLabel, significantDigits, allowCompactPriceScale])
 
   return (
     <Box
@@ -108,7 +96,7 @@ function Chart(props: ChartProps) {
       }}
       ref={containerRef}
     />
-  );
+  )
 }
 
-export const MemoChart = memo(Chart, () => true);
+export const MemoChart = memo(Chart, () => true)

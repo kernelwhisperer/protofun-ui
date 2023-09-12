@@ -1,11 +1,8 @@
-import {
-  METRIC_DECLARATIONS,
-  ProtocolId,
-} from "../app/stores/metric-declarations";
+import { METRIC_DECLARATIONS, ProtocolId } from "../app/stores/metric-declarations"
 
-export const PROTOCOL_IDS = Object.keys(METRIC_DECLARATIONS) as [ProtocolId];
+export const PROTOCOL_IDS = Object.keys(METRIC_DECLARATIONS) as [ProtocolId]
 
-const SITE = "https://protocol.fun";
+const SITE = "https://protocol.fun"
 
 function generateSiteMap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -15,7 +12,7 @@ function generateSiteMap() {
     xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
     xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 ${PROTOCOL_IDS.map((protocol) => {
-  const metrics = METRIC_DECLARATIONS[protocol];
+  const metrics = METRIC_DECLARATIONS[protocol]
 
   return metrics
     .map(
@@ -26,7 +23,7 @@ ${PROTOCOL_IDS.map((protocol) => {
         <changefreq>weekly</changefreq>
     </url>`
     )
-    .join("");
+    .join("")
 }).join("")}
   <url>
     <loc>https://protocol.fun/login</loc>
@@ -39,7 +36,7 @@ ${PROTOCOL_IDS.map((protocol) => {
     <changefreq>weekly</changefreq>
   </url>
 </urlset>
- `;
+ `
 }
 
-console.log(generateSiteMap());
+console.log(generateSiteMap())

@@ -1,13 +1,13 @@
-"use client";
+"use client"
 import {
   AttachMoney,
   LocalGasStationOutlined,
   ReceiptLong,
   SvgIconComponent,
-} from "@mui/icons-material";
+} from "@mui/icons-material"
 
-import { MetricId } from "./metrics";
-import { ProtocolId } from "./protocols";
+import { MetricId } from "./metrics"
+import { ProtocolId } from "./protocols"
 
 export const METRIC_ICONS_MAP: Partial<
   Record<ProtocolId, Partial<Record<MetricId, SvgIconComponent>>>
@@ -20,4 +20,4 @@ export const METRIC_ICONS_MAP: Partial<
     eth_price: AttachMoney,
     tx_cost: ReceiptLong,
   },
-};
+}

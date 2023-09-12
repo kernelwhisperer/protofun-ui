@@ -1,5 +1,5 @@
 export interface AlertDraft {
-  clientX: number;
-  clientY: number;
-  value: number;
+  clientX: number
+  clientY: number
+  value: number
 }

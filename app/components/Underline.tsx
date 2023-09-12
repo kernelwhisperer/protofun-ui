@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
-import { animated, easings, useSpring } from "@react-spring/web";
-import React from "react";
+import { Box } from "@mui/material"
+import { animated, easings, useSpring } from "@react-spring/web"
+import React from "react"
 
-const AnimatedBox = animated(Box);
+const AnimatedBox = animated(Box)
 
 export function Underline() {
   const styles = useSpring({
@@ -14,7 +14,7 @@ export function Underline() {
     delay: 200,
     from: { x: 0 },
     to: { x: 1 },
-  });
+  })
 
   return (
     <AnimatedBox
@@ -34,5 +34,5 @@ export function Underline() {
         x: styles.x.to([0, 0.5, 1], ["-50%", "0%", "50%"]),
       }}
     ></AnimatedBox>
-  );
+  )
 }

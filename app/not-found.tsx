@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { Typography } from "@mui/material";
-import React from "react";
+import { Typography } from "@mui/material"
+import React from "react"
 
-import { PageTitle } from "./components/PageTitle";
-import { PageWrapper } from "./components/RootLayout/PageWrapper";
-import { StaggeredList } from "./components/StaggeredList";
-import { RobotoMonoFF } from "./components/Theme/fonts";
+import { PageTitle } from "./components/PageTitle"
+import { PageWrapper } from "./components/RootLayout/PageWrapper"
+import { StaggeredList } from "./components/StaggeredList"
+import { RobotoMonoFF } from "./components/Theme/fonts"
 
 // TODO: https://github.com/vercel/next.js/issues/45620
 export const metadata = {
   title: "Page not found · Protocol Fundamentals",
-};
+}
 
 export default function NotFound() {
   return (
@@ -25,5 +25,5 @@ export default function NotFound() {
         </Typography>
       </StaggeredList>
     </PageWrapper>
-  );
+  )
 }

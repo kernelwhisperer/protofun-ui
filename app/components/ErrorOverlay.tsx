@@ -1,21 +1,21 @@
-import { Stack, Typography } from "@mui/material";
-import { animated, useSpring } from "@react-spring/web";
-import React from "react";
+import { Stack, Typography } from "@mui/material"
+import { animated, useSpring } from "@react-spring/web"
+import React from "react"
 
-import { SPRING_CONFIGS } from "../utils/client-utils";
+import { SPRING_CONFIGS } from "../utils/client-utils"
 
 interface ProgressProps {
-  errorMessage: string;
+  errorMessage: string
 }
 
 export function ErrorOverlay(props: ProgressProps) {
-  const { errorMessage } = props;
+  const { errorMessage } = props
 
   const style = useSpring({
     config: SPRING_CONFIGS.quick,
     from: { opacity: 0 },
     to: errorMessage ? { opacity: 1 } : { opacity: 0 },
-  });
+  })
   // TODO this should be using useTransition
 
   return (
@@ -34,5 +34,5 @@ export function ErrorOverlay(props: ProgressProps) {
         <Typography>{errorMessage}</Typography>
       </animated.div>
     </Stack>
-  );
+  )
 }

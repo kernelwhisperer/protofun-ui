@@ -1,5 +1,5 @@
-import { Typography, TypographyProps } from "@mui/material";
-import React from "react";
+import { Typography, TypographyProps } from "@mui/material"
+import React from "react"
 
 export function LegendLabel({ sx, ...rest }: TypographyProps) {
   return (
@@ -13,5 +13,5 @@ export function LegendLabel({ sx, ...rest }: TypographyProps) {
       }}
       {...rest}
     />
-  );
+  )
 }

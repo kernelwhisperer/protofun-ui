@@ -1,12 +1,12 @@
-import { Dialog, Fade } from "@mui/material";
-import React from "react";
+import { Dialog, Fade } from "@mui/material"
+import React from "react"
 
-import { PopoverToggleProps } from "../../../utils/client-utils";
-import { PopoverPaper, PopoverPaperProps } from "../../PopoverPaper";
-import { NotifContents } from "../Notifications/NotifContents";
+import { PopoverToggleProps } from "../../../utils/client-utils"
+import { PopoverPaper, PopoverPaperProps } from "../../PopoverPaper"
+import { NotifContents } from "../Notifications/NotifContents"
 
-const DIALOG_WIDTH = 380;
-const DIALOG_HEIGHT = 500;
+const DIALOG_WIDTH = 380
+const DIALOG_HEIGHT = 500
 
 export default function NotificationsDialog({
   anchorEl,
@@ -65,5 +65,5 @@ export default function NotificationsDialog({
         <NotifContents toggleOpen={toggleOpen} />
       </Dialog>
     </>
-  );
+  )
 }

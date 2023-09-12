@@ -1,50 +1,41 @@
-import { AccountCircleRounded } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Button,
-  ButtonGroup,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useStore } from "@nanostores/react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import { AccountCircleRounded } from "@mui/icons-material"
+import { Avatar, Box, Button, ButtonGroup, Stack, Typography } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import React, { useCallback, useEffect, useState } from "react"
 
-import { checkLogin, logout } from "../../../api/auth";
-import { $loopsAllowed } from "../../../stores/app";
-import { $user } from "../../../stores/user";
-import { PopoverToggleProps } from "../../../utils/client-utils";
-import { RobotoMonoFF } from "../../Theme/fonts";
+import { checkLogin, logout } from "../../../api/auth"
+import { $loopsAllowed } from "../../../stores/app"
+import { $user } from "../../../stores/user"
+import { PopoverToggleProps } from "../../../utils/client-utils"
+import { RobotoMonoFF } from "../../Theme/fonts"
 
-export function AccountSection({
-  toggleOpen,
-}: Pick<PopoverToggleProps, "toggleOpen">) {
-  const searchParams = useSearchParams();
-  const user = useStore($user);
-  const [userUUID, setUserUUID] = useState("");
+export function AccountSection({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
+  const searchParams = useSearchParams()
+  const user = useStore($user)
+  const [userUUID, setUserUUID] = useState("")
 
   useEffect(() => {
-    const localId = localStorage.getItem("fun-user-uuid");
+    const localId = localStorage.getItem("fun-user-uuid")
     if (localId) {
-      setUserUUID(localId);
+      setUserUUID(localId)
     }
-  }, []);
+  }, [])
 
   const handleLogout = useCallback(() => {
-    toggleOpen();
+    toggleOpen()
     setTimeout(
       () => {
-        logout().then();
+        logout().then()
       },
       $loopsAllowed.get() ? 500 : 80
-    );
-  }, [toggleOpen]);
+    )
+  }, [toggleOpen])
 
   useEffect(() => {
-    checkLogin();
-  }, []);
+    checkLogin()
+  }, [])
 
   return (
     <>
@@ -61,14 +52,10 @@ export function AccountSection({
 
         <Typography variant="caption" marginX={1}>
           <span style={{ marginRight: 8, opacity: 0.7 }}>Email</span>
-          <span style={{ fontFamily: RobotoMonoFF }}>
-            {user ? user.email : "Unknown"}
-          </span>
+          <span style={{ fontFamily: RobotoMonoFF }}>{user ? user.email : "Unknown"}</span>
           <br />
           <span style={{ marginRight: 8, opacity: 0.7 }}>User ID</span>
-          <span style={{ fontFamily: RobotoMonoFF }}>
-            {user ? `#${user.id}` : userUUID}
-          </span>
+          <span style={{ fontFamily: RobotoMonoFF }}>{user ? `#${user.id}` : userUUID}</span>
         </Typography>
       </Stack>
       <Box sx={{ marginTop: 2 }}>
@@ -103,5 +90,5 @@ export function AccountSection({
         )}
       </Box>
     </>
-  );
+  )
 }

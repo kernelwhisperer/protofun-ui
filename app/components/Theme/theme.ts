@@ -1,31 +1,31 @@
-import { alpha, CssVarsThemeOptions, Fade } from "@mui/material";
+import { alpha, CssVarsThemeOptions, Fade } from "@mui/material"
 
-import { RobotoFlexFF } from "./fonts";
+import { RobotoFlexFF } from "./fonts"
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
-    accent: true;
+    accent: true
   }
 }
 
 declare module "@mui/material" {
   interface TypeBackground {
-    backdrop: string;
-    disabled: string;
-    glass: string;
+    backdrop: string
+    disabled: string
+    glass: string
   }
   interface ZIndex {
-    menu: number;
-    menuButton: number;
-    popover: number;
-    title: number;
+    menu: number
+    menuButton: number
+    popover: number
+    title: number
   }
   interface Palette {
-    accent: Palette["primary"];
+    accent: Palette["primary"]
   }
 
   interface PaletteOptions {
-    accent?: PaletteOptions["primary"];
+    accent?: PaletteOptions["primary"]
   }
   // interface SimplePaletteColorOptions {
   //   raw?: string;
@@ -33,16 +33,16 @@ declare module "@mui/material" {
 }
 
 // https://colorhunt.co/palette/ff6d60f7d060f3e99f98d8aa
-const RETRO_GREY = "rgb(41, 44, 52)";
+const RETRO_GREY = "rgb(41, 44, 52)"
 // const RETRO_GREY_AF = "rgb(48, 51, 59)";
 // const RETRO_GREY = "rgb(57, 65, 73)";
 
-export const RETRO_BEIGE_1 = "rgb(200, 187, 155)";
+export const RETRO_BEIGE_1 = "rgb(200, 187, 155)"
 // const RETRO_BEIGE_1_AF = "rgb(209, 200, 178)";
 // const RETRO_YELLOW = "rgb(238, 187, 95)";
 
-const RETRO_BEIGE_2 = "rgb(236, 225, 211)";
-const RETRO_PURPLE = "rgb(184, 119, 182)";
+const RETRO_BEIGE_2 = "rgb(236, 225, 211)"
+const RETRO_PURPLE = "rgb(184, 119, 182)"
 
 export const globalStyles = `
   // html {
@@ -162,7 +162,7 @@ export const globalStyles = `
   .notistack-MuiContent-warning svg {
     color: #ff9800;
   }
-`;
+`
 
 export const themeOptions: CssVarsThemeOptions = {
   colorSchemes: {
@@ -237,11 +237,10 @@ export const themeOptions: CssVarsThemeOptions = {
       styleOverrides: {
         root: {
           "&.blurred": {
-            "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))":
-              {
-                backdropFilter: "blur(8px)",
-                backgroundColor: "var(--mui-palette-background-backdrop)",
-              },
+            "@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none))": {
+              backdropFilter: "blur(8px)",
+              backgroundColor: "var(--mui-palette-background-backdrop)",
+            },
           },
         },
       },
@@ -390,4 +389,4 @@ export const themeOptions: CssVarsThemeOptions = {
     popover: 2002,
     title: 1350,
   },
-};
+}

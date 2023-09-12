@@ -1,14 +1,14 @@
-import { expect, it } from "vitest";
+import { expect, it } from "vitest"
 
-import { getBuiltGraphSDK } from "../.graphclient";
+import { getBuiltGraphSDK } from "../.graphclient"
 
 it("17491129", async () => {
   // arrange
-  const sdk = getBuiltGraphSDK();
+  const sdk = getBuiltGraphSDK()
   // act
   const { block } = await sdk.FetchBlock({
     id: "0x56c1ec3f16c917d68c94f5136ba39df9585c6d1e920d5aa45e26549b30fdb4f9",
-  });
+  })
   // assert
   // https://etherscan.io/block/17491129
   expect(block).toMatchInlineSnapshot(`
@@ -27,16 +27,16 @@ it("17491129", async () => {
       "timestamp": "1686903083",
       "txnCount": 166,
     }
-  `);
-});
+  `)
+})
 
 it("17491130", async () => {
   // arrange
-  const sdk = getBuiltGraphSDK();
+  const sdk = getBuiltGraphSDK()
   // act
   const { block } = await sdk.FetchBlock({
     id: "0x7c61c61cb8628c41f38a995578629eba8e457a115c8305e6b5df9a75c6bd33ba",
-  });
+  })
   // assert
   expect(block).toMatchInlineSnapshot(`
       {
@@ -54,5 +54,5 @@ it("17491130", async () => {
         "timestamp": "1686903095",
         "txnCount": 241,
       }
-    `);
-});
+    `)
+})

@@ -1,20 +1,20 @@
-"use client";
-import { useStore } from "@nanostores/react";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+"use client"
+import { useStore } from "@nanostores/react"
+import { usePathname } from "next/navigation"
+import { useEffect } from "react"
 
-import { $fullAppVersion, $mixpanel } from "../../stores/app";
+import { $fullAppVersion, $mixpanel } from "../../stores/app"
 
 export function PageChangeListener() {
-  const pathname = usePathname();
-  const mixpanel = useStore($mixpanel);
+  const pathname = usePathname()
+  const mixpanel = useStore($mixpanel)
 
   useEffect(() => {
-    if (!mixpanel) return;
+    if (!mixpanel) return
     mixpanel?.track_pageview({
       version: $fullAppVersion.get(),
-    });
-  }, [pathname, mixpanel]);
+    })
+  }, [pathname, mixpanel])
 
-  return null;
+  return null
 }

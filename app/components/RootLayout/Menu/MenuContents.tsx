@@ -1,23 +1,15 @@
-import { GitHub, Twitter } from "@mui/icons-material";
-import {
-  Link as MuiLink,
-  MenuItem,
-  Typography,
-  TypographyProps,
-} from "@mui/material";
-import React from "react";
+import { GitHub, Twitter } from "@mui/icons-material"
+import { Link as MuiLink, MenuItem, Typography, TypographyProps } from "@mui/material"
+import React from "react"
 
-import { AppVerProps } from "../../../stores/app";
-import {
-  PopoverToggleProps,
-  SPRING_CONFIGS,
-} from "../../../utils/client-utils";
-import { StaggeredList } from "../../StaggeredList";
-import { RobotoMonoFF } from "../../Theme/fonts";
-import { AccountSection } from "./AccountSection";
-import DiscordIcon from "./discord.svg";
-import { ReducedMotion } from "./ReducedMotion";
-import { ThemeMode } from "./ThemeMode";
+import { AppVerProps } from "../../../stores/app"
+import { PopoverToggleProps, SPRING_CONFIGS } from "../../../utils/client-utils"
+import { StaggeredList } from "../../StaggeredList"
+import { RobotoMonoFF } from "../../Theme/fonts"
+import { AccountSection } from "./AccountSection"
+import DiscordIcon from "./discord.svg"
+import { ReducedMotion } from "./ReducedMotion"
+import { ThemeMode } from "./ThemeMode"
 
 const CustomLink = ({ children, ...rest }: any) => (
   <MenuItem component={MuiLink} tabIndex={0} role="button" {...rest}>
@@ -34,7 +26,7 @@ const CustomLink = ({ children, ...rest }: any) => (
       {children}
     </Typography>
   </MenuItem>
-);
+)
 
 const SectionTitle = (props: TypographyProps) => (
   <Typography
@@ -46,16 +38,11 @@ const SectionTitle = (props: TypographyProps) => (
     }}
     {...props}
   />
-);
+)
 
-type MenuContentsProps = AppVerProps & PopoverToggleProps;
+type MenuContentsProps = AppVerProps & PopoverToggleProps
 
-export const MenuContents = ({
-  appVer,
-  gitHash,
-  open,
-  toggleOpen,
-}: MenuContentsProps) => {
+export const MenuContents = ({ appVer, gitHash, open, toggleOpen }: MenuContentsProps) => {
   return (
     <StaggeredList
       config={open ? SPRING_CONFIGS.quick : SPRING_CONFIGS.veryQuick}
@@ -108,21 +95,13 @@ export const MenuContents = ({
         </CustomLink>
       </div>
       <div>
-        <Typography
-          sx={{ opacity: 0.5 }}
-          fontFamily={RobotoMonoFF}
-          variant="body2"
-        >
+        <Typography sx={{ opacity: 0.5 }} fontFamily={RobotoMonoFF} variant="body2">
           App version: {appVer}
         </Typography>
-        <Typography
-          sx={{ opacity: 0.5 }}
-          fontFamily={RobotoMonoFF}
-          variant="body2"
-        >
+        <Typography sx={{ opacity: 0.5 }} fontFamily={RobotoMonoFF} variant="body2">
           App digest: {gitHash.slice(0, 7)}
         </Typography>
       </div>
     </StaggeredList>
-  );
-};
+  )
+}

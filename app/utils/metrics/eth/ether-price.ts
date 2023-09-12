@@ -1,33 +1,30 @@
-import { PriceUnit, Timeframe } from "../../../stores/metrics";
-import { Candle } from "../../candle-utils";
+import { PriceUnit, Timeframe } from "../../../stores/metrics"
+import { Candle } from "../../candle-utils"
 
 const timeframeMapping: Partial<Record<Timeframe, string>> = {
   Day: "1d",
   Hour: "1h",
   Minute: "1m",
   Week: "1w",
-};
+}
 
 export default async function query(
   timeframe: Timeframe,
   since?: string,
   _priceUnit?: PriceUnit
 ): Promise<Candle[]> {
-  const interval = timeframeMapping[timeframe];
+  const interval = timeframeMapping[timeframe]
 
-  if (!interval)
-    throw new Error(
-      `Timeframe '${timeframe}' is not supported for this metric.`
-    );
+  if (!interval) throw new Error(`Timeframe '${timeframe}' is not supported for this metric.`)
 
-  let apiUrl = `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=${interval}&limit=1000`;
+  let apiUrl = `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=${interval}&limit=1000`
   if (since) {
-    const timestamp = parseInt(since) * 1000;
-    apiUrl = `${apiUrl}&startTime=${timestamp}`;
+    const timestamp = parseInt(since) * 1000
+    apiUrl = `${apiUrl}&startTime=${timestamp}`
   }
 
-  const res = await fetch(apiUrl);
-  const data = await res.json();
+  const res = await fetch(apiUrl)
+  const data = await res.json()
 
   // [
   //   [
@@ -51,5 +48,5 @@ export default async function query(
     low: x[3],
     open: x[1],
     timestamp: String(x[0] / 1000),
-  }));
+  }))
 }

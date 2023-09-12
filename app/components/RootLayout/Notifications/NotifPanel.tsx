@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Typography } from "@mui/material"
+import React from "react"
 
 export function NotifPanel() {
   return (
@@ -10,5 +10,5 @@ export function NotifPanel() {
         None of your alerts went off.
       </Typography>
     </Box>
-  );
+  )
 }

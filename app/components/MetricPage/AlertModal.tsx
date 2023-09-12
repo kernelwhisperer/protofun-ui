@@ -1,5 +1,5 @@
-import { AddRounded, CloseRounded, RemoveRounded } from "@mui/icons-material";
-import { LoadingButton, loadingButtonClasses } from "@mui/lab";
+import { AddRounded, CloseRounded, RemoveRounded } from "@mui/icons-material"
+import { LoadingButton, loadingButtonClasses } from "@mui/lab"
 import {
   Dialog,
   DialogActions,
@@ -12,54 +12,53 @@ import {
   PopoverVirtualElement,
   Stack,
   TextField,
-} from "@mui/material";
-import { useStore } from "@nanostores/react";
-import Decimal from "decimal.js";
-import { useSnackbar } from "notistack";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+} from "@mui/material"
+import { useStore } from "@nanostores/react"
+import Decimal from "decimal.js"
+import { useSnackbar } from "notistack"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 
-import { createAlert } from "../../api/alerts-api";
-import { $entryMap, $legendTimestamp, Metric } from "../../stores/metrics";
-import { AlertDraft } from "../../utils/alert-utils";
-import { formatNumber, logError } from "../../utils/client-utils";
-import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper";
-import { RobotoMonoFF } from "../Theme/fonts";
+import { createAlert } from "../../api/alerts-api"
+import { $entryMap, $legendTimestamp, Metric } from "../../stores/metrics"
+import { AlertDraft } from "../../utils/alert-utils"
+import { formatNumber, logError } from "../../utils/client-utils"
+import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper"
+import { RobotoMonoFF } from "../Theme/fonts"
 
 type NotificationModalProps = {
-  draft?: AlertDraft;
-  metric: Metric;
-  precision: number;
-  setDraft: (draft?: AlertDraft) => void;
-  significantDigits: number;
-  unitLabel: string;
-};
+  draft?: AlertDraft
+  metric: Metric
+  precision: number
+  setDraft: (draft?: AlertDraft) => void
+  significantDigits: number
+  unitLabel: string
+}
 
-const DIALOG_WIDTH = 240;
+const DIALOG_WIDTH = 240
 
 export default function AlertModal(props: NotificationModalProps) {
-  const { metric, draft, setDraft, precision, significantDigits, unitLabel } =
-    props;
-  const inputRef = useRef<HTMLInputElement>();
-  const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
+  const { metric, draft, setDraft, precision, significantDigits, unitLabel } = props
+  const inputRef = useRef<HTMLInputElement>()
+  const { enqueueSnackbar } = useSnackbar()
+  const [loading, setLoading] = useState(false)
 
-  const timestamp = useStore($legendTimestamp);
-  const entryMap = useStore($entryMap);
+  const timestamp = useStore($legendTimestamp)
+  const entryMap = useStore($entryMap)
 
-  const entry: any = entryMap[timestamp];
-  const lastValueRaw: string = entry?.close || entry?.baseFeePerGas || "0";
-  const lastValue = new Decimal(lastValueRaw).div(precision).toNumber();
+  const entry: any = entryMap[timestamp]
+  const lastValueRaw: string = entry?.close || entry?.baseFeePerGas || "0"
+  const lastValue = new Decimal(lastValueRaw).div(precision).toNumber()
 
   const handleClose = useCallback(() => {
-    setDraft(undefined);
-  }, [setDraft]);
+    setDraft(undefined)
+  }, [setDraft])
 
   const handleSubmit = useCallback(() => {
     if (!draft) {
-      return;
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     createAlert({
       metricId: metric.id,
       protocolId: metric.protocol,
@@ -68,18 +67,18 @@ export default function AlertModal(props: NotificationModalProps) {
       triggerValue: String(draft.value * metric.precision),
     } as any)
       .then(() => {
-        enqueueSnackbar("Alert created");
-        setDraft(undefined);
+        enqueueSnackbar("Alert created")
+        setDraft(undefined)
       })
       .catch((error: Error) => {
-        logError(error);
+        logError(error)
         enqueueSnackbar(`Error: ${error.message}`, {
           variant: "error",
-        });
+        })
       })
       .finally(() => {
-        setLoading(false);
-      });
+        setLoading(false)
+      })
   }, [
     draft,
     enqueueSnackbar,
@@ -89,7 +88,7 @@ export default function AlertModal(props: NotificationModalProps) {
     metric.protocol,
     setDraft,
     timestamp,
-  ]);
+  ])
 
   const virtualElement: PopoverVirtualElement | null = useMemo(
     () =>
@@ -107,14 +106,14 @@ export default function AlertModal(props: NotificationModalProps) {
                 width: 1,
                 x: draft.clientX - 16,
                 y: draft.clientY,
-              };
+              }
             },
             nodeType: 1,
           },
     [draft]
-  );
+  )
 
-  if (!draft) return;
+  if (!draft) return
 
   return (
     <>
@@ -140,17 +139,9 @@ export default function AlertModal(props: NotificationModalProps) {
         }
         PaperComponent={PopoverPaper as never}
       >
-        <DialogTitle
-          id="alert-dialog-title"
-          color="text.secondary"
-          fontFamily={RobotoMonoFF}
-        >
+        <DialogTitle id="alert-dialog-title" color="text.secondary" fontFamily={RobotoMonoFF}>
           <span>Create alert</span>
-          <IconButton
-            sx={{ marginRight: -1 }}
-            onClick={handleClose}
-            color="secondary"
-          >
+          <IconButton sx={{ marginRight: -1 }} onClick={handleClose} color="secondary">
             <CloseRounded />
           </IconButton>
         </DialogTitle>
@@ -175,13 +166,13 @@ export default function AlertModal(props: NotificationModalProps) {
                       size="small"
                       color="secondary"
                       onClick={() => {
-                        if (!inputRef.current) return;
+                        if (!inputRef.current) return
 
-                        inputRef.current.stepUp();
+                        inputRef.current.stepUp()
                         setDraft({
                           ...draft,
                           value: parseFloat(inputRef.current.value),
-                        });
+                        })
                       }}
                       sx={{ borderRadius: 0, marginRight: -1, padding: 0 }}
                     >
@@ -191,13 +182,13 @@ export default function AlertModal(props: NotificationModalProps) {
                       size="small"
                       color="secondary"
                       onClick={() => {
-                        if (!inputRef.current) return;
+                        if (!inputRef.current) return
 
-                        inputRef.current.stepDown();
+                        inputRef.current.stepDown()
                         setDraft({
                           ...draft,
                           value: parseFloat(inputRef.current.value),
-                        });
+                        })
                       }}
                       sx={{ borderRadius: 0, marginRight: -1, padding: 0 }}
                     >
@@ -229,7 +220,7 @@ export default function AlertModal(props: NotificationModalProps) {
               setDraft({
                 ...draft,
                 value: parseFloat(event.target.value),
-              });
+              })
             }}
           />
         </DialogContent>
@@ -241,9 +232,7 @@ export default function AlertModal(props: NotificationModalProps) {
             variant="contained"
             sx={{
               [`&.${loadingButtonClasses.root}`]: {
-                bgcolor: loading
-                  ? "var(--mui-palette-background-disabled)"
-                  : undefined,
+                bgcolor: loading ? "var(--mui-palette-background-disabled)" : undefined,
               },
               [`& .${loadingButtonClasses.loadingIndicator}`]: {
                 color: "var(--mui-palette-secondary-main)",
@@ -255,5 +244,5 @@ export default function AlertModal(props: NotificationModalProps) {
         </DialogActions>
       </Dialog>
     </>
-  );
+  )
 }

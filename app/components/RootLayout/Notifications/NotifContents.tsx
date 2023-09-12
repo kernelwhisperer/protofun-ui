@@ -1,28 +1,25 @@
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Chip, Stack, Tab, tabClasses } from "@mui/material";
-import { useStore } from "@nanostores/react";
-import React from "react";
+import { TabContext, TabList, TabPanel } from "@mui/lab"
+import { Box, Chip, Stack, Tab, tabClasses } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import React from "react"
 
-import { $alerts } from "../../../api/alerts-api";
-import { RobotoMonoFF } from "../../Theme/fonts";
-import { AlertsPanel } from "./AlertsPanel";
-import { NotifPanel } from "./NotifPanel";
+import { $alerts } from "../../../api/alerts-api"
+import { RobotoMonoFF } from "../../Theme/fonts"
+import { AlertsPanel } from "./AlertsPanel"
+import { NotifPanel } from "./NotifPanel"
 
 export function NotifContents({ toggleOpen }: any) {
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = React.useState("1")
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-  const alerts = useStore($alerts);
+    setValue(newValue)
+  }
+  const alerts = useStore($alerts)
 
   return (
     <>
       <TabContext value={value}>
-        <Box
-          id="notif-dialog-title"
-          sx={{ borderBottom: 1, borderColor: "divider" }}
-        >
+        <Box id="notif-dialog-title" sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList
             onChange={handleChange}
             variant="scrollable"
@@ -62,19 +59,13 @@ export function NotifContents({ toggleOpen }: any) {
             ></Tab>
           </TabList>
         </Box>
-        <TabPanel
-          sx={{ height: "100%", overflow: "auto", padding: 0 }}
-          value="1"
-        >
+        <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="1">
           <NotifPanel />
         </TabPanel>
-        <TabPanel
-          sx={{ height: "100%", overflow: "auto", padding: 0 }}
-          value="2"
-        >
+        <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="2">
           <AlertsPanel toggleOpen={toggleOpen} />
         </TabPanel>
       </TabContext>
     </>
-  );
+  )
 }

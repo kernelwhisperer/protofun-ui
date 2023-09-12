@@ -1,26 +1,19 @@
-import React from "react";
+import React from "react"
 
-import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider";
-import { App } from "./components/RootLayout/App";
-import { PageChangeListener } from "./components/RootLayout/PageChangeListener";
-import { SentryProvider } from "./components/RootLayout/SentryProvider";
-import ThemeProvider from "./components/Theme/ThemeProvider";
+import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider"
+import { App } from "./components/RootLayout/App"
+import { PageChangeListener } from "./components/RootLayout/PageChangeListener"
+import { SentryProvider } from "./components/RootLayout/SentryProvider"
+import ThemeProvider from "./components/Theme/ThemeProvider"
 
 export const metadata = {
   description: "On-chain data aggregation",
   title: "Protocol Fundamentals",
-};
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const appVer = (process.env.NEXT_PUBLIC_APP_VER as string).replaceAll(
-    '"',
-    ""
-  );
-  const gitHash = process.env.NEXT_PUBLIC_GIT_HASH as string;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const appVer = (process.env.NEXT_PUBLIC_APP_VER as string).replaceAll('"', "")
+  const gitHash = process.env.NEXT_PUBLIC_GIT_HASH as string
 
   return (
     <html lang="en">
@@ -53,5 +46,5 @@ export default function RootLayout({
         </AnalyticsProvider>
       </body>
     </html>
-  );
+  )
 }

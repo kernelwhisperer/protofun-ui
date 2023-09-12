@@ -1,7 +1,7 @@
-import { PriceUnit, Timeframe } from "../../../stores/metrics";
-import { Candle } from "../../candle-utils";
-import queryBaseFeePerGas from "./base-fee-per-gas";
-import query from "./ether-price";
+import { PriceUnit, Timeframe } from "../../../stores/metrics"
+import { Candle } from "../../candle-utils"
+import queryBaseFeePerGas from "./base-fee-per-gas"
+import query from "./ether-price"
 
 export default async function queryTxCost(
   timeframe: Timeframe,
@@ -9,28 +9,24 @@ export default async function queryTxCost(
   priceUnit?: PriceUnit
 ): Promise<Candle[]> {
   if (timeframe === "Block") {
-    throw new Error("queryTransferCostUsd: Block timeframe unsupported.");
+    throw new Error("queryTransferCostUsd: Block timeframe unsupported.")
   }
 
   let [baseFeePerGas, etherPrice] = await Promise.all([
     queryBaseFeePerGas(timeframe, since),
     priceUnit === PriceUnit.ETH ? Promise.resolve([]) : query(timeframe, since),
-  ]);
+  ])
 
   if (priceUnit === PriceUnit.ETH) {
-    return baseFeePerGas as Candle[];
+    return baseFeePerGas as Candle[]
   }
 
-  etherPrice = etherPrice.slice(etherPrice.length - baseFeePerGas.length);
-  baseFeePerGas = baseFeePerGas as Candle[];
+  etherPrice = etherPrice.slice(etherPrice.length - baseFeePerGas.length)
+  baseFeePerGas = baseFeePerGas as Candle[]
 
   if (baseFeePerGas.length !== etherPrice.length) {
-    console.log(
-      "📜 LOG > baseFeePerGas, etherPrice:",
-      baseFeePerGas,
-      etherPrice
-    );
-    throw new Error("queryTransferCostUsd: This should never happen!");
+    console.log("📜 LOG > baseFeePerGas, etherPrice:", baseFeePerGas, etherPrice)
+    throw new Error("queryTransferCostUsd: This should never happen!")
   }
 
   return baseFeePerGas.map((x, index) => ({
@@ -40,5 +36,5 @@ export default async function queryTxCost(
     low: String(parseFloat(x.low) * parseFloat(etherPrice[index].low)),
     open: String(parseFloat(x.open) * parseFloat(etherPrice[index].open)),
     timestamp: x.timestamp,
-  }));
+  }))
 }

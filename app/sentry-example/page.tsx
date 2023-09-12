@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import Head from "next/head";
-import React from "react";
+import Head from "next/head"
+import React from "react"
 
 export default function Home() {
   return (
@@ -47,9 +47,9 @@ export default function Home() {
             padding: "12px",
           }}
           onClick={async () => {
-            const res = await fetch("/api/sentry-example-api");
+            const res = await fetch("/api/sentry-example-api")
             if (!res.ok) {
-              throw new Error("Sentry Example Frontend Error");
+              throw new Error("Sentry Example Frontend Error")
             }
           }}
         >
@@ -58,10 +58,7 @@ export default function Home() {
 
         <p>
           Next, look for the error on the{" "}
-          <a href="https://coldpizza.sentry.io/issues/?project=4505410080931840">
-            Issues Page
-          </a>
-          .
+          <a href="https://coldpizza.sentry.io/issues/?project=4505410080931840">Issues Page</a>.
         </p>
         <p style={{ marginTop: "24px" }}>
           For more information, see{" "}
@@ -71,5 +68,5 @@ export default function Home() {
         </p>
       </main>
     </div>
-  );
+  )
 }

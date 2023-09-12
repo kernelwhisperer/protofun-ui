@@ -1,28 +1,23 @@
-import {
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  SelectProps,
-} from "@mui/material";
-import { useStore } from "@nanostores/react";
-import React, { useCallback } from "react";
-import { useBoolean } from "usehooks-ts";
+import { MenuItem, Select, SelectChangeEvent, SelectProps } from "@mui/material"
+import { useStore } from "@nanostores/react"
+import React, { useCallback } from "react"
+import { useBoolean } from "usehooks-ts"
 
-import { $variantIndex, Metric } from "../../stores/metrics";
+import { $variantIndex, Metric } from "../../stores/metrics"
 
 export function MetricVariantSelector({
   variants,
   sx,
   ...rest
 }: Pick<Metric, "variants"> & SelectProps) {
-  const { value: open, toggle: toggleOpen } = useBoolean(false);
-  const variantIndex = useStore($variantIndex);
+  const { value: open, toggle: toggleOpen } = useBoolean(false)
+  const variantIndex = useStore($variantIndex)
 
   const handleChange = useCallback((event: SelectChangeEvent) => {
-    $variantIndex.set(parseInt(event.target.value));
-  }, []);
+    $variantIndex.set(parseInt(event.target.value))
+  }, [])
 
-  if (!variants) return null;
+  if (!variants) return null
 
   return (
     <Select
@@ -57,5 +52,5 @@ export function MetricVariantSelector({
         </MenuItem>
       ))}
     </Select>
-  );
+  )
 }
