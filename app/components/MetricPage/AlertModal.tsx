@@ -13,29 +13,42 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { useStore } from "@nanostores/react";
+import Decimal from "decimal.js";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import { createAlert } from "../../api/alerts-api";
-import { Metric } from "../../stores/metrics";
+import { $entryMap, $legendTimestamp, Metric } from "../../stores/metrics";
 import { AlertDraft } from "../../utils/alert-utils";
-import { logError } from "../../utils/client-utils";
+import { formatNumber, logError } from "../../utils/client-utils";
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper";
 import { RobotoMonoFF } from "../Theme/fonts";
 
 type NotificationModalProps = {
   draft?: AlertDraft;
   metric: Metric;
+  precision: number;
   setDraft: (draft?: AlertDraft) => void;
+  significantDigits: number;
+  unitLabel: string;
 };
 
 const DIALOG_WIDTH = 240;
 
 export default function AlertModal(props: NotificationModalProps) {
-  const { metric, draft, setDraft } = props;
+  const { metric, draft, setDraft, precision, significantDigits, unitLabel } =
+    props;
   const inputRef = useRef<HTMLInputElement>();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
+
+  const timestamp = useStore($legendTimestamp);
+  const entryMap = useStore($entryMap);
+
+  const entry: any = entryMap[timestamp];
+  const lastValueRaw: string = entry?.close || entry?.baseFeePerGas || "0";
+  const lastValue = new Decimal(lastValueRaw).div(precision).toNumber();
 
   const handleClose = useCallback(() => {
     setDraft(undefined);
@@ -50,8 +63,10 @@ export default function AlertModal(props: NotificationModalProps) {
     createAlert({
       metricId: metric.id,
       protocolId: metric.protocol,
+      startTimestamp: timestamp, // TODO
+      startValue: lastValueRaw,
       triggerValue: String(draft.value * metric.precision),
-    })
+    } as any)
       .then(() => {
         enqueueSnackbar("Alert created");
         setDraft(undefined);
@@ -65,7 +80,16 @@ export default function AlertModal(props: NotificationModalProps) {
       .finally(() => {
         setLoading(false);
       });
-  }, [draft, enqueueSnackbar, metric, setDraft]);
+  }, [
+    draft,
+    enqueueSnackbar,
+    lastValueRaw,
+    metric.id,
+    metric.precision,
+    metric.protocol,
+    setDraft,
+    timestamp,
+  ]);
 
   const virtualElement: PopoverVirtualElement | null = useMemo(
     () =>
@@ -132,8 +156,12 @@ export default function AlertModal(props: NotificationModalProps) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" marginBottom={3}>
-            Get a push notification when <b>{metric.title}</b> crosses a certain
-            value.
+            Get a push notification when {metric.title}{" "}
+            {lastValue <= draft.value ? "increases" : "decreases"} from{" "}
+            <b>
+              {formatNumber(lastValue, significantDigits)} {unitLabel}
+            </b>{" "}
+            and reaches the trigger value.
           </DialogContentText>
           <TextField
             autoFocus

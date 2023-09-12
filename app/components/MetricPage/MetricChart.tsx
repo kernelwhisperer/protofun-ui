@@ -465,7 +465,14 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           allowCompactPriceScale={allowCompactPriceScale}
         />
       </animated.div>
-      <AlertModal metric={metric} draft={alertDraft} setDraft={setAlertDraft} />
+      <AlertModal
+        metric={metric}
+        precision={precision}
+        unitLabel={priceUnit}
+        significantDigits={significantDigits}
+        draft={alertDraft}
+        setDraft={setAlertDraft}
+      />
     </>
   );
 }
