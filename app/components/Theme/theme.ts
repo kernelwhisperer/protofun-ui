@@ -127,7 +127,7 @@ export const globalStyles = `
     top: -6px !important;
     right: 0 !important;
     margin-right: 16px;
-    z-index: 2001;
+    z-index: 1999;
   }
 
   .notistack-MuiContent {
@@ -385,9 +385,9 @@ export const themeOptions: CssVarsThemeOptions = {
     fontFamily: RobotoFlexFF,
   },
   zIndex: {
-    menu: 1600,
-    menuButton: 1601,
-    popover: 2000,
+    menu: 2000,
+    menuButton: 2001,
+    popover: 2002,
     title: 1350,
   },
 };

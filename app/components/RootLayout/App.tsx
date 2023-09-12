@@ -6,6 +6,7 @@ import React, { useState } from "react";
 
 import { AppVerProps } from "../../stores/app";
 import { isMobile } from "../../utils/client-utils";
+import { DismissButton } from "../DismissButton";
 import { Header } from "./Header";
 
 interface AppProps extends AppVerProps {
@@ -25,6 +26,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
         vertical: isMobile ? "bottom" : "top",
       }}
       maxSnack={isMobile ? 3 : 6}
+      action={(snackKey) => <DismissButton snackKey={snackKey} />}
     >
       <Header appVer={appVer} gitHash={gitHash} />
       <Container

@@ -44,7 +44,7 @@ export default function NotificationsDialog({
               onClose: toggleOpen,
               open,
               sx: {
-                zIndex: 2000,
+                zIndex: "var(--mui-zIndex-popover)",
               },
               transformOrigin: {
                 horizontal: "right",

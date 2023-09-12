@@ -46,6 +46,9 @@ export function MetricVariantSelector({
           className: "blurred",
         },
         elevation: 0,
+        sx: {
+          zIndex: "var(--mui-zIndex-modal)",
+        },
       }}
     >
       {variants.map(({ label }, index) => (
