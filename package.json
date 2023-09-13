@@ -52,7 +52,7 @@
     "nanostores": "^0.9.2",
     "notistack": "^3.0.1",
     "posthog-js": "^1.75.3",
-    "protofun-service": "http://localhost:3030/protofun-service-0.0.4.tgz",
+    "protofun-service": "https://service.protocol.fun/protofun-service-0.0.5.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
