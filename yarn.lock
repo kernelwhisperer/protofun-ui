@@ -1706,6 +1706,13 @@
     "@types/config" "^3.3.0"
     config "^3.3.9"
 
+"@feathersjs/errors@^4.5.8":
+  version "4.5.17"
+  resolved "https://registry.yarnpkg.com/@feathersjs/errors/-/errors-4.5.17.tgz#be22c87989da8df9e96d5d1c693d14b1e142f19e"
+  integrity sha512-HY1YJV/9d5wKd3RPNaWggOhAX4NmOulr5EvBMMm6jaMizJ7UMRUgZmqyRtuHL4h+u2LoLmWv9+wO3V+uCFoULg==
+  dependencies:
+    debug "^4.3.3"
+
 "@feathersjs/errors@^5.0.8":
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/@feathersjs/errors/-/errors-5.0.8.tgz#4e5f62ce5aa22fdd82cbd6844c346c925de99ceb"
@@ -3837,7 +3844,7 @@ ajv-formats@^2.1.1:
   dependencies:
     ajv "^8.0.0"
 
-ajv@^6.10.0, ajv@^6.12.4:
+ajv@^6.10.0, ajv@^6.12.4, ajv@^6.12.6:
   version "6.12.6"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
   integrity sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==
@@ -4831,6 +4838,13 @@ dataloader@2.2.2, dataloader@^2.2.2:
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.2.2.tgz#216dc509b5abe39d43a9b9d97e6e5e473dfbe3e0"
   integrity sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==
 
+date-fns@^2.30.0:
+  version "2.30.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
+  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
+
 date-time@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/date-time/-/date-time-3.1.0.tgz#0d1e934d170579f481ed8df1e2b8ff70ee845e1e"
@@ -4857,7 +4871,7 @@ debug@3.2.7, debug@^3.1.0, debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-debug@4, debug@4.3.4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4, debug@~4.3.1, debug@~4.3.2:
+debug@4, debug@4.3.4, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4, debug@~4.3.1, debug@~4.3.2:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
@@ -5762,6 +5776,27 @@ fbjs@^3.0.0:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^1.0.35"
+
+feathers-hooks-common@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-8.1.1.tgz#34517b3d07eae813e7b505a13d0c539643119a38"
+  integrity sha512-l33cpzRAjBnX/koyyCdeRY7dFPJBZVRKmN1fR1926S8p3gjS+gq5HE7wIipFcIPLDFKfwE9o2ZU5FlM2eCteXA==
+  dependencies:
+    "@feathersjs/errors" "^5.0.8"
+    ajv "^6.12.6"
+    debug "^4.3.4"
+    graphql "^16.8.0"
+    lodash "^4.17.21"
+    traverse "^0.6.7"
+
+feathers-permissions@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/feathers-permissions/-/feathers-permissions-2.1.4.tgz#66306cf7f50c91329e907a70980e32d137082967"
+  integrity sha512-7z6nBw0FqKQUS31WwRSyXG9LHesCxryVtkhP3L87pvwFB1WeFEMiOwvP4toeYaBmzZ1aFsHDIVECgEIQ9naxtg==
+  dependencies:
+    "@feathersjs/errors" "^4.5.8"
+    debug "^4.2.0"
+    lodash "^4.17.20"
 
 fecha@^4.2.0:
   version "4.2.3"
@@ -7957,9 +7992,9 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-"protofun-service@https://service.protocol.fun/protofun-service-0.0.2.tgz":
-  version "0.0.2"
-  resolved "https://service.protocol.fun/protofun-service-0.0.2.tgz#39e95a4a50f17e7954c09c42897092adfe02a6c9"
+"protofun-service@http://localhost:3030/protofun-service-0.0.4.tgz":
+  version "0.0.3"
+  resolved "http://localhost:3030/protofun-service-0.0.4.tgz#45240af52952dd50b0ca40ed2c07fe83c6f55aad"
   dependencies:
     "@feathersjs/adapter-commons" "^5.0.8"
     "@feathersjs/authentication" "^5.0.8"
@@ -7974,9 +8009,18 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     "@feathersjs/schema" "^5.0.8"
     "@feathersjs/socketio" "^5.0.8"
     "@feathersjs/transport-commons" "^5.0.8"
+    feathers-hooks-common "^8.1.1"
+    feathers-permissions "^2.1.4"
     knex "^2.5.1"
     pg "^8.11.1"
+    protofun "^0.1.6"
+    urql "^4.0.5"
     winston "^3.10.0"
+
+protofun@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.1.6.tgz#f5e34e80da71239dc6f0331516c60f3ce92c817d"
+  integrity sha512-iPt8hcVczlBK/pJ95PEgoJ9vTcyNjE1fxt+2el9nV0czkEYA9j6xQm51nKLtxiEMvOQfQtcNKAz8uSH1BGE/HQ==
 
 proxy-addr@~2.0.7:
   version "2.0.7"
@@ -8906,6 +8950,11 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
+
+traverse@^0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.7.tgz#46961cd2d57dd8706c36664acde06a248f1173fe"
+  integrity sha512-/y956gpUo9ZNCb99YjxG7OaslxZWHfCHAUUfshwqOXmxUIvqLjVO581BT+gM59+QV9tFe6/CGG53tsA1Y7RSdg==
 
 triple-beam@^1.3.0:
   version "1.4.1"

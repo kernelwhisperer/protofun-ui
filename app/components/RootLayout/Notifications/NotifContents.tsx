@@ -3,7 +3,7 @@ import { Box, Chip, Stack, Tab, tabClasses } from "@mui/material"
 import { useStore } from "@nanostores/react"
 import React from "react"
 
-import { $alerts } from "../../../api/alerts-api"
+import { $activeAlerts } from "../../../api/alerts-api"
 import { RobotoMonoFF } from "../../Theme/fonts"
 import { AlertsPanel } from "./AlertsPanel"
 import { NotifPanel } from "./NotifPanel"
@@ -14,7 +14,7 @@ export function NotifContents({ toggleOpen }: any) {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-  const alerts = useStore($alerts)
+  const activeAlerts = useStore($activeAlerts)
 
   return (
     <>
@@ -43,7 +43,7 @@ export function NotifContents({ toggleOpen }: any) {
                 <Stack direction="row" alignItems="center">
                   <span>Alerts</span>
                   <Chip
-                    label={alerts.length}
+                    label={activeAlerts}
                     size="small"
                     disabled
                     sx={{
@@ -60,7 +60,7 @@ export function NotifContents({ toggleOpen }: any) {
           </TabList>
         </Box>
         <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="1">
-          <NotifPanel />
+          <NotifPanel toggleOpen={toggleOpen} />
         </TabPanel>
         <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="2">
           <AlertsPanel toggleOpen={toggleOpen} />

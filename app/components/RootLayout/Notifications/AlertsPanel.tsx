@@ -80,6 +80,7 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
         </Box>
       )}
       <List
+        disablePadding
         sx={(theme) => ({
           [`& .${listItemTextClasses.primary}`]: {
             // fontSize: theme.typography.body2.fontSize,
@@ -97,29 +98,38 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
           const { value, unitLabel, metric } = formatValue(alert)
           const Icon = METRIC_ICONS_MAP[metric.protocol][metric.id]
           const protocol = PROTOCOL_MAP[metric.protocol]
+          const startDatetime = new Date(parseInt(alert.startTimestamp) * 1000)
+          const startDateLabel = new Intl.DateTimeFormat(window.navigator.language, {
+            dateStyle: "medium",
+            hourCycle: "h23",
+            timeStyle: "short",
+          }).format(startDatetime)
 
           return (
             <ListItem
               dense
               key={alert.id}
               secondaryAction={
-                <IconButton
-                  edge="end"
-                  color="inherit"
-                  tabIndex={2}
-                  onClick={() => handleRemove(alert)}
-                >
-                  <ClearOutlined fontSize="small" />
-                </IconButton>
+                alert.paused ? null : (
+                  <IconButton
+                    edge="end"
+                    color="inherit"
+                    tabIndex={2}
+                    onClick={() => handleRemove(alert)}
+                  >
+                    <ClearOutlined fontSize="small" />
+                  </IconButton>
+                )
               }
               disablePadding
-              sx={{ minWidth: 280 }}
+              sx={{ borderBottom: 1, borderColor: "divider", minWidth: 280 }}
             >
               <ListItemButton
                 dense
                 component={Link}
                 href={`/${metric.protocol}/${metric.id}?${searchParams?.toString()}`}
                 onClick={toggleOpen}
+                disabled={alert.paused}
               >
                 <ListItemAvatar>
                   <Badge
@@ -156,16 +166,27 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
                   </Badge>
                 </ListItemAvatar>
                 <ListItemText
+                  primaryTypographyProps={{
+                    fontSize: "0.825rem",
+                    // lineHeight: "1.4",
+                    variant: "body2",
+                  }}
                   primary={
-                    <span>
-                      {metric.title} to cross{" "}
-                      <Typography fontFamily={RobotoMonoFF} variant="body2" component={"span"}>
-                        {value}
+                    <>
+                      {protocol.title}&apos;s {metric.title} <br /> to{" "}
+                      {alert.increase ? "increase" : "decrease"} to{" "}
+                      <Typography
+                        fontWeight={500}
+                        fontFamily={RobotoMonoFF}
+                        variant="body2"
+                        component="span"
+                        fontSize="0.825rem"
+                      >
+                        {value} {unitLabel}
                       </Typography>{" "}
-                      {unitLabel}
-                    </span>
+                    </>
                   }
-                  secondary="Jan 7, 16:50:32"
+                  secondary={startDateLabel}
                 />
               </ListItemButton>
             </ListItem>

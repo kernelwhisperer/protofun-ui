@@ -356,6 +356,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       }
       const primaryColor = theme.palette.primary.main
       findAlertsForMetric(metric.id).forEach((alert) => {
+        if (alert.paused) return
         const line = mainSeries.current?.createPriceLine({
           // LightweightCharts.LineStyle.Dotted,
           axisLabelVisible: true,
@@ -381,6 +382,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     }
     const primaryColor = theme.palette.primary.main
     findAlertsForMetric(metric.id).forEach((alert) => {
+      if (alert.paused) return
       const line = mainSeries.current?.createPriceLine({
         // LightweightCharts.LineStyle.Dotted,
         axisLabelVisible: true,

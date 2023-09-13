@@ -5,14 +5,14 @@ import dynamic from "next/dynamic"
 import React, { useState } from "react"
 import { useBoolean } from "usehooks-ts"
 
-import { $user } from "../../stores/user"
+import { $unreadNotifications } from "../../api/notifications-api"
 
 const NotificationsDialog = dynamic(() => import("./Notifications/NotificationsDialog"))
 
 export default function Notifications() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { value: open, toggle: toggleOpen } = useBoolean(false)
-  const user = useStore($user)
+  const unreadNotifications = useStore($unreadNotifications)
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function Notifications() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
       >
-        <Badge badgeContent={user ? 3 : 0} color="accent" variant="standard">
+        <Badge badgeContent={unreadNotifications} color="accent" variant="standard">
           <NotificationsNoneRounded fontSize="medium" />
         </Badge>
       </IconButton>

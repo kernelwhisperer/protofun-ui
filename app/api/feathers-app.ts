@@ -22,4 +22,4 @@ socket.on("connect_error", () => {
 const app = createClient(socketio(socket))
 app.configure(auth())
 
-export { app }
+export { app, socket }

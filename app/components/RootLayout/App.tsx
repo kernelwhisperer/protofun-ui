@@ -5,7 +5,6 @@ import { SnackbarProvider } from "notistack"
 import React from "react"
 
 import { AppVerProps } from "../../stores/app"
-import { isMobile } from "../../utils/client-utils"
 import { DismissButton } from "../DismissButton"
 import { ConnectionStatus } from "./ConnectionStatus"
 import { Header } from "./Header"
@@ -19,11 +18,11 @@ export function App({ children, appVer, gitHash }: AppProps) {
     <SnackbarProvider
       TransitionComponent={Grow}
       // autoHideDuration={50000000}
-      anchorOrigin={{
-        horizontal: "center",
-        vertical: "bottom",
-      }}
-      maxSnack={isMobile ? 3 : 6}
+      // anchorOrigin={{
+      //   horizontal: "center",
+      //   vertical: "bottom",
+      // }}
+      // maxSnack={isMobile ? 3 : 6}
       action={(snackKey) => <DismissButton snackKey={snackKey} />}
     >
       <Header appVer={appVer} gitHash={gitHash} />

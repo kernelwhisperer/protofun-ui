@@ -28,3 +28,9 @@ After commit & push:
   ```sh
   cd repos/protofun-indexer && docker pull danielconstantin/protofun-ui:latest && make start-graph-node
   ```
+
+## Updating sdks
+
+```sh
+yarn add protofun-service@http://localhost:3030/protofun-service-0.0.4.tgz
+```
