@@ -1,4 +1,4 @@
-import { Dialog, Fade } from "@mui/material"
+import { Dialog } from "@mui/material"
 import React from "react"
 
 import { PopoverToggleProps } from "../../../utils/client-utils"
@@ -33,8 +33,8 @@ export default function NotificationsDialog({
         PaperProps={
           {
             popoverProps: {
-              TransitionComponent: Fade,
-              TransitionProps: {},
+              // TransitionComponent: Fade,
+              // TransitionProps: {},
               anchorEl,
               anchorOrigin: {
                 horizontal: "right",

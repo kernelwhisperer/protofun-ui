@@ -56,7 +56,12 @@ const MenuBackground = forwardRef<HTMLDivElement, MenuBackgroundProps>(function 
   })
 
   return (
-    <Container ref={ref} maxWidth="lg" sx={{ padding: { xs: 0 }, position: "relative" }}>
+    <Container
+      ref={ref}
+      tabIndex={-1}
+      maxWidth="lg"
+      sx={{ padding: { xs: 0 }, position: "relative" }}
+    >
       <AnimatedBox
         sx={{
           backgroundColor: "var(--mui-palette-background-default)",

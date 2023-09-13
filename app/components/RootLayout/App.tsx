@@ -1,12 +1,13 @@
 "use client"
 
-import { Container, Fade, Stack } from "@mui/material"
+import { Container, Grow, Stack } from "@mui/material"
 import { SnackbarProvider } from "notistack"
-import React, { useState } from "react"
+import React from "react"
 
 import { AppVerProps } from "../../stores/app"
 import { isMobile } from "../../utils/client-utils"
 import { DismissButton } from "../DismissButton"
+import { ConnectionStatus } from "./ConnectionStatus"
 import { Header } from "./Header"
 
 interface AppProps extends AppVerProps {
@@ -14,26 +15,24 @@ interface AppProps extends AppVerProps {
 }
 
 export function App({ children, appVer, gitHash }: AppProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
   return (
     <SnackbarProvider
-      domRoot={isMobile ? undefined : (anchorEl as HTMLElement)}
-      TransitionComponent={Fade}
+      TransitionComponent={Grow}
       // autoHideDuration={50000000}
       anchorOrigin={{
-        horizontal: isMobile ? "center" : "right",
-        vertical: isMobile ? "bottom" : "top",
+        horizontal: "center",
+        vertical: "bottom",
       }}
       maxSnack={isMobile ? 3 : 6}
       action={(snackKey) => <DismissButton snackKey={snackKey} />}
     >
       <Header appVer={appVer} gitHash={gitHash} />
-      <Container ref={setAnchorEl} maxWidth="lg" sx={{ padding: { xs: 0 }, position: "relative" }}>
+      <Container maxWidth="lg" sx={{ padding: { xs: 0 }, position: "relative" }}>
         <Stack>
           {/* TODO: https://github.com/vercel/next.js/issues/49279 */}
           {children}
         </Stack>
+        <ConnectionStatus />
         {/* <svg
           style={{
             opacity: 0,

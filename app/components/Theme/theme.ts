@@ -123,10 +123,6 @@ export const globalStyles = `
   }
 
   .notistack-SnackbarContainer {
-    position: absolute !important;
-    top: -6px !important;
-    right: 0 !important;
-    margin-right: 16px;
     z-index: 1999;
   }
 
