@@ -59,7 +59,10 @@ export function NotifContents({ toggleOpen }: any) {
             ></Tab>
           </TabList>
         </Box>
-        <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="1">
+        <TabPanel
+          sx={{ height: "100%", overflow: "auto", padding: 0, position: "relative" }}
+          value="1"
+        >
           <NotifPanel toggleOpen={toggleOpen} />
         </TabPanel>
         <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="2">

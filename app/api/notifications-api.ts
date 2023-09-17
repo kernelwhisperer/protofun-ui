@@ -25,7 +25,7 @@ export async function archiveNotification(notification: Notification) {
 
 function handleCreated(notification: Notification) {
   // console.log("📜 LOG > app.service > notification created:", notification)
-  $notifications.set([...$notifications.get(), notification])
+  $notifications.set([notification, ...$notifications.get()])
 }
 
 function handlePatched(notification: Notification) {

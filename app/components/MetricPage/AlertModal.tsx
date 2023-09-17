@@ -1,6 +1,7 @@
 import { AddRounded, CloseRounded, RemoveRounded } from "@mui/icons-material"
 import { LoadingButton, loadingButtonClasses } from "@mui/lab"
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,13 +16,16 @@ import {
 } from "@mui/material"
 import { useStore } from "@nanostores/react"
 import Decimal from "decimal.js"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
 import React, { useCallback, useMemo, useRef, useState } from "react"
 
 import { createAlert } from "../../api/alerts-api"
 import { $entryMap, $legendTimestamp, Metric } from "../../stores/metrics"
+import { $user } from "../../stores/user"
 import { AlertDraft } from "../../utils/alert-utils"
-import { formatNumber, logError } from "../../utils/client-utils"
+import { formatNumber, isMobile, logError, wait } from "../../utils/client-utils"
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper"
 import { RobotoMonoFF } from "../Theme/fonts"
 
@@ -44,6 +48,8 @@ export default function AlertModal(props: NotificationModalProps) {
 
   const timestamp = useStore($legendTimestamp)
   const entryMap = useStore($entryMap)
+  const searchParams = useSearchParams()
+  const user = useStore($user)
 
   const entry: any = entryMap[timestamp]
   const lastValueRaw: string = entry?.close || entry?.baseFeePerGas || "0"
@@ -67,8 +73,15 @@ export default function AlertModal(props: NotificationModalProps) {
       triggerValue: String(draft.value * metric.precision),
     } as any)
       .then(() => {
-        enqueueSnackbar("Alert created")
+        enqueueSnackbar("Alert created.")
         setDraft(undefined)
+        return wait(2000)
+      })
+      .then(() => Notification.requestPermission())
+      .then((result) => {
+        if (result === "denied") {
+          enqueueSnackbar("Push notifications denied.", { variant: "error" })
+        }
       })
       .catch((error: Error) => {
         logError(error)
@@ -155,7 +168,7 @@ export default function AlertModal(props: NotificationModalProps) {
             and reaches the trigger value.
           </DialogContentText>
           <TextField
-            autoFocus
+            autoFocus={!isMobile}
             size="medium"
             inputRef={inputRef}
             InputProps={{
@@ -225,22 +238,34 @@ export default function AlertModal(props: NotificationModalProps) {
           />
         </DialogContent>
         <DialogActions>
-          <LoadingButton
-            loading={loading}
-            onClick={handleSubmit}
-            color="accent"
-            variant="contained"
-            sx={{
-              [`&.${loadingButtonClasses.root}`]: {
-                bgcolor: loading ? "var(--mui-palette-background-disabled)" : undefined,
-              },
-              [`& .${loadingButtonClasses.loadingIndicator}`]: {
-                color: "var(--mui-palette-secondary-main)",
-              },
-            }}
-          >
-            Create alert
-          </LoadingButton>
+          {user ? (
+            <LoadingButton
+              loading={loading}
+              onClick={handleSubmit}
+              color="accent"
+              variant="contained"
+              sx={{
+                [`&.${loadingButtonClasses.root}`]: {
+                  bgcolor: loading ? "var(--mui-palette-background-disabled)" : undefined,
+                },
+                [`& .${loadingButtonClasses.loadingIndicator}`]: {
+                  color: "var(--mui-palette-secondary-main)",
+                },
+              }}
+            >
+              Create alert
+            </LoadingButton>
+          ) : (
+            <Button
+              sx={{ minWidth: "90px !important" }}
+              color="accent"
+              variant="contained"
+              component={Link}
+              href={`/login?${searchParams?.toString()}`}
+            >
+              Login
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </>

@@ -1,4 +1,4 @@
-import { ClearOutlined } from "@mui/icons-material"
+import { ClearOutlined, SvgIconComponent } from "@mui/icons-material"
 import {
   Avatar,
   avatarClasses,
@@ -56,7 +56,7 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
     (alert: Alert) => {
       removeAlert(alert)
         .then(() => {
-          enqueueSnackbar("Alert deleted")
+          enqueueSnackbar("Alert deleted.")
         })
         .catch((error: Error) => {
           logError(error)
@@ -96,7 +96,7 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
       >
         {alerts.map((alert) => {
           const { value, unitLabel, metric } = formatValue(alert)
-          const Icon = METRIC_ICONS_MAP[metric.protocol][metric.id]
+          const Icon = METRIC_ICONS_MAP[metric.protocol]?.[metric.id] as SvgIconComponent
           const protocol = PROTOCOL_MAP[metric.protocol]
           const startDatetime = new Date(parseInt(alert.startTimestamp) * 1000)
           const startDateLabel = new Intl.DateTimeFormat(window.navigator.language, {

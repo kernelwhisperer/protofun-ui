@@ -6,7 +6,7 @@ import { PopoverPaper, PopoverPaperProps } from "../../PopoverPaper"
 import { NotifContents } from "../Notifications/NotifContents"
 
 const DIALOG_WIDTH = 380
-const DIALOG_HEIGHT = 500
+const DIALOG_HEIGHT = 600
 
 export default function NotificationsDialog({
   anchorEl,
@@ -21,7 +21,6 @@ export default function NotificationsDialog({
         onClose={toggleOpen}
         aria-labelledby="notif-dialog-title"
         aria-describedby="notif-dialog-description"
-        hideBackdrop
         sx={{
           zIndex: "var(--mui-zIndex-popover)",
         }}
@@ -33,8 +32,6 @@ export default function NotificationsDialog({
         PaperProps={
           {
             popoverProps: {
-              // TransitionComponent: Fade,
-              // TransitionProps: {},
               anchorEl,
               anchorOrigin: {
                 horizontal: "right",
@@ -46,17 +43,14 @@ export default function NotificationsDialog({
               sx: {
                 zIndex: "var(--mui-zIndex-popover)",
               },
-              transformOrigin: {
-                horizontal: "right",
-                vertical: "top",
-              },
             },
             sx: {
               background: "var(--mui-palette-secondary-main)",
               border: "1px solid var(--mui-palette-TableCell-border)",
               height: DIALOG_HEIGHT,
               margin: 0,
-              width: `min(calc(100vw - 16px), ${DIALOG_WIDTH}px) !important`,
+              marginTop: 2,
+              width: `min(calc(100vw - 32px), ${DIALOG_WIDTH}px) !important`,
             },
           } as PopoverPaperProps
         }

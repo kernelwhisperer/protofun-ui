@@ -31,7 +31,7 @@ export function findAlertsForMetric(metricId: MetricId) {
 
 function handleCreated(alert: Alert) {
   // console.log("📜 LOG > app.service > alert created:", alert)
-  $alerts.set([...$alerts.get(), alert])
+  $alerts.set([alert, ...$alerts.get()])
 }
 
 function handlePatched(alert: Alert) {

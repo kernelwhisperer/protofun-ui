@@ -18,10 +18,10 @@ export function App({ children, appVer, gitHash }: AppProps) {
     <SnackbarProvider
       TransitionComponent={Grow}
       // autoHideDuration={50000000}
-      // anchorOrigin={{
-      //   horizontal: "center",
-      //   vertical: "bottom",
-      // }}
+      anchorOrigin={{
+        horizontal: "center",
+        vertical: "bottom",
+      }}
       // maxSnack={isMobile ? 3 : 6}
       action={(snackKey) => <DismissButton snackKey={snackKey} />}
     >

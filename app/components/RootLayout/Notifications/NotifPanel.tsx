@@ -1,6 +1,8 @@
+import { NotificationsNoneRounded } from "@mui/icons-material"
 import {
   avatarClasses,
   Box,
+  Button,
   List,
   ListItem,
   listItemAvatarClasses,
@@ -15,7 +17,7 @@ import Decimal from "decimal.js"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
-import { Notification } from "protofun-service"
+import { Notification as NotificationShape } from "protofun-service"
 import React, { useCallback, useEffect } from "react"
 
 import { Alert } from "../../../api/alerts-api"
@@ -50,7 +52,7 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
   const searchParams = useSearchParams()
 
   const handleClick = useCallback(
-    (notification: Notification) => {
+    (notification: NotificationShape) => {
       toggleOpen()
       archiveNotification(notification).catch((error: Error) => {
         logError(error)
@@ -61,10 +63,26 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
     },
     [enqueueSnackbar, toggleOpen]
   )
+  const handleTestNotification = useCallback(() => {
+    Notification.requestPermission().then((result) => {
+      if (result === "denied") {
+        enqueueSnackbar("Push notifications denied.", { variant: "error" })
+      } else {
+        const _pushNotification = new Notification("Test notification", {
+          body: "This is a test notification sent from protocol.fun.",
+          // icon: notifImg,
+        })
+      }
+    })
+  }, [enqueueSnackbar])
 
   useEffect(() => {
-    function handleCreated(notification: Notification) {
+    function handleCreated(notification: NotificationShape) {
       enqueueSnackbar(notification.text)
+      const _pushNotification = new Notification(notification.text, {
+        body: notification.text,
+        // icon: notifImg,
+      })
     }
 
     function setup() {
@@ -164,6 +182,23 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
           )
         })}
       </List>
+      <Button
+        sx={{
+          "&:not(:hover)": {
+            opacity: 0.5,
+          },
+          background: "var(--mui-palette-secondary-main)",
+          bottom: 0,
+          position: "absolute",
+          width: "100%",
+        }}
+        size="small"
+        fullWidth
+        endIcon={<NotificationsNoneRounded fontSize="small" />}
+        onClick={handleTestNotification}
+      >
+        Send a test notification
+      </Button>
     </>
   )
 }
