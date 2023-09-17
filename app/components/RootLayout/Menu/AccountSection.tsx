@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import React, { useCallback, useEffect, useState } from "react"
 
-import { checkLogin, logout } from "../../../api/auth"
+import { checkLogin, logout } from "../../../api/users-api"
 import { $loopsAllowed } from "../../../stores/app"
 import { $user } from "../../../stores/user"
 import { PopoverToggleProps } from "../../../utils/client-utils"

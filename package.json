@@ -3,6 +3,9 @@
   "version": "0.3.0",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  },
   "author": {
     "name": "Daniel Constantin",
     "email": "hello@danielconstantin.net"

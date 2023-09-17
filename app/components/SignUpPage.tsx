@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
 import React, { FormEvent, useCallback, useEffect, useState } from "react"
 
-import { signUp } from "../api/auth"
+import { signUp } from "../api/users-api"
 import { PageTitle } from "../components/PageTitle"
 import { StaggeredList } from "../components/StaggeredList"
 import { RobotoMonoFF } from "../components/Theme/fonts"

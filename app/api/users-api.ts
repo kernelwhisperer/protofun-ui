@@ -34,6 +34,18 @@ export async function signUp(email: string, password: string) {
   await login(email, password)
 }
 
+export async function patchPushSubscription(subscription: PushSubscription) {
+  const user = $user.get()
+  if (!user?.id) {
+    throw new Error("Login to use notifications.")
+  }
+
+  await app.service("users").patch(user.id, {
+    googleId: JSON.stringify(subscription),
+    // subscription,
+  })
+}
+
 app.on("login", ({ user }) => {
   if (window.location.toString().includes("localhost")) {
     return

@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
 import React, { FormEvent, useCallback, useEffect, useState } from "react"
 
-import { login } from "../api/auth"
+import { login } from "../api/users-api"
 import { $user } from "../stores/user"
 import { logError } from "../utils/client-utils"
 import { PageTitle } from "./PageTitle"

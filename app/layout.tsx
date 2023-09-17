@@ -4,6 +4,7 @@ import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider"
 import { App } from "./components/RootLayout/App"
 import { PageChangeListener } from "./components/RootLayout/PageChangeListener"
 import { SentryProvider } from "./components/RootLayout/SentryProvider"
+import { WebPushProvider } from "./components/RootLayout/WebPushProvider"
 import ThemeProvider from "./components/Theme/ThemeProvider"
 
 export const metadata = {
@@ -14,6 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const appVer = (process.env.NEXT_PUBLIC_APP_VER as string).replaceAll('"', "")
   const gitHash = process.env.NEXT_PUBLIC_GIT_HASH as string
+  const pushPubKey = process.env.NEXT_PUBLIC_PUSH_PUB_KEY as string
 
   return (
     <html lang="en">
@@ -36,11 +38,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AnalyticsProvider appVer={appVer} gitHash={gitHash}>
           <SentryProvider appVer={appVer} gitHash={gitHash}>
-            <ThemeProvider>
-              <App appVer={appVer} gitHash={gitHash}>
-                {children}
-              </App>
-            </ThemeProvider>
+            <WebPushProvider pushPubKey={pushPubKey}>
+              <ThemeProvider>
+                <App appVer={appVer} gitHash={gitHash}>
+                  {children}
+                </App>
+              </ThemeProvider>
+            </WebPushProvider>
           </SentryProvider>
           <PageChangeListener />
         </AnalyticsProvider>

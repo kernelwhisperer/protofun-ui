@@ -80,7 +80,7 @@ export default function AlertModal(props: NotificationModalProps) {
       .then(() => Notification.requestPermission())
       .then((result) => {
         if (result === "denied") {
-          enqueueSnackbar("Push notifications denied.", { variant: "error" })
+          enqueueSnackbar("Push notifications not permitted.", { variant: "error" })
         }
       })
       .catch((error: Error) => {
