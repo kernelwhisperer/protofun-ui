@@ -1,6 +1,7 @@
 "use client"
 
 import { AnimationConfig, config } from "@react-spring/web"
+import { atom } from "nanostores"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
@@ -57,6 +58,8 @@ export interface PopoverToggleProps {
   open: boolean
   toggleOpen: () => void
 }
+
+export const $serviceWorker = atom<ServiceWorkerRegistration | undefined>()
 
 export function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)

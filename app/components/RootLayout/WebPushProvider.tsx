@@ -1,9 +1,11 @@
 "use client"
 
+import { useStore } from "@nanostores/react"
 import { useEffect } from "react"
 
 import { patchPushSubscription } from "../../api/users-api"
-import { urlBase64ToUint8Array } from "../../utils/client-utils"
+import { $user } from "../../stores/user"
+import { $serviceWorker, urlBase64ToUint8Array } from "../../utils/client-utils"
 
 interface WebPushProviderProps {
   children: React.ReactNode
@@ -11,6 +13,9 @@ interface WebPushProviderProps {
 }
 
 export function WebPushProvider({ children, pushPubKey }: WebPushProviderProps) {
+  const serviceWorker = useStore($serviceWorker)
+  const user = useStore($user)
+
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       console.log("SW start")
@@ -18,13 +23,7 @@ export function WebPushProvider({ children, pushPubKey }: WebPushProviderProps) 
         .register("/service-worker.js")
         .then((registration) => {
           console.log("SW registered: ", registration)
-          const convertedVapidKey = urlBase64ToUint8Array(pushPubKey)
-          registration.pushManager
-            .subscribe({
-              applicationServerKey: convertedVapidKey,
-              userVisibleOnly: true,
-            })
-            .then(patchPushSubscription)
+          $serviceWorker.set(registration)
         })
         .catch((registrationError) => {
           console.log("SW registration failed: ", registrationError)
@@ -34,6 +33,18 @@ export function WebPushProvider({ children, pushPubKey }: WebPushProviderProps) 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!serviceWorker || !user) return
+
+    const convertedVapidKey = urlBase64ToUint8Array(pushPubKey)
+    serviceWorker.pushManager
+      .subscribe({
+        applicationServerKey: convertedVapidKey,
+        userVisibleOnly: true,
+      })
+      .then(patchPushSubscription)
+  }, [pushPubKey, serviceWorker, user])
 
   return children
 }
