@@ -1,9 +1,9 @@
 import { SvgIconComponent } from "@mui/icons-material"
 
-import AaveIcon from "../components/HomePage/assets/aave.svg"
-import CompIcon from "../components/HomePage/assets/compound.svg"
-import EthereumIcon from "../components/HomePage/assets/ethereum.svg"
-import MakerIcon from "../components/HomePage/assets/maker.svg"
+import AaveIcon from "../../public/assets/aave.svg"
+import CompIcon from "../../public/assets/comp.svg"
+import EthereumIcon from "../../public/assets/eth.svg"
+import MakerIcon from "../../public/assets/mkr.svg"
 import { ProtocolId } from "./metric-declarations"
 
 export type { ProtocolId }

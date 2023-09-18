@@ -68,6 +68,7 @@ export enum PriceUnit {
 
 export type Metric = {
   allowCompactPriceScale?: boolean
+  disallowAlerts?: boolean
   disallowCandleType?: boolean
   disallowLiveMode?: boolean
   iconPadding?: string
@@ -94,6 +95,7 @@ export const METRICS_MAP: MetricsMapType = {
   comp: {
     tvl: {
       allowCompactPriceScale: true,
+      disallowAlerts: true,
       disallowCandleType: true,
       disallowLiveMode: true,
       iconPadding: "16px",
@@ -122,6 +124,7 @@ export const METRICS_MAP: MetricsMapType = {
       title: "Base fee per gas",
     },
     eth_price: {
+      disallowAlerts: true,
       iconPadding: "16px",
       id: "eth_price",
       precision: 1,
@@ -135,6 +138,7 @@ export const METRICS_MAP: MetricsMapType = {
       title: "Ether price",
     },
     tx_cost: {
+      disallowAlerts: true,
       iconPadding: "16px",
       id: "tx_cost",
       precision: 1,

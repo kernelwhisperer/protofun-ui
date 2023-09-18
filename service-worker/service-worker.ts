@@ -39,6 +39,8 @@ worker.addEventListener("notificationclick", (event) => {
 
 worker.addEventListener("install", (event) => {
   console.log("📜 LOG > worker.addEventListener install> event:", event)
+  // TODO: would be better to tap for reload
+  worker.skipWaiting()
   // Cached assets logic
 })
 

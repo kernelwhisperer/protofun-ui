@@ -63,6 +63,8 @@ export function Login() {
             label="Email address"
             autoComplete="email"
             name="email"
+            required
+            type="email"
           />
           <TextField
             sx={{ minWidth: 260 }}
@@ -71,6 +73,11 @@ export function Login() {
             type="password"
             autoComplete="current-password"
             name="pass"
+            required
+            inputProps={{
+              pattern: ".{6,}",
+              title: "Must have at least 6 characters.",
+            }}
           />
           <LoadingButton loading={loading} type="submit" color="accent" variant="contained">
             Login

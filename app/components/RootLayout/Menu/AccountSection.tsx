@@ -1,9 +1,10 @@
 import { AccountCircleRounded } from "@mui/icons-material"
 import { Avatar, Box, Button, ButtonGroup, Stack, Typography } from "@mui/material"
 import { useStore } from "@nanostores/react"
+import md5 from "md5"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 
 import { checkLogin, logout } from "../../../api/users-api"
 import { $loopsAllowed } from "../../../stores/app"
@@ -37,12 +38,18 @@ export function AccountSection({ toggleOpen }: Pick<PopoverToggleProps, "toggleO
     checkLogin()
   }, [])
 
+  const gravatar = useMemo(
+    () => (user?.email ? `https://www.gravatar.com/avatar/${md5(user.email)}` : undefined),
+    [user?.email]
+  )
+
   return (
     <>
       <Stack direction="row" alignItems="center">
         {user ? (
           <Avatar
-          // sx={{ fontSize: "0.8rem", height: 24, width: 24 }}
+            // sx={{ fontSize: "0.8rem", height: 24, width: 24 }}
+            src={gravatar}
           >
             {user.email[0].toUpperCase()}
           </Avatar>

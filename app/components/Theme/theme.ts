@@ -271,6 +271,10 @@ export const themeOptions: CssVarsThemeOptions = {
             // transform: "translateY(0px)",
             // transform: "scale(.95)",
           },
+          "&:disabled": {
+            cursor: "not-allowed",
+            pointerEvents: "auto",
+          },
           "&:hover:not(:active)": {
             transform: "translateY(-1px)",
             // transform: "scale(1.05)",

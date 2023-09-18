@@ -2,6 +2,7 @@ import { AddRounded, CloseRounded, RemoveRounded } from "@mui/icons-material"
 import { LoadingButton, loadingButtonClasses } from "@mui/lab"
 import {
   Button,
+  buttonClasses,
   Dialog,
   DialogActions,
   DialogContent,
@@ -241,6 +242,7 @@ export default function AlertModal(props: NotificationModalProps) {
           {user ? (
             <LoadingButton
               loading={loading}
+              disabled={metric.disallowAlerts}
               onClick={handleSubmit}
               color="accent"
               variant="contained"
@@ -248,12 +250,16 @@ export default function AlertModal(props: NotificationModalProps) {
                 [`&.${loadingButtonClasses.root}`]: {
                   bgcolor: loading ? "var(--mui-palette-background-disabled)" : undefined,
                 },
+                [`&.${buttonClasses.disabled}`]: {
+                  bgcolor: "var(--mui-palette-background-disabled)",
+                  color: "var(--mui-palette-secondary-main)",
+                },
                 [`& .${loadingButtonClasses.loadingIndicator}`]: {
                   color: "var(--mui-palette-secondary-main)",
                 },
               }}
             >
-              Create alert
+              {metric.disallowAlerts ? "Alerts are WIP for this metric" : "Create alert"}
             </LoadingButton>
           ) : (
             <Button

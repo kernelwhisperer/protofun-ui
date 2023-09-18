@@ -63,6 +63,8 @@ export function SignUp() {
             label="Email address"
             autoComplete="email"
             name="email"
+            required
+            type="email"
           />
           <TextField
             sx={{ minWidth: 260 }}
@@ -71,6 +73,11 @@ export function SignUp() {
             type="password"
             autoComplete="new-password"
             name="pass"
+            required
+            inputProps={{
+              pattern: ".{6,}",
+              title: "Must have at least 6 characters.",
+            }}
           />
           <LoadingButton loading={loading} type="submit" color="accent" variant="contained">
             Sign up
