@@ -34,7 +34,7 @@ export async function signUp(email: string, password: string) {
   await login(email, password)
 }
 
-export async function patchPushSubscription(subscription: PushSubscription) {
+export async function patchPushSubscription(subscription: PushSubscription | null) {
   const user = $user.get()
   if (!user?.id) {
     throw new Error("Login to use notifications.")

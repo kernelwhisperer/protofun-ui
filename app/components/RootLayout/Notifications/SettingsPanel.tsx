@@ -8,6 +8,7 @@ import { createNotification } from "../../../api/notifications-api"
 import { $user } from "../../../stores/user"
 import {
   $pushSubscription,
+  disableWebPush,
   enableWebPush,
   logError,
   PopoverToggleProps,
@@ -36,12 +37,27 @@ export function SettingsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOp
     }
 
     if (!pushSubscription) {
-      enableWebPush().catch((error: Error) => {
-        logError(error)
-        enqueueSnackbar(`Error: ${error.message}`, {
-          variant: "error",
+      enableWebPush()
+        .then(() => {
+          enqueueSnackbar("Push notifications enabled", { variant: "success" })
         })
-      })
+        .catch((error: Error) => {
+          logError(error)
+          enqueueSnackbar(`Error: ${error.message}`, {
+            variant: "error",
+          })
+        })
+    } else {
+      disableWebPush()
+        .then(() => {
+          enqueueSnackbar("Push notifications disabled", { variant: "success" })
+        })
+        .catch((error: Error) => {
+          logError(error)
+          enqueueSnackbar(`Error: ${error.message}`, {
+            variant: "error",
+          })
+        })
     }
   }, [enqueueSnackbar, pushSubscription, user])
 

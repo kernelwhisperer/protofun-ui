@@ -94,3 +94,12 @@ export async function enableWebPush() {
 
   await patchPushSubscription(subscription)
 }
+
+export async function disableWebPush() {
+  const pushSubscription = $pushSubscription.get()
+
+  const unsub = await pushSubscription?.unsubscribe()
+  console.log("📜 LOG > disableWebPush > unsub:", unsub)
+
+  await patchPushSubscription(null)
+}
