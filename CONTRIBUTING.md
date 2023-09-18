@@ -7,6 +7,8 @@ After commit & push:
 1. Bump
 
   ```sh
+  # Update sdk if needed
+  #
   yarn version
   ```
 
@@ -14,7 +16,6 @@ After commit & push:
 
   ```sh
   # Update NEXT_PUBLIC_PROTOFUN_SERVICE in .env.local
-  # Update sdk if needed
   #
   yarn docker:build
   yarn docker:run # to test

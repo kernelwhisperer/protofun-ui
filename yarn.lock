@@ -8019,9 +8019,9 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-"protofun-service@http://localhost:3030/protofun-service-0.1.1.tgz":
-  version "0.1.1"
-  resolved "http://localhost:3030/protofun-service-0.1.1.tgz#4eccf8adccaa229282c4adfca034f537f0fe6984"
+"protofun-service@https://service.protocol.fun/protofun-service-0.1.2.tgz":
+  version "0.1.2"
+  resolved "https://service.protocol.fun/protofun-service-0.1.2.tgz#8b6cb2d2cd1fd9d2bf0883b370fd5121c3a9ffb6"
   dependencies:
     "@feathersjs/adapter-commons" "^5.0.8"
     "@feathersjs/authentication" "^5.0.8"
