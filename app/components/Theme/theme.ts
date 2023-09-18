@@ -8,6 +8,12 @@ declare module "@mui/material/Button" {
   }
 }
 
+declare module "@mui/material/Badge" {
+  interface BadgePropsColorOverrides {
+    accent: true
+  }
+}
+
 declare module "@mui/material" {
   interface TypeBackground {
     backdrop: string

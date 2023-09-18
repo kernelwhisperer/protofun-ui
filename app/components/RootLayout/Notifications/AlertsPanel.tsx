@@ -145,7 +145,8 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
                           width: 28,
                         }}
                       >
-                        <Icon fontSize={"1.25rem"} />
+                        {/* TODO */}
+                        <Icon fontSize={"1.25rem" as "small"} />
                       </Avatar>
                     }
                   >

@@ -151,7 +151,7 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
             )
           }
 
-          const { value, unitLabel, metric } = formatValue(alert)
+          const { value, unitLabel, metric } = formatValue(alert as Alert) // TODO
           const protocol = PROTOCOL_MAP[metric.protocol]
 
           return (
