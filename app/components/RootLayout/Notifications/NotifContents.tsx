@@ -1,3 +1,4 @@
+import { Settings } from "@mui/icons-material"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { Box, Chip, Stack, Tab, tabClasses } from "@mui/material"
 import { useStore } from "@nanostores/react"
@@ -7,6 +8,7 @@ import { $activeAlerts } from "../../../api/alerts-api"
 import { RobotoMonoFF } from "../../Theme/fonts"
 import { AlertsPanel } from "./AlertsPanel"
 import { NotifPanel } from "./NotifPanel"
+import { SettingsPanel } from "./SettingsPanel"
 
 export function NotifContents({ toggleOpen }: any) {
   const [value, setValue] = React.useState("1")
@@ -42,31 +44,34 @@ export function NotifContents({ toggleOpen }: any) {
               label={
                 <Stack direction="row" alignItems="center">
                   <span>Alerts</span>
-                  <Chip
-                    label={activeAlerts}
-                    size="small"
-                    disabled
-                    sx={{
-                      display: "inline-flex",
-                      fontFamily: RobotoMonoFF,
-                      letterSpacing: 1,
-                      marginLeft: 1,
-                    }}
-                  />
+                  {activeAlerts > 0 && (
+                    <Chip
+                      label={activeAlerts}
+                      size="small"
+                      disabled
+                      sx={{
+                        display: "inline-flex",
+                        fontFamily: RobotoMonoFF,
+                        letterSpacing: 1,
+                        marginLeft: 1,
+                      }}
+                    />
+                  )}
                 </Stack>
               }
               value="2"
-            ></Tab>
+            />
+            <Tab label={<Settings fontSize="small" />} value="3" />
           </TabList>
         </Box>
-        <TabPanel
-          sx={{ height: "100%", overflow: "auto", padding: 0, position: "relative" }}
-          value="1"
-        >
+        <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="1">
           <NotifPanel toggleOpen={toggleOpen} />
         </TabPanel>
         <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="2">
           <AlertsPanel toggleOpen={toggleOpen} />
+        </TabPanel>
+        <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="3">
+          <SettingsPanel toggleOpen={toggleOpen} />
         </TabPanel>
       </TabContext>
     </>

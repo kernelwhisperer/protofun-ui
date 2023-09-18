@@ -4,7 +4,7 @@ import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider"
 import { App } from "./components/RootLayout/App"
 import { PageChangeListener } from "./components/RootLayout/PageChangeListener"
 import { SentryProvider } from "./components/RootLayout/SentryProvider"
-import { WebPushProvider } from "./components/RootLayout/WebPushProvider"
+import { ServiceWorkerProvider } from "./components/RootLayout/ServiceWorkerProvider"
 import ThemeProvider from "./components/Theme/ThemeProvider"
 
 export const metadata = {
@@ -38,13 +38,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AnalyticsProvider appVer={appVer} gitHash={gitHash}>
           <SentryProvider appVer={appVer} gitHash={gitHash}>
-            <WebPushProvider pushPubKey={pushPubKey}>
+            <ServiceWorkerProvider pushPubKey={pushPubKey}>
               <ThemeProvider>
                 <App appVer={appVer} gitHash={gitHash}>
                   {children}
                 </App>
               </ThemeProvider>
-            </WebPushProvider>
+            </ServiceWorkerProvider>
           </SentryProvider>
           <PageChangeListener />
         </AnalyticsProvider>

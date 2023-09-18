@@ -25,7 +25,7 @@ import { createAlert } from "../../api/alerts-api"
 import { $entryMap, $legendTimestamp, Metric } from "../../stores/metrics"
 import { $user } from "../../stores/user"
 import { AlertDraft } from "../../utils/alert-utils"
-import { formatNumber, isMobile, logError, wait } from "../../utils/client-utils"
+import { enableWebPush, formatNumber, isMobile, logError, wait } from "../../utils/client-utils"
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper"
 import { RobotoMonoFF } from "../Theme/fonts"
 
@@ -77,12 +77,12 @@ export default function AlertModal(props: NotificationModalProps) {
         setDraft(undefined)
         return wait(2000)
       })
-      .then(() => Notification.requestPermission())
-      .then((result) => {
-        if (result === "denied") {
-          enqueueSnackbar("Push notifications not permitted.", { variant: "error" })
-        }
-      })
+      .then(enableWebPush)
+      // .then((result) => {
+      //   if (result === "denied") {
+      //     enqueueSnackbar("Push notifications not permitted.", { variant: "error" })
+      //   }
+      // })
       .catch((error: Error) => {
         logError(error)
         enqueueSnackbar(`Error: ${error.message}`, {

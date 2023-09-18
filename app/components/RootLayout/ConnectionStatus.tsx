@@ -31,6 +31,7 @@ export function ConnectionStatus() {
           maxWidth: 1200,
           position: "fixed",
           width: "100%",
+          // marginX: 2
         }}
         alignItems="center"
       >

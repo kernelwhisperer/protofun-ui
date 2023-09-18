@@ -1,4 +1,4 @@
-import { alpha, CssVarsThemeOptions, Fade } from "@mui/material"
+import { alpha, CssVarsThemeOptions, darken, Fade, lighten } from "@mui/material"
 
 import { RobotoFlexFF } from "./fonts"
 
@@ -167,6 +167,9 @@ export const themeOptions: CssVarsThemeOptions = {
         Avatar: {
           defaultBg: RETRO_BEIGE_2,
         },
+        Switch: {
+          defaultColor: lighten(RETRO_GREY, 0.5),
+        },
         TableCell: {
           border: alpha(RETRO_BEIGE_2, 0.33),
         },
@@ -199,6 +202,9 @@ export const themeOptions: CssVarsThemeOptions = {
       palette: {
         Avatar: {
           defaultBg: RETRO_GREY,
+        },
+        Switch: {
+          defaultColor: darken(RETRO_BEIGE_1, 0.1),
         },
         TableCell: {
           border: alpha(RETRO_GREY, 0.33),

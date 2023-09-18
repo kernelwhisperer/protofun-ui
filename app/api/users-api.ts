@@ -39,10 +39,8 @@ export async function patchPushSubscription(subscription: PushSubscription) {
   if (!user?.id) {
     throw new Error("Login to use notifications.")
   }
-
   await app.service("users").patch(user.id, {
-    googleId: JSON.stringify(subscription),
-    // subscription,
+    webpush: JSON.stringify(subscription),
   })
 }
 

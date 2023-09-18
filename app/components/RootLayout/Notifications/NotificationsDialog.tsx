@@ -1,7 +1,7 @@
 import { Dialog } from "@mui/material"
 import React from "react"
 
-import { PopoverToggleProps } from "../../../utils/client-utils"
+import { isMobile, PopoverToggleProps } from "../../../utils/client-utils"
 import { PopoverPaper, PopoverPaperProps } from "../../PopoverPaper"
 import { NotifContents } from "../Notifications/NotifContents"
 
@@ -24,6 +24,7 @@ export default function NotificationsDialog({
         sx={{
           zIndex: "var(--mui-zIndex-popover)",
         }}
+        hideBackdrop={!isMobile}
         slotProps={{
           backdrop: {
             className: "blurred",
@@ -49,7 +50,7 @@ export default function NotificationsDialog({
               border: "1px solid var(--mui-palette-TableCell-border)",
               height: DIALOG_HEIGHT,
               margin: 0,
-              marginTop: 2,
+              marginTop: isMobile ? 2 : 1,
               width: `min(calc(100vw - 32px), ${DIALOG_WIDTH}px) !important`,
             },
           } as PopoverPaperProps

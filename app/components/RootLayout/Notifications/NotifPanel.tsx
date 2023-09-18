@@ -1,8 +1,6 @@
-import { NotificationsNoneRounded } from "@mui/icons-material"
 import {
   avatarClasses,
   Box,
-  Button,
   List,
   ListItem,
   listItemAvatarClasses,
@@ -20,16 +18,11 @@ import { useSnackbar } from "notistack"
 import { Notification as NotificationShape } from "protofun-service"
 import React, { useCallback, useEffect } from "react"
 
-import { $alerts, Alert } from "../../../api/alerts-api"
+import { Alert } from "../../../api/alerts-api"
 import { app, socket } from "../../../api/feathers-app"
-import {
-  $notifications,
-  archiveNotification,
-  createNotification,
-} from "../../../api/notifications-api"
+import { $notifications, archiveNotification } from "../../../api/notifications-api"
 import { METRICS_MAP } from "../../../stores/metrics"
 import { PROTOCOL_MAP } from "../../../stores/protocols"
-import { $user } from "../../../stores/user"
 import { formatNumber, logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
 
@@ -55,7 +48,6 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
   const { enqueueSnackbar } = useSnackbar()
   const notifications = useStore($notifications)
   const searchParams = useSearchParams()
-  const user = useStore($user)
 
   const handleClick = useCallback(
     (notification: NotificationShape) => {
@@ -69,33 +61,6 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
     },
     [enqueueSnackbar, toggleOpen]
   )
-  const handleTestNotification = useCallback(() => {
-    if (!user) {
-      return
-    }
-
-    const alerts = $alerts.get()
-    if (!alerts || alerts.length === 0) {
-      enqueueSnackbar("Set up an alert before testing notifications.", { variant: "error" })
-    }
-
-    createNotification({
-      alertId: alerts[0].id,
-      text: "This is a test notification sent from protocol.fun.",
-      userId: user.id,
-    })
-
-    Notification.requestPermission().then((result) => {
-      if (result === "denied") {
-        enqueueSnackbar("Push notifications not permitted.", { variant: "error" })
-      } else {
-        const _pushNotification = new Notification("Test notification", {
-          body: "This is a test notification sent from protocol.fun.",
-          // icon: notifImg,
-        })
-      }
-    })
-  }, [enqueueSnackbar, user])
 
   useEffect(() => {
     function handleCreated(notification: NotificationShape) {
@@ -148,14 +113,46 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
         })}
       >
         {notifications.map((notification) => {
-          const { alert } = notification
-          const { value, unitLabel, metric } = formatValue(alert)
-          const protocol = PROTOCOL_MAP[metric.protocol]
-
           const notifDatetime = new Date(notification.createdAt * 1000)
           const notifDateLabel = formatDistance(notifDatetime, new Date(), {
             addSuffix: true,
           })
+
+          const { alert } = notification
+
+          if (!alert) {
+            return (
+              <ListItem
+                dense
+                key={notification.id}
+                disablePadding
+                sx={{
+                  borderBottom: 1,
+                  borderColor: "divider",
+                  minWidth: 280,
+                }}
+              >
+                <ListItemButton
+                  disabled={notification.archived}
+                  dense
+                  onClick={() => handleClick(notification)}
+                >
+                  <ListItemText
+                    primaryTypographyProps={{
+                      fontSize: "0.825rem",
+                      // lineHeight: "1.4",
+                      variant: "body2",
+                    }}
+                    primary={notification.text}
+                    secondary={notifDateLabel}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )
+          }
+
+          const { value, unitLabel, metric } = formatValue(alert)
+          const protocol = PROTOCOL_MAP[metric.protocol]
 
           return (
             <ListItem
@@ -203,25 +200,6 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
           )
         })}
       </List>
-      {user && (
-        <Button
-          sx={{
-            "&:not(:hover)": {
-              opacity: 0.5,
-            },
-            background: "var(--mui-palette-secondary-main)",
-            bottom: 0,
-            position: "absolute",
-            width: "100%",
-          }}
-          size="small"
-          fullWidth
-          endIcon={<NotificationsNoneRounded fontSize="small" />}
-          onClick={handleTestNotification}
-        >
-          Send a test notification
-        </Button>
-      )}
     </>
   )
 }

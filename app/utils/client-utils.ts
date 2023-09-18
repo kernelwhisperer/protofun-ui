@@ -3,6 +3,9 @@
 import { AnimationConfig, config } from "@react-spring/web"
 import { atom } from "nanostores"
 
+import { patchPushSubscription } from "../api/users-api"
+import { $user } from "../stores/user"
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
 
@@ -60,6 +63,8 @@ export interface PopoverToggleProps {
 }
 
 export const $serviceWorker = atom<ServiceWorkerRegistration | undefined>()
+export const $pushPubKey = atom<string>("")
+export const $pushSubscription = atom<PushSubscription | null>(null)
 
 export function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
@@ -72,4 +77,20 @@ export function urlBase64ToUint8Array(base64String: string) {
     outputArray[i] = rawData.charCodeAt(i)
   }
   return outputArray
+}
+
+export async function enableWebPush() {
+  const serviceWorker = $serviceWorker.get()
+  const user = $user.get()
+  const pushPubKey = $pushPubKey.get()
+
+  if (!serviceWorker || !user) return
+
+  const convertedVapidKey = urlBase64ToUint8Array(pushPubKey)
+  const subscription = await serviceWorker.pushManager.subscribe({
+    applicationServerKey: convertedVapidKey,
+    userVisibleOnly: true,
+  })
+
+  await patchPushSubscription(subscription)
 }
