@@ -47,3 +47,6 @@ next-env.d.ts
 .sentryclirc
 
 analyze*/
+
+public/service-worker.js
+public/sitemap.xml

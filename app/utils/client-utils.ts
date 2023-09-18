@@ -47,8 +47,12 @@ export const isMobile = isServerSide
   : Boolean(
       window.navigator.userAgent.match(
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-      )
+      ) || window.innerWidth < 520 // FIXME
     )
+
+export const isProduction = isServerSide
+  ? false
+  : Boolean(window.location.toString().includes("https://protocol.fun")) // FIXME
 
 export function logError(error: Error) {
   console.error(error)

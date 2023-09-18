@@ -14,6 +14,7 @@ ignorePatterns:
   - build/**/*
   - dist/**/*
   - package-lock.json
+  - public/service-worker.js
 parserOptions:
   ecmaFeatures:
     jsx: true

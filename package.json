@@ -12,7 +12,9 @@
   },
   "scripts": {
     "dev": "NEXT_PUBLIC_APP_VER=`npm pkg get version` NEXT_PUBLIC_GIT_HASH=`git rev-parse HEAD` next dev",
-    "prebuild": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generate-sitemap.ts > public/sitemap.xml",
+    "prebuild": "yarn build:sitemap && yarn build:sw",
+    "build:sw": "tsc -p service-worker/tsconfig.json",
+    "build:sitemap": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generate-sitemap.ts > public/sitemap.xml",
     "build": "NEXT_PUBLIC_APP_VER=`npm pkg get version` NEXT_PUBLIC_GIT_HASH=`git rev-parse HEAD` next build",
     "analyze": "ANALYZE=true yarn build",
     "docker:build": "docker build -t danielconstantin/protofun-ui .",

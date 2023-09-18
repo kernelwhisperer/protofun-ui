@@ -2,6 +2,7 @@
 import React, { useEffect } from "react"
 
 import { AppVerProps } from "../../stores/app"
+import { isProduction } from "../../utils/client-utils"
 
 interface SentryProviderProps extends AppVerProps {
   children: React.ReactNode
@@ -9,7 +10,7 @@ interface SentryProviderProps extends AppVerProps {
 
 export function SentryProvider({ children, gitHash }: SentryProviderProps) {
   useEffect(() => {
-    if (window.location.toString().includes("localhost")) {
+    if (!isProduction) {
       return
     }
     // TODO load a subset?

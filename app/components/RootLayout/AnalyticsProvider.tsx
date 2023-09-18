@@ -3,6 +3,7 @@ import React, { useEffect } from "react"
 import { v4 as uuid } from "uuid"
 
 import { $fullAppVersion, $mixpanel, AppVerProps } from "../../stores/app"
+import { isProduction } from "../../utils/client-utils"
 
 interface AnalyticsProviderProps extends AppVerProps {
   children: React.ReactNode
@@ -10,7 +11,7 @@ interface AnalyticsProviderProps extends AppVerProps {
 
 export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProviderProps) {
   useEffect(() => {
-    if (window.location.toString().includes("localhost")) {
+    if (!isProduction) {
       return
     }
 

@@ -16,13 +16,13 @@ export function ServiceWorkerProvider({ children, pushPubKey }: ServiceWorkerPro
       navigator.serviceWorker
         .register("/service-worker.js")
         .then((registration) => {
-          console.log("ServiceWorker registered: ", registration)
+          console.log("ServiceWorker registered: ", !!registration)
           $serviceWorker.set(registration)
 
           return registration.pushManager.getSubscription()
         })
         .then((subscription) => {
-          console.log("📜 LOG > ServiceWorkerProvider > push subscription:", subscription)
+          console.log("ServiceWorker subscription: ", !!subscription)
           $pushSubscription.set(subscription)
         })
         .catch((registrationError) => {

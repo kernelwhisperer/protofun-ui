@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid"
 
 import { $user } from "../stores/user"
+import { isProduction } from "../utils/client-utils"
 import { app } from "./feathers-app"
 
 export async function checkLogin() {
@@ -45,7 +46,7 @@ export async function patchPushSubscription(subscription: PushSubscription | nul
 }
 
 app.on("login", ({ user }) => {
-  if (window.location.toString().includes("localhost")) {
+  if (!isProduction) {
     return
   }
 

@@ -65,10 +65,6 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
   useEffect(() => {
     function handleCreated(notification: NotificationShape) {
       enqueueSnackbar(notification.text)
-      const _pushNotification = new Notification(notification.text, {
-        body: notification.text,
-        // icon: notifImg,
-      })
     }
 
     function setup() {
