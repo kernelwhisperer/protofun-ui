@@ -2,6 +2,7 @@
 
 import { AnimationConfig, config } from "@react-spring/web"
 import { atom } from "nanostores"
+import { v4 as uuid } from "uuid"
 
 import { patchPushSubscription } from "../api/users-api"
 import { $user } from "../stores/user"
@@ -98,15 +99,21 @@ export async function enableWebPush() {
   console.log("ServiceWorker subscription: ", !!subscription)
   $pushSubscription.set(subscription)
 
-  await patchPushSubscription(subscription)
+  await patchPushSubscription(getDeviceId(), subscription)
 }
 
-export async function disableWebPush() {
-  const pushSubscription = $pushSubscription.get()
-
-  const unsub = await pushSubscription?.unsubscribe()
-  console.log("📜 LOG > disableWebPush > unsub:", unsub)
-
-  await patchPushSubscription(null)
+export async function disableWebPushOnDevice() {
+  await $pushSubscription.get()?.unsubscribe()
   $pushSubscription.set(null)
+}
+
+export function getDeviceId() {
+  let deviceId = localStorage.getItem("fun-device-uuid")
+
+  if (!deviceId) {
+    deviceId = uuid()
+    localStorage.setItem("fun-device-uuid", deviceId)
+  }
+
+  return deviceId
 }

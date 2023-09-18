@@ -1,6 +1,9 @@
 import { Dialog } from "@mui/material"
-import React from "react"
+import { useSnackbar } from "notistack"
+import { Notification } from "protofun-service"
+import React, { useEffect } from "react"
 
+import { app, socket } from "../../../api/feathers-app"
 import { isMobile, PopoverToggleProps } from "../../../utils/client-utils"
 import { PopoverPaper, PopoverPaperProps } from "../../PopoverPaper"
 import { NotifContents } from "../Notifications/NotifContents"
@@ -13,6 +16,28 @@ export default function NotificationsDialog({
   open,
   toggleOpen,
 }: { anchorEl: any } & PopoverToggleProps) {
+  const { enqueueSnackbar } = useSnackbar()
+
+  useEffect(() => {
+    function handleCreated(notification: Notification) {
+      enqueueSnackbar(notification.text)
+    }
+
+    function setup() {
+      app.service("notifications").on("created", handleCreated)
+    }
+
+    function teardown() {
+      app.service("notifications").removeListener("created", handleCreated)
+    }
+
+    app.on("login", setup)
+    app.on("logout", teardown)
+    socket.on("disconnect", teardown)
+
+    return teardown
+  }, [enqueueSnackbar])
+
   return (
     <>
       <Dialog

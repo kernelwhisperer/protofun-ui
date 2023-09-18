@@ -1,7 +1,7 @@
-import { v4 as uuid } from "uuid"
+import { User } from "protofun-service"
 
 import { $user } from "../stores/user"
-import { isProduction } from "../utils/client-utils"
+import { getDeviceId, isProduction } from "../utils/client-utils"
 import { app } from "./feathers-app"
 
 export async function checkLogin() {
@@ -35,17 +35,40 @@ export async function signUp(email: string, password: string) {
   await login(email, password)
 }
 
-export async function patchPushSubscription(subscription: PushSubscription | null) {
+export async function patchPushSubscription(
+  deviceLabel: string,
+  subscription: PushSubscription | null
+) {
   const user = $user.get()
   if (!user?.id) {
     throw new Error("Login to use notifications.")
   }
+
+  let nextDevices = Array.isArray(user.pushDevices) ? [...user.pushDevices] : []
+
+  if (subscription === null) {
+    nextDevices = nextDevices.filter((x) => x.label !== deviceLabel)
+  } else {
+    nextDevices.push({
+      label: deviceLabel,
+      sub: subscription.toJSON() as any, // TODO
+    })
+  }
+
   await app.service("users").patch(user.id, {
-    webpush: JSON.stringify(subscription),
+    pushDevices: nextDevices,
   })
 }
 
-app.on("login", ({ user }) => {
+function handlePatched(user: User) {
+  // console.log("📜 LOG > app.service > user patched:", user)
+  $user.set(user)
+}
+
+async function setup({ user }: any) {
+  // console.log("📜 LOG > app.service user > setup")
+  app.service("users").on("patched", handlePatched)
+
   if (!isProduction) {
     return
   }
@@ -53,16 +76,20 @@ app.on("login", ({ user }) => {
   import("posthog-js")
     .then((x) => x.default)
     .then((posthog) => {
-      let userId = localStorage.getItem("fun-user-uuid")
-      if (!userId) {
-        userId = uuid()
-        localStorage.setItem("fun-user-uuid", userId)
-      }
+      const deviceId = getDeviceId()
 
       if (window.location.toString().includes("localhost")) {
         posthog.debug()
       }
 
-      posthog.identify(userId, { email: user.email })
+      posthog.identify(deviceId, { email: user.email })
     })
-})
+}
+
+function teardown() {
+  // console.log("📜 LOG > app.service user > teardown")
+  app.service("users").removeListener("patched", handlePatched)
+}
+
+app.on("login", setup)
+app.on("logout", teardown)

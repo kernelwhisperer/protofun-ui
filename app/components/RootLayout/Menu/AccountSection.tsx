@@ -8,18 +8,18 @@ import React, { useCallback, useEffect, useState } from "react"
 import { checkLogin, logout } from "../../../api/users-api"
 import { $loopsAllowed } from "../../../stores/app"
 import { $user } from "../../../stores/user"
-import { PopoverToggleProps } from "../../../utils/client-utils"
+import { getDeviceId, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
 
 export function AccountSection({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
   const searchParams = useSearchParams()
   const user = useStore($user)
-  const [userUUID, setUserUUID] = useState("")
+  const [deviceUUID, setDeviceUUID] = useState("")
 
   useEffect(() => {
-    const localId = localStorage.getItem("fun-user-uuid")
-    if (localId) {
-      setUserUUID(localId)
+    const deviceId = getDeviceId()
+    if (deviceId) {
+      setDeviceUUID(deviceId)
     }
   }, [])
 
@@ -55,7 +55,7 @@ export function AccountSection({ toggleOpen }: Pick<PopoverToggleProps, "toggleO
           <span style={{ fontFamily: RobotoMonoFF }}>{user ? user.email : "Unknown"}</span>
           <br />
           <span style={{ marginRight: 8, opacity: 0.7 }}>User ID</span>
-          <span style={{ fontFamily: RobotoMonoFF }}>{user ? `#${user.id}` : userUUID}</span>
+          <span style={{ fontFamily: RobotoMonoFF }}>{user ? `#${user.id}` : deviceUUID}</span>
         </Typography>
       </Stack>
       <Box sx={{ marginTop: 2 }}>

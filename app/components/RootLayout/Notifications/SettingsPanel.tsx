@@ -1,23 +1,37 @@
-import { NotificationsNoneRounded } from "@mui/icons-material"
-import { Box, Button, FormControlLabel, FormGroup, Stack, Switch, Typography } from "@mui/material"
+import { ClearOutlined, Devices, NotificationsNoneRounded } from "@mui/icons-material"
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Stack,
+  Typography,
+} from "@mui/material"
 import { useStore } from "@nanostores/react"
 import { useSnackbar } from "notistack"
 import React, { useCallback } from "react"
 
 import { createNotification } from "../../../api/notifications-api"
+import { patchPushSubscription } from "../../../api/users-api"
 import { $user } from "../../../stores/user"
 import {
-  $pushSubscription,
-  disableWebPush,
+  disableWebPushOnDevice,
   enableWebPush,
+  getDeviceId,
   logError,
   PopoverToggleProps,
 } from "../../../utils/client-utils"
+import { RobotoMonoFF } from "../../Theme/fonts"
 
-export function SettingsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
+export function SettingsPanel({ toggleOpen: _toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
   const { enqueueSnackbar } = useSnackbar()
   const user = useStore($user)
-  const pushSubscription = useStore($pushSubscription)
+  const deviceId = getDeviceId()
 
   const handleTestNotification = useCallback(() => {
     if (!user) {
@@ -31,15 +45,31 @@ export function SettingsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOp
     })
   }, [user])
 
-  const handlePushNotif = useCallback(() => {
+  const handleEnablePush = useCallback(() => {
     if (!user) {
       return
     }
 
-    if (!pushSubscription) {
-      enableWebPush()
+    enableWebPush()
+      .then(() => {
+        enqueueSnackbar("Push notifications enabled.", { variant: "success" })
+      })
+      .catch((error: Error) => {
+        logError(error)
+        enqueueSnackbar(`Error: ${error.message}`, {
+          variant: "error",
+        })
+      })
+  }, [enqueueSnackbar, user])
+
+  const handleRemove = useCallback(
+    (deviceLabel: string) => {
+      patchPushSubscription(deviceLabel, null)
         .then(() => {
-          enqueueSnackbar("Push notifications enabled", { variant: "success" })
+          enqueueSnackbar("Push notifications disabled.")
+          if (deviceId === deviceLabel) {
+            return disableWebPushOnDevice()
+          }
         })
         .catch((error: Error) => {
           logError(error)
@@ -47,19 +77,9 @@ export function SettingsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOp
             variant: "error",
           })
         })
-    } else {
-      disableWebPush()
-        .then(() => {
-          enqueueSnackbar("Push notifications disabled", { variant: "success" })
-        })
-        .catch((error: Error) => {
-          logError(error)
-          enqueueSnackbar(`Error: ${error.message}`, {
-            variant: "error",
-          })
-        })
-    }
-  }, [enqueueSnackbar, pushSubscription, user])
+    },
+    [deviceId, enqueueSnackbar]
+  )
 
   return (
     <>
@@ -69,26 +89,70 @@ export function SettingsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOp
         </Box>
       )}
       {user && (
-        <Stack gap={2} padding={1} alignItems="flex-start">
-          <FormGroup sx={{ width: "100%" }}>
-            <FormControlLabel
-              sx={{
-                justifyContent: "space-between",
-                margin: 0,
-                paddingX: 1,
-                width: "100%",
-              }}
-              onClick={handlePushNotif}
-              labelPlacement="start"
-              control={<Switch checked={!!pushSubscription} />}
-              label="Push notifications"
-              slotProps={{
-                typography: {
-                  variant: "body2",
-                },
-              }}
-            />
-          </FormGroup>
+        <Stack gap={1} padding={2} alignItems="flex-start">
+          {!!user?.pushDevices?.length && (
+            <>
+              <Typography variant="body2" letterSpacing="0.05rem">
+                Devices
+              </Typography>
+              <List sx={{ width: "100%" }}>
+                {user?.pushDevices?.map((device) => (
+                  <ListItem
+                    key={device.label}
+                    secondaryAction={
+                      <IconButton
+                        color="inherit"
+                        tabIndex={2}
+                        onClick={() => handleRemove(device.label)}
+                      >
+                        <ClearOutlined fontSize="small" />
+                      </IconButton>
+                    }
+                    sx={{ backgroundColor: "divider", borderRadius: 2, minWidth: 280 }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar>
+                        <Devices />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primaryTypographyProps={{
+                        fontFamily: RobotoMonoFF,
+                        variant: "caption",
+                      }}
+                      primary={device.label}
+                      secondary={
+                        deviceId === device.label ? (
+                          <Chip
+                            label="Current device"
+                            size="small"
+                            disabled
+                            component="span"
+                            sx={{
+                              fontFamily: RobotoMonoFF,
+                              fontSize: "0.75rem",
+                              letterSpacing: 1,
+                              marginLeft: 0,
+                            }}
+                          />
+                        ) : null
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          )}
+          {!user?.pushDevices?.find((x) => x.label === deviceId) && (
+            <Button
+              size="small"
+              sx={{ transform: "none !important" }}
+              variant="outlined"
+              onClick={handleEnablePush}
+            >
+              <span>Enable push on the current device</span>
+            </Button>
+          )}
           <Button
             size="small"
             sx={{ transform: "none !important" }}

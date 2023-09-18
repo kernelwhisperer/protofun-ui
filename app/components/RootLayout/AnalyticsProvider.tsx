@@ -1,9 +1,8 @@
 "use client"
 import React, { useEffect } from "react"
-import { v4 as uuid } from "uuid"
 
 import { $fullAppVersion, $mixpanel, AppVerProps } from "../../stores/app"
-import { isProduction } from "../../utils/client-utils"
+import { getDeviceId, isProduction } from "../../utils/client-utils"
 
 interface AnalyticsProviderProps extends AppVerProps {
   children: React.ReactNode
@@ -19,13 +18,9 @@ export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProvid
       .then((x) => x.default)
       .then((mixpanel) => {
         import("@sentry/nextjs").then(({ captureException, setUser }) => {
-          let userId = localStorage.getItem("fun-user-uuid")
-          if (!userId) {
-            userId = uuid()
-            localStorage.setItem("fun-user-uuid", userId)
-          }
+          const deviceId = getDeviceId()
 
-          setUser({ id: userId })
+          setUser({ id: deviceId })
 
           if (!process.env.NEXT_PUBLIC_MIXPANEL) {
             captureException(new Error("Mixpanel token missing"))
@@ -43,7 +38,7 @@ export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProvid
 
           // Set this to a unique identifier for the user performing the event.
           // eg: their ID in your database or their email address.
-          mixpanel.identify(userId)
+          mixpanel.identify(deviceId)
 
           $fullAppVersion.set(`${appVer}@${gitHash}`)
           $mixpanel.set(mixpanel)
@@ -54,11 +49,7 @@ export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProvid
       .then((x) => x.default)
       .then((posthog) => {
         import("@sentry/nextjs").then(({ captureException, setUser }) => {
-          let userId = localStorage.getItem("fun-user-uuid")
-          if (!userId) {
-            userId = uuid()
-            localStorage.setItem("fun-user-uuid", userId)
-          }
+          const userId = getDeviceId()
 
           setUser({ id: userId })
 

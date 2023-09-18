@@ -15,11 +15,10 @@ import Decimal from "decimal.js"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
-import { Notification as NotificationShape } from "protofun-service"
-import React, { useCallback, useEffect } from "react"
+import { Notification } from "protofun-service"
+import React, { useCallback } from "react"
 
 import { Alert } from "../../../api/alerts-api"
-import { app, socket } from "../../../api/feathers-app"
 import { $notifications, archiveNotification } from "../../../api/notifications-api"
 import { METRICS_MAP } from "../../../stores/metrics"
 import { PROTOCOL_MAP } from "../../../stores/protocols"
@@ -50,7 +49,7 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
   const searchParams = useSearchParams()
 
   const handleClick = useCallback(
-    (notification: NotificationShape) => {
+    (notification: Notification) => {
       toggleOpen()
       archiveNotification(notification).catch((error: Error) => {
         logError(error)
@@ -61,26 +60,6 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
     },
     [enqueueSnackbar, toggleOpen]
   )
-
-  useEffect(() => {
-    function handleCreated(notification: NotificationShape) {
-      enqueueSnackbar(notification.text)
-    }
-
-    function setup() {
-      app.service("notifications").on("created", handleCreated)
-    }
-
-    function teardown() {
-      app.service("notifications").removeListener("created", handleCreated)
-    }
-
-    app.on("login", setup)
-    app.on("logout", teardown)
-    socket.on("disconnect", teardown)
-
-    return teardown
-  }, [enqueueSnackbar])
 
   return (
     <>
