@@ -95,6 +95,8 @@ export async function enableWebPush() {
     applicationServerKey: convertedVapidKey,
     userVisibleOnly: true,
   })
+  console.log("ServiceWorker subscription: ", !!subscription)
+  $pushSubscription.set(subscription)
 
   await patchPushSubscription(subscription)
 }
@@ -106,4 +108,5 @@ export async function disableWebPush() {
   console.log("📜 LOG > disableWebPush > unsub:", unsub)
 
   await patchPushSubscription(null)
+  $pushSubscription.set(null)
 }

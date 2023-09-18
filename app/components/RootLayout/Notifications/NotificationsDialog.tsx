@@ -24,7 +24,8 @@ export default function NotificationsDialog({
         sx={{
           zIndex: "var(--mui-zIndex-popover)",
         }}
-        hideBackdrop={!isMobile}
+        // hideBackdrop={!isMobile}
+        hideBackdrop
         slotProps={{
           backdrop: {
             className: "blurred",

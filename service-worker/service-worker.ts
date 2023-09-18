@@ -7,8 +7,8 @@ type PayloadShape = {
 }
 
 worker.addEventListener("push", (event) => {
-  console.log("📜 LOG > worker.addEventListener push> event:", event)
   const payload: PayloadShape = event.data.json()
+  console.log("📜 LOG > worker.addEventListener > payload:", payload)
   const { title, options } = payload
 
   event.waitUntil(worker.registration.showNotification(title, options))
@@ -18,6 +18,7 @@ worker.addEventListener("push", (event) => {
 worker.addEventListener("notificationclick", (event) => {
   // Close the notification popout
   event.notification.close()
+  console.log("📜 LOG > worker.addEventListener > event.notification:", event.notification)
   // Get all the Window clients
   event.waitUntil(
     worker.clients.matchAll({ type: "window" }).then((clientsArr) => {
@@ -26,10 +27,12 @@ worker.addEventListener("notificationclick", (event) => {
         windowClient.url === event.notification.data.url ? (windowClient.focus(), true) : false
       )
       // Otherwise, open a new tab to the applicable URL and focus it.
-      if (!hadWindowToFocus)
+      console.log("📜 LOG > worker.clients.matchAll > event.notification:", event.notification)
+      if (!hadWindowToFocus) {
         worker.clients
           .openWindow(event.notification.data.url)
           .then((windowClient) => (windowClient ? windowClient.focus() : null))
+      }
     })
   )
 })
