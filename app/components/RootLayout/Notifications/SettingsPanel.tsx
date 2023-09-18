@@ -108,7 +108,12 @@ export function SettingsPanel({ toggleOpen: _toggleOpen }: Pick<PopoverTogglePro
                         <ClearOutlined fontSize="small" />
                       </IconButton>
                     }
-                    sx={{ backgroundColor: "divider", borderRadius: 2, minWidth: 280 }}
+                    sx={{
+                      backgroundColor: "var(--mui-palette-action-hover)",
+                      borderRadius: 2,
+                      marginBottom: 1,
+                      minWidth: 280,
+                    }}
                   >
                     <ListItemAvatar>
                       <Avatar>
