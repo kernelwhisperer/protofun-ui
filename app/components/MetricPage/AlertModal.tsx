@@ -79,7 +79,11 @@ export default function AlertModal(props: NotificationModalProps) {
         setDraft(undefined)
         return wait(2000)
       })
-      .then(enableWebPush)
+      .then(() => {
+        if (!user?.pushDevices || user?.pushDevices.length === 0) {
+          return enableWebPush()
+        }
+      })
       // .then((result) => {
       //   if (result === "denied") {
       //     enqueueSnackbar("Push notifications not permitted.", { variant: "error" })
@@ -103,6 +107,7 @@ export default function AlertModal(props: NotificationModalProps) {
     metric.protocol,
     setDraft,
     timestamp,
+    user?.pushDevices,
   ])
 
   const virtualElement: PopoverVirtualElement | null = useMemo(
