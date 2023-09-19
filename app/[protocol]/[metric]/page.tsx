@@ -1,11 +1,10 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { isMetric, isProtocolId, METRICS_MAP, PROTOCOL_MAP } from "protofun"
 import React from "react"
 
 import { MetricPage } from "../../components/MetricPage/MetricPage"
 import { PageWrapper } from "../../components/RootLayout/PageWrapper"
-import { isMetric, METRICS_MAP } from "../../stores/metrics"
-import { isProtocolId, PROTOCOL_MAP } from "../../stores/protocols"
 
 type Props = {
   params: { metric: string; protocol: string }

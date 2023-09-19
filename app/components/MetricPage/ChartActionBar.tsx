@@ -1,6 +1,7 @@
 import { CandlestickChart, ShowChart } from "@mui/icons-material"
 import { Button, ButtonGroup, MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material"
 import { useStore } from "@nanostores/react"
+import { Metric, TIME_FRAMES, Timeframe } from "protofun"
 import React, { useCallback } from "react"
 
 import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams"
@@ -10,10 +11,7 @@ import {
   $scaleMode,
   $seriesType,
   $timeframe,
-  Metric,
-  TIME_FRAMES,
-  Timeframe,
-} from "../../stores/metrics"
+} from "../../stores/metric-page"
 
 export function ChartActionBar({ metric }: { metric: Metric }) {
   const { timeframes, priceUnits } = metric

@@ -1,5 +1,6 @@
 import { Mixpanel } from "mixpanel-browser"
 import { atom } from "nanostores"
+import { User } from "protofun-service"
 
 export const $fullAppVersion = atom<string>("")
 export const $mixpanel = atom<Mixpanel | undefined>()
@@ -12,3 +13,5 @@ export interface AppVerProps {
   appVer: string
   gitHash: string
 }
+
+export const $user = atom<User | null>(null)

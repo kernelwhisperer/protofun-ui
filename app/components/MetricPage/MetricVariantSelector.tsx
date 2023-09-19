@@ -1,9 +1,10 @@
 import { MenuItem, Select, SelectChangeEvent, SelectProps } from "@mui/material"
 import { useStore } from "@nanostores/react"
+import { Metric } from "protofun"
 import React, { useCallback } from "react"
 import { useBoolean } from "usehooks-ts"
 
-import { $variantIndex, Metric } from "../../stores/metrics"
+import { $variantIndex } from "../../stores/metric-page"
 
 export function MetricVariantSelector({
   variants,

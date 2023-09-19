@@ -1,9 +1,10 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
+import { PROTOCOLS } from "protofun"
 import React from "react"
 
-import { PROTOCOLS } from "../../stores/protocols"
+import { PROTOCOL_ICON_MAP } from "../../stores/protocol-icons"
 import { LinkButton } from "../LinkButton"
 import { PageTitle } from "../PageTitle"
 import { StaggeredList } from "../StaggeredList"
@@ -29,9 +30,9 @@ export function HomePage() {
             key={protocol.id}
             href={`/${protocol.id}?${searchParams?.toString()}`}
             label={protocol.title}
-            icon={protocol.icon}
+            icon={PROTOCOL_ICON_MAP[protocol.id].icon}
             disabled={!protocol.enabled}
-            iconPadding={protocol.iconPadding}
+            iconPadding={PROTOCOL_ICON_MAP[protocol.id].iconPadding}
           />
         ))}
       </StaggeredList>

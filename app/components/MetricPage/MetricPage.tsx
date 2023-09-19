@@ -3,6 +3,7 @@ import { InfoOutlined } from "@mui/icons-material"
 import { Paper, Stack } from "@mui/material"
 import dynamic from "next/dynamic"
 import { useSearchParams } from "next/navigation"
+import { isTimeframe, Metric, MetricId, METRICS_MAP, PROTOCOL_MAP, ProtocolId } from "protofun"
 import React from "react"
 
 import { METRIC_DESC_MAP } from "../../stores/metric-descriptions"
@@ -13,15 +14,9 @@ import {
   $scaleMode,
   $seriesType,
   $timeframe,
-  isTimeframe,
   liveModeDefault,
-  Metric,
-  MetricId,
-  METRICS_MAP,
   scaleModeDefault,
-} from "../../stores/metrics"
-import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols"
-import { SimpleBlock } from "../../utils/block-utils"
+} from "../../stores/metric-page"
 import { Candle } from "../../utils/candle-utils"
 import { BackButton } from "../BackButton"
 import { PageTitle } from "../PageTitle"
@@ -33,7 +28,7 @@ import { ChartActionBar } from "./ChartActionBar"
 import { MetricVariantSelector } from "./MetricVariantSelector"
 
 export interface MetricPageProps {
-  data: SimpleBlock[] | Candle[]
+  data: Candle[]
   metricId: MetricId
   protocolId: ProtocolId
   searchParams: { timeframe?: string; unit?: string }

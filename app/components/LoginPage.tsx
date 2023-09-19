@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack"
 import React, { FormEvent, useCallback, useEffect, useState } from "react"
 
 import { login } from "../api/users-api"
-import { $user } from "../stores/user"
+import { $user } from "../stores/app"
 import { logError } from "../utils/client-utils"
 import { PageTitle } from "./PageTitle"
 import { StaggeredList } from "./StaggeredList"

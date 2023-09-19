@@ -18,7 +18,7 @@ import React, { useCallback } from "react"
 
 import { createNotification } from "../../../api/notifications-api"
 import { patchPushSubscription } from "../../../api/users-api"
-import { $user } from "../../../stores/user"
+import { $user } from "../../../stores/app"
 import {
   disableWebPushOnDevice,
   enableWebPush,

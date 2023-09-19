@@ -4,7 +4,7 @@ import { Box, useTheme } from "@mui/material"
 import { createChart, CrosshairMode, IChartApi } from "lightweight-charts"
 import React, { memo, MutableRefObject, useEffect, useRef } from "react"
 
-import { $timeframe } from "../stores/metrics"
+import { $timeframe } from "../stores/metric-page"
 import { createPriceFormatter } from "../utils/chart"
 import { isMobile } from "../utils/client-utils"
 import { RobotoMonoFF } from "./Theme/fonts"

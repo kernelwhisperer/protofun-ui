@@ -1,13 +1,12 @@
 "use client"
 
-import { SvgIconComponent } from "@mui/icons-material"
 import { useSearchParams } from "next/navigation"
+import { METRICS_MAP, PROTOCOL_MAP, ProtocolId } from "protofun"
 import React from "react"
 
 import { METRIC_DESC_MAP } from "../../stores/metric-descriptions"
 import { METRIC_ICONS_MAP } from "../../stores/metric-icons"
-import { METRICS_MAP } from "../../stores/metrics"
-import { PROTOCOL_MAP, ProtocolId } from "../../stores/protocols"
+import { IconData } from "../../stores/protocol-icons"
 import { BackButton } from "../BackButton"
 import { LinkButton } from "../LinkButton"
 import { PageTitle } from "../PageTitle"
@@ -45,11 +44,11 @@ export function ProtocolPage(props: ProtocolProps) {
             disableInteractive
           >
             <LinkButton
-              iconPadding={metric.iconPadding}
+              iconPadding={(METRIC_ICONS_MAP[protocolId]?.[metric.id] as IconData).iconPadding}
               prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well
               href={`/${protocolId}/${metric.id}?${searchParams?.toString()}`}
               label={metric.title}
-              icon={METRIC_ICONS_MAP[protocolId]?.[metric.id] as SvgIconComponent}
+              icon={(METRIC_ICONS_MAP[protocolId]?.[metric.id] as IconData).icon}
             />
           </Tooltip>
         ))}

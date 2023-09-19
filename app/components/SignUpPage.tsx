@@ -12,7 +12,7 @@ import { signUp } from "../api/users-api"
 import { PageTitle } from "../components/PageTitle"
 import { StaggeredList } from "../components/StaggeredList"
 import { RobotoMonoFF } from "../components/Theme/fonts"
-import { $user } from "../stores/user"
+import { $user } from "../stores/app"
 import { logError } from "../utils/client-utils"
 
 export function SignUp() {

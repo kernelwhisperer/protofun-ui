@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react"
 import Decimal from "decimal.js"
 import React from "react"
 
-import { $entryMap, $legendTimestamp, $seriesType, CandleMap } from "../../stores/metrics"
+import { $entryMap, $legendTimestamp, $seriesType } from "../../stores/metric-page"
 import { isCandle } from "../../utils/candle-utils"
 import { formatNumber, isMobile } from "../../utils/client-utils"
 import { LegendLabel } from "./LegendLabel"
@@ -21,7 +21,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
 
   const seriesType = useStore($seriesType)
   const timestamp = useStore($legendTimestamp)
-  const candleMap = useStore($entryMap) as CandleMap
+  const candleMap = useStore($entryMap)
 
   const candle = candleMap[timestamp]
   const candleDatetime = new Date(parseInt(timestamp || "0") * 1000)

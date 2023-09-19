@@ -1,5 +1,5 @@
-import bundleAnalyzer from "@next/bundle-analyzer";
-import { withSentryConfig } from "@sentry/nextjs";
+import bundleAnalyzer from "@next/bundle-analyzer"
+import { withSentryConfig } from "@sentry/nextjs"
 
 /** @type {import('@sentry/nextjs/types/config/types').WebpackConfigFunction} */
 const webpack = (config) => {
@@ -16,12 +16,17 @@ const webpack = (config) => {
           test: /\.svg$/,
           use: ["@svgr/webpack"],
         },
+        {
+          // Ignore .d.ts.map files coming from protofun-sdk
+          loader: "ignore-loader",
+          test: /\.d\.ts\.map$/,
+        },
       ],
     },
-  };
+  }
 
-  return Object.assign({}, config, overrides);
-};
+  return Object.assign({}, config, overrides)
+}
 
 /** @type {import('next').NextConfig} */
 let nextConfig = {
@@ -51,20 +56,20 @@ let nextConfig = {
         destination: "https://eu.posthog.com/:path*",
         source: "/ph/:path*",
       },
-    ];
+    ]
   },
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
   },
   webpack,
-};
+}
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
-});
+})
 
-nextConfig = withBundleAnalyzer(nextConfig);
+nextConfig = withBundleAnalyzer(nextConfig)
 
 nextConfig = withSentryConfig(
   nextConfig,
@@ -96,11 +101,11 @@ nextConfig = withSentryConfig(
     // Upload a larger set of source maps for prettier stack traces (increases build time)
     widenClientFileUpload: true,
   }
-);
+)
 
 // nextConfig = million.next(nextConfig, {
 //   // if you're using RSC:
 //   auto: { rsc: true },
 // });
 
-export default nextConfig;
+export default nextConfig

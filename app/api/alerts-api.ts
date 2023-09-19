@@ -1,7 +1,7 @@
 import { atom, computed } from "nanostores"
+import { MetricId } from "protofun"
 import { Alert, AlertData } from "protofun-service"
 
-import { MetricId } from "../stores/metric-declarations"
 import { app, socket } from "./feathers-app"
 
 export type { Alert }

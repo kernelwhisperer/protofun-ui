@@ -1,6 +1,6 @@
 import { User } from "protofun-service"
 
-import { $user } from "../stores/user"
+import { $user } from "../stores/app"
 import { getDeviceId, isProduction } from "../utils/client-utils"
 import { app } from "./feathers-app"
 

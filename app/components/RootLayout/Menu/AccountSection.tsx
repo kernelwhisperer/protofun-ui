@@ -7,8 +7,7 @@ import { useSearchParams } from "next/navigation"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 
 import { checkLogin, logout } from "../../../api/users-api"
-import { $loopsAllowed } from "../../../stores/app"
-import { $user } from "../../../stores/user"
+import { $loopsAllowed, $user } from "../../../stores/app"
 import { getDeviceId, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
 

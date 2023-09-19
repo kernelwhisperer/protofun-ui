@@ -1,4 +1,4 @@
-import { ClearOutlined, SvgIconComponent } from "@mui/icons-material"
+import { ClearOutlined } from "@mui/icons-material"
 import {
   Avatar,
   avatarClasses,
@@ -20,12 +20,12 @@ import Decimal from "decimal.js"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
+import { METRICS_MAP, PROTOCOL_MAP } from "protofun"
 import React, { useCallback } from "react"
 
 import { $alerts, Alert, removeAlert } from "../../../api/alerts-api"
 import { METRIC_ICONS_MAP } from "../../../stores/metric-icons"
-import { METRICS_MAP } from "../../../stores/metrics"
-import { PROTOCOL_MAP } from "../../../stores/protocols"
+import { IconData, PROTOCOL_ICON_MAP } from "../../../stores/protocol-icons"
 import { formatNumber, logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
 
@@ -96,8 +96,9 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
       >
         {alerts.map((alert) => {
           const { value, unitLabel, metric } = formatValue(alert)
-          const Icon = METRIC_ICONS_MAP[metric.protocol]?.[metric.id] as SvgIconComponent
+          const metricIconData = METRIC_ICONS_MAP[metric.protocol]?.[metric.id] as IconData
           const protocol = PROTOCOL_MAP[metric.protocol]
+          const protocolIconData = PROTOCOL_ICON_MAP[metric.protocol]
           const startDatetime = new Date(parseInt(alert.startTimestamp) * 1000)
           const startDateLabel = new Intl.DateTimeFormat(window.navigator.language, {
             dateStyle: "medium",
@@ -146,20 +147,20 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
                         }}
                       >
                         {/* TODO */}
-                        <Icon fontSize={"1.25rem" as "small"} />
+                        <metricIconData.icon fontSize={"1.25rem" as "small"} />
                       </Avatar>
                     }
                   >
                     <Avatar sx={{ height: 32, width: 32 }}>
                       <SvgIcon
                         inheritViewBox
-                        component={protocol.icon}
+                        component={protocolIconData.icon}
                         width="100%"
                         height="100%"
                         sx={{
                           fontSize: "50px",
                           height: "100%",
-                          padding: `calc(${protocol.iconPadding} / 4)`,
+                          padding: `calc(${protocolIconData.iconPadding} / 4)`,
                           width: "100%",
                         }}
                       />

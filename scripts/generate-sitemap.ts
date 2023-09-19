@@ -1,6 +1,4 @@
-import { METRIC_DECLARATIONS, ProtocolId } from "../app/stores/metric-declarations"
-
-export const PROTOCOL_IDS = Object.keys(METRIC_DECLARATIONS) as [ProtocolId]
+import { METRICS } from "protofun"
 
 const SITE = "https://protocol.fun"
 
@@ -11,19 +9,13 @@ function generateSiteMap() {
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
     xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-${PROTOCOL_IDS.map((protocol) => {
-  const metrics = METRIC_DECLARATIONS[protocol]
-
-  return metrics
-    .map(
-      (metric) => `
+${METRICS.map((metric) => {
+  return `
     <url>
-        <loc>${SITE}/${protocol}/${metric}</loc>
+        <loc>${SITE}/${metric.protocol}/${metric.id}</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
         <changefreq>weekly</changefreq>
     </url>`
-    )
-    .join("")
 }).join("")}
   <url>
     <loc>https://protocol.fun/login</loc>

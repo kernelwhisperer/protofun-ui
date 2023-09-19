@@ -20,10 +20,9 @@ import React, { useCallback } from "react"
 
 import { Alert } from "../../../api/alerts-api"
 import { $notifications, archiveNotification } from "../../../api/notifications-api"
-import { METRICS_MAP } from "../../../stores/metrics"
-import { PROTOCOL_MAP } from "../../../stores/protocols"
 import { formatNumber, logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
+import { METRICS_MAP, PROTOCOL_MAP } from "protofun"
 
 function formatValue(alert: Alert) {
   const metric = METRICS_MAP[alert.protocolId][alert.metricId]

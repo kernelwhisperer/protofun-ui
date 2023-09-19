@@ -1,16 +1,16 @@
 import { useStore } from "@nanostores/react"
+import { Metric, PriceUnit, SubscribeResult } from "protofun"
 import { useCallback, useEffect, useRef } from "react"
-import { useInterval } from "usehooks-ts"
 
-import { $liveMode, $timeframe, PriceUnit, QueryFn } from "../stores/metrics"
-import { SimpleBlock } from "../utils/block-utils"
+import { $liveMode, $timeframe } from "../stores/metric-page"
 import { Candle } from "../utils/candle-utils"
+import { loadMetricFns } from "../utils/client-utils"
 
 export function useLiveData(
   initialTimestamp: string,
-  queryFn: QueryFn,
+  metric: Metric,
   priceUnit: PriceUnit,
-  handleNewData: (data: Candle | SimpleBlock) => void,
+  onNewData: (data: Candle) => void,
   active: boolean
 ) {
   const lastTimestamp = useRef<string>(initialTimestamp)
@@ -20,27 +20,37 @@ export function useLiveData(
     lastTimestamp.current = initialTimestamp
   }, [initialTimestamp])
 
-  const tryFetch = useCallback(async () => {
+  const setup = useCallback(async () => {
+    const { subscribe } = await loadMetricFns(metric.protocol, metric.id)
     const timeframe = $timeframe.get()
-    // console.log(
-    //   "📜 LOG > useLiveData > since",
-    //   lastTimestamp.current,
-    //   timeframe
-    // );
 
-    const data = await queryFn(timeframe, lastTimestamp.current, priceUnit)
-    // console.log("📜 LOG > useLiveData > response", timeframe, data);
+    const unsubscribe = subscribe({
+      onNewData,
+      priceUnit,
+      since: lastTimestamp.current,
+      timeframe,
+    })
 
-    if (data.length) {
-      lastTimestamp.current = data[data.length - 1].timestamp
-      data.forEach(handleNewData)
+    return unsubscribe
+  }, [metric, onNewData, priceUnit])
+
+  useEffect(() => {
+    let cleanup: SubscribeResult
+    let isCancelled = false
+
+    if (liveMode && active) {
+      setup().then((unsubscribe) => {
+        if (!isCancelled) {
+          cleanup = unsubscribe
+        } else {
+          unsubscribe()
+        }
+      })
     }
-  }, [queryFn, priceUnit, handleNewData])
 
-  useInterval(
-    tryFetch,
-    // Delay in milliseconds or null to stop it
-    // 12 * 1000
-    liveMode && active ? 3 * 1000 : null // TODO
-  )
+    return () => {
+      isCancelled = true
+      if (cleanup) cleanup()
+    }
+  }, [active, liveMode, setup])
 }

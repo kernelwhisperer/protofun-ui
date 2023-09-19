@@ -1,11 +1,13 @@
 "use client"
 
 import { AnimationConfig, config } from "@react-spring/web"
+import { CandlestickSeriesPartialOptions } from "lightweight-charts"
 import { atom } from "nanostores"
+import { MetricFnsResult, MetricId, ProtocolId } from "protofun"
 import { v4 as uuid } from "uuid"
 
 import { patchPushSubscription } from "../api/users-api"
-import { $user } from "../stores/user"
+import { $user } from "../stores/app"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
@@ -116,4 +118,48 @@ export function getDeviceId() {
   }
 
   return deviceId
+}
+
+export const candleStickOptions: CandlestickSeriesPartialOptions = {
+  // ----default
+  // rgb(227, 96, 85)
+  // rgb(72, 163, 154)
+  // ----tv-mobile
+  // rgb(229, 75, 74)
+  // rgb(58, 151, 129)
+  // ----tv-web
+  // rgb(242, 54, 69)
+  // rgb(8, 153, 129)
+  //
+  borderDownColor: "rgb(220, 60, 70)",
+  borderUpColor: "rgb(0, 150, 108)",
+  downColor: "rgb(220, 60, 70)",
+  upColor: "rgb(0, 150, 108)",
+  wickDownColor: "rgb(220, 60, 70)",
+  wickUpColor: "rgb(0, 150, 108)",
+}
+
+/**
+ * Hack https://github.com/vercel/next.js/discussions/33980
+ */
+export const METRIC_MODULE_MAP: any = {
+  aave: {},
+  comp: {
+    tvl: () => import("protofun/dist/metrics/comp/tvl"),
+  },
+  eth: {
+    base_fee: () => import("protofun/dist/metrics/eth/base_fee"),
+    eth_price: () => import("protofun/dist/metrics/eth/eth_price"),
+    tx_cost: () => import("protofun/dist/metrics/eth/tx_cost"),
+  },
+  mkr: {},
+} as const
+
+export async function loadMetricFns(
+  protocolId: ProtocolId,
+  metricId: MetricId
+): Promise<MetricFnsResult> {
+  const module = await METRIC_MODULE_MAP[protocolId][metricId]()
+  const { default: query, subscribe } = module
+  return { query, subscribe }
 }

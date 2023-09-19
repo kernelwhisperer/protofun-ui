@@ -1,9 +1,7 @@
 "use client"
 
+import { MetricId, ProtocolId } from "protofun"
 import React from "react"
-
-import { MetricId } from "./metrics"
-import { ProtocolId } from "./protocols"
 
 type Descriptions = {
   description: React.ReactNode

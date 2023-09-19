@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
-import { $priceUnitIndex, $timeframe } from "../stores/metrics"
+import { $priceUnitIndex, $timeframe } from "../stores/metric-page"
 
 export function useSyncedSearchParams() {
   const router = useRouter()

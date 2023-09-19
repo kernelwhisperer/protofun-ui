@@ -11,6 +11,7 @@ import {
   Time,
 } from "lightweight-charts"
 import dynamic from "next/dynamic"
+import { Metric } from "protofun"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { $alerts, findAlertsForMetric } from "../../api/alerts-api"
@@ -26,12 +27,9 @@ import {
   $seriesType,
   $timeframe,
   $variantIndex,
-  candleStickOptions,
   EntryMap,
-  Metric,
-} from "../../stores/metrics"
+} from "../../stores/metric-page"
 import { AlertDraft } from "../../utils/alert-utils"
-import { createBlockMapper, isBlock, isBlockArray, SimpleBlock } from "../../utils/block-utils"
 import {
   Candle,
   createCandleMapper,
@@ -40,18 +38,23 @@ import {
   isCandleArray,
 } from "../../utils/candle-utils"
 import { createPriceFormatter } from "../../utils/chart"
-import { logError, SPRING_CONFIGS, TZ_OFFSET, wait } from "../../utils/client-utils"
+import {
+  candleStickOptions,
+  loadMetricFns,
+  logError,
+  SPRING_CONFIGS,
+  TZ_OFFSET,
+  wait,
+} from "../../utils/client-utils"
 import { MemoChart } from "../Chart"
 import { ErrorOverlay } from "../ErrorOverlay"
 import { Progress } from "../Progress"
-import { BlockChartLegend } from "./BlockChartLegend"
 import { CandleChartLegend } from "./CandleChartLegend"
 
 const AlertModal = dynamic(() => import("./AlertModal"))
 
 export default function MetricChart({ metric }: { metric: Metric }) {
   const {
-    queryFn,
     priceUnits,
     precision: defaultPrecision,
     significantDigits: significantDigitsArray,
@@ -84,43 +87,44 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   // console.log("📜 LOG > MetricChart render", data.length, loading);
   useEffect(() => {
-    if (metric.timeframes && !metric.timeframes.includes(timeframe)) return
-    if ($loading.get()) return
-    // console.log("📜 LOG > MetricChart > fetching");
+    async function setup() {
+      const { query } = await loadMetricFns(metric.protocol, metric.id)
 
-    $loading.set(true)
-    setError("")
+      if (!metric.timeframes.includes(timeframe)) return
+      if ($loading.get()) return
+      // console.log("📜 LOG > MetricChart > fetching");
 
-    Promise.all([queryFn(timeframe, undefined, priceUnit), wait($loopsAllowed.get() ? 333 : 100)])
-      .then(([data]) => {
-        const map = (data as Array<Candle | SimpleBlock>).reduce((acc, curr) => {
-          acc[curr.timestamp] = curr
-          return acc
-        }, {} as EntryMap)
+      $loading.set(true)
+      setError("")
 
-        $entryMap.set(map)
-        $entries.set(data)
-        // console.log("📜 LOG > MetricChart > fetching finished");
-      })
-      .then(() => {
-        $loading.set(false)
-      })
-      .catch((error) => {
-        console.error(error)
-        setError(`${error.name}: ${error.message}`)
-        $loading.set(false)
-        logError(error)
-      })
+      Promise.all([query({ priceUnit, timeframe }), wait($loopsAllowed.get() ? 333 : 100)])
+        .then(([data]) => {
+          const map = data.reduce((acc, curr) => {
+            acc[curr.timestamp] = curr
+            return acc
+          }, {} as EntryMap)
+
+          $entryMap.set(map)
+          $entries.set(data)
+          // console.log("📜 LOG > MetricChart > fetching finished");
+        })
+        .then(() => {
+          $loading.set(false)
+        })
+        .catch((error) => {
+          console.error(error)
+          setError(`${error.name}: ${error.message}`)
+          $loading.set(false)
+          logError(error)
+        })
+    }
+
+    setup()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe, priceUnit])
 
   const mainSeriesData = useMemo(() => {
     if (data.length === 0) return []
-
-    if (isBlockArray(data)) {
-      const mapBlockToLine = createBlockMapper("baseFeePerGas", precision)
-      return data.map(mapBlockToLine)
-    }
 
     if (!isCandleArray(data)) {
       throw new Error("This should never happen!")
@@ -262,7 +266,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   }, [timeframe])
 
   const handleNewData = useCallback(
-    (data: Candle | SimpleBlock) => {
+    (data: Candle) => {
       const precision = variants ? variants[$variantIndex.get()].precision : defaultPrecision
 
       if (priceUnit !== priceUnits[$priceUnitIndex.get()]) {
@@ -273,16 +277,6 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       if (entries.length === 0) return
       if (entries[entries.length - 1].timestamp > data.timestamp) {
         return
-      }
-
-      if (isBlockArray(entries) && isBlock(data)) {
-        if (entries[entries.length - 1].timestamp !== data.timestamp) {
-          entries.push(data)
-          $entryMap.setKey(data.timestamp, data)
-          $legendTimestamp.set(data.timestamp)
-          const mapBlockToLine = createBlockMapper("baseFeePerGas", precision)
-          mainSeries.current?.update(mapBlockToLine(data))
-        }
       }
 
       if (isCandleArray(entries) && isCandle(data)) {
@@ -309,7 +303,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   useLiveData(
     data[data.length - 1]?.timestamp,
-    queryFn,
+    metric,
     priceUnit,
     handleNewData,
     !loading && !error && data.length > 0
@@ -410,21 +404,12 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           width: "100%",
         }}
       >
-        {timeframe === "Block" && (
-          <BlockChartLegend
-            precision={precision}
-            unitLabel={priceUnit}
-            significantDigits={significantDigits}
-          />
-        )}
-        {timeframe !== "Block" && (
-          <CandleChartLegend
-            precision={precision}
-            unitLabel={priceUnit}
-            significantDigits={significantDigits}
-            metricTitle={title}
-          />
-        )}
+        <CandleChartLegend
+          precision={precision}
+          unitLabel={priceUnit}
+          significantDigits={significantDigits}
+          metricTitle={title}
+        />
         <MemoChart
           chartRef={chartRef}
           unitLabel={priceUnit}
