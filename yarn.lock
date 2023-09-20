@@ -4404,6 +4404,14 @@ chalk@3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@4, chalk@^4.0.0, chalk@^4.1.0:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
+  integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 chalk@^2.0.0, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -4412,14 +4420,6 @@ chalk@^2.0.0, chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
-
-chalk@^4.0.0, chalk@^4.1.0:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
-  integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
-  dependencies:
-    ansi-styles "^4.1.0"
-    supports-color "^7.1.0"
 
 change-case-all@1.0.14:
   version "1.0.14"
@@ -8048,9 +8048,9 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-"protofun-service@https://service.protocol.fun/protofun-service-0.1.2.tgz":
-  version "0.1.2"
-  resolved "https://service.protocol.fun/protofun-service-0.1.2.tgz#8b6cb2d2cd1fd9d2bf0883b370fd5121c3a9ffb6"
+"protofun-service@https://service.protocol.fun/protofun-service-0.1.3.tgz":
+  version "0.1.3"
+  resolved "https://service.protocol.fun/protofun-service-0.1.3.tgz#2532887a5719471fcd70ae69063b1f29747cd32b"
   dependencies:
     "@feathersjs/adapter-commons" "^5.0.8"
     "@feathersjs/authentication" "^5.0.8"
@@ -8065,25 +8065,22 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     "@feathersjs/schema" "^5.0.8"
     "@feathersjs/socketio" "^5.0.8"
     "@feathersjs/transport-commons" "^5.0.8"
+    chalk "4"
+    decimal.js "^10.4.3"
     dotenv "^16.3.1"
     feathers-hooks-common "^8.1.1"
     feathers-permissions "^2.1.4"
     knex "^2.5.1"
     pg "^8.11.1"
-    protofun "^0.1.6"
+    protofun "^0.2.5"
     urql "^4.0.5"
     web-push "^3.6.6"
     winston "^3.10.0"
 
-protofun@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.1.6.tgz#f5e34e80da71239dc6f0331516c60f3ce92c817d"
-  integrity sha512-iPt8hcVczlBK/pJ95PEgoJ9vTcyNjE1fxt+2el9nV0czkEYA9j6xQm51nKLtxiEMvOQfQtcNKAz8uSH1BGE/HQ==
-
-protofun@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.2.4.tgz#b24f56b403eccf3909bde2c3966da55a7740f66c"
-  integrity sha512-AqbuJcxmlkbNZga/vbdM5/qeBw3Nu/hhJ1kJNU5d9nyHWWB+DXWObHDYS8lVerxqkhZ+GljkDnJNs+5mBuZVrQ==
+protofun@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.2.5.tgz#94a00478527efc497e2bfb3f70fa0fb2dca24d06"
+  integrity sha512-5LNEIC8HtzJuKc+WxmaRqIdsHUUqSNFPrfRDIozhgPWQymwpLWkZdaQefMhdH/MSumJi5mHRWAVTjauW3ziMLw==
 
 proxy-addr@~2.0.7:
   version "2.0.7"

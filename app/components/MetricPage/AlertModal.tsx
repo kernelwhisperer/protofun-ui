@@ -20,14 +20,19 @@ import Decimal from "decimal.js"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
-import { Metric } from "protofun"
+import { formatNumber, Metric, wait } from "protofun"
 import React, { useCallback, useMemo, useRef, useState } from "react"
 
 import { createAlert } from "../../api/alerts-api"
 import { $user } from "../../stores/app"
-import { $entryMap, $legendTimestamp } from "../../stores/metric-page"
+import {
+  $entryMap,
+  $legendTimestamp,
+  $priceUnitIndex,
+  $variantIndex,
+} from "../../stores/metric-page"
 import { AlertDraft } from "../../utils/alert-utils"
-import { enableWebPush, formatNumber, isMobile, logError, wait } from "../../utils/client-utils"
+import { enableWebPush, isMobile, logError } from "../../utils/client-utils"
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper"
 import { RobotoMonoFF } from "../Theme/fonts"
 
@@ -54,7 +59,7 @@ export default function AlertModal(props: NotificationModalProps) {
   const user = useStore($user)
 
   const entry: any = entryMap[timestamp]
-  const lastValueRaw: string = entry?.close || entry?.baseFeePerGas || "0"
+  const lastValueRaw: string = entry?.close || "0"
   const lastValue = new Decimal(lastValueRaw).div(precision).toNumber()
 
   const handleClose = useCallback(() => {
@@ -69,11 +74,13 @@ export default function AlertModal(props: NotificationModalProps) {
     setLoading(true)
     createAlert({
       metricId: metric.id,
+      priceUnitIndex: $priceUnitIndex.get(),
       protocolId: metric.protocol,
-      startTimestamp: timestamp, // TODO
+      startTimestamp: timestamp,
       startValue: lastValueRaw,
-      triggerValue: String(draft.value * metric.precision),
-    } as any)
+      triggerValue: new Decimal(draft.value).mul(precision).toString(),
+      variantIndex: $variantIndex.get(),
+    })
       .then(() => {
         enqueueSnackbar("Alert created.")
         setDraft(undefined)
@@ -103,8 +110,8 @@ export default function AlertModal(props: NotificationModalProps) {
     enqueueSnackbar,
     lastValueRaw,
     metric.id,
-    metric.precision,
     metric.protocol,
+    precision,
     setDraft,
     timestamp,
     user?.pushDevices,

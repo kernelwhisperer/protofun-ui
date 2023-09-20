@@ -11,7 +11,7 @@ import {
   Time,
 } from "lightweight-charts"
 import dynamic from "next/dynamic"
-import { Metric } from "protofun"
+import { getMetricPrecision, getSignificantDigits, Metric, wait } from "protofun"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { $alerts, findAlertsForMetric } from "../../api/alerts-api"
@@ -44,7 +44,6 @@ import {
   logError,
   SPRING_CONFIGS,
   TZ_OFFSET,
-  wait,
 } from "../../utils/client-utils"
 import { MemoChart } from "../Chart"
 import { ErrorOverlay } from "../ErrorOverlay"
@@ -54,18 +53,11 @@ import { CandleChartLegend } from "./CandleChartLegend"
 const AlertModal = dynamic(() => import("./AlertModal"))
 
 export default function MetricChart({ metric }: { metric: Metric }) {
-  const {
-    priceUnits,
-    precision: defaultPrecision,
-    significantDigits: significantDigitsArray,
-    variants,
-    title,
-    allowCompactPriceScale,
-  } = metric
+  const { priceUnits, title, allowCompactPriceScale } = metric
 
   const priceUnitIndex = useStore($priceUnitIndex)
   const priceUnit = priceUnits[priceUnitIndex]
-  const significantDigits = significantDigitsArray[priceUnitIndex]
+  const significantDigits = getSignificantDigits(metric, priceUnitIndex)
 
   const theme = useTheme()
   const crosshairSubRef = useRef<MouseEventHandler>()
@@ -79,7 +71,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const data = useStore($entries)
   const seriesType = useStore($seriesType)
   const variantIndex = useStore($variantIndex)
-  const precision = variants ? variants[variantIndex].precision : defaultPrecision
+  const precision = getMetricPrecision(metric, variantIndex)
 
   const [error, setError] = useState<string>("")
   const [alertDraft, setAlertDraft] = useState<AlertDraft>()
@@ -267,7 +259,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   const handleNewData = useCallback(
     (data: Candle) => {
-      const precision = variants ? variants[$variantIndex.get()].precision : defaultPrecision
+      const precision = getMetricPrecision(metric, $variantIndex.get())
 
       if (priceUnit !== priceUnits[$priceUnitIndex.get()]) {
         return
@@ -298,7 +290,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
         }
       }
     },
-    [defaultPrecision, priceUnit, priceUnits, variants]
+    [metric, priceUnit, priceUnits]
   )
 
   useLiveData(
@@ -349,21 +341,23 @@ export default function MetricChart({ metric }: { metric: Metric }) {
         return
       }
       const primaryColor = theme.palette.primary.main
-      findAlertsForMetric(metric.id).forEach((alert) => {
-        if (alert.paused) return
-        const line = mainSeries.current?.createPriceLine({
-          // LightweightCharts.LineStyle.Dotted,
-          axisLabelVisible: true,
-          color: primaryColor,
-          lineStyle: 3,
-          lineWidth: 1,
-          price: new Decimal(alert.triggerValue).div(precision).toNumber(),
-          title: "🕒",
-        })
-        if (line) {
-          alertPriceLinesRef.current.push(line)
+      findAlertsForMetric(metric.id, $priceUnitIndex.get(), $variantIndex.get()).forEach(
+        (alert) => {
+          if (alert.paused) return
+          const line = mainSeries.current?.createPriceLine({
+            // LightweightCharts.LineStyle.Dotted,
+            axisLabelVisible: true,
+            color: primaryColor,
+            lineStyle: 3,
+            lineWidth: 1,
+            price: new Decimal(alert.triggerValue).div(precision).toNumber(),
+            title: "🕒",
+          })
+          if (line) {
+            alertPriceLinesRef.current.push(line)
+          }
         }
-      })
+      )
     })
 
     return cleanup
@@ -375,7 +369,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       return
     }
     const primaryColor = theme.palette.primary.main
-    findAlertsForMetric(metric.id).forEach((alert) => {
+    findAlertsForMetric(metric.id, $priceUnitIndex.get(), $variantIndex.get()).forEach((alert) => {
       if (alert.paused) return
       const line = mainSeries.current?.createPriceLine({
         // LightweightCharts.LineStyle.Dotted,

@@ -12,28 +12,6 @@ import { $user } from "../stores/app"
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
 
-export async function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-type NumberNotation = "standard" | "scientific" | "engineering" | "compact" | undefined
-
-export function formatNumber(
-  number: number,
-  digits: number,
-  notation: NumberNotation = "standard"
-) {
-  return new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
-    notation,
-  }).format(number)
-}
-
-export function formatBigInt(number: number) {
-  return new Intl.NumberFormat().format(number)
-}
-
 export const TZ_OFFSET = new Date().getTimezoneOffset() * 60
 
 export const SPRING_CONFIGS: Record<string, Partial<AnimationConfig>> = {

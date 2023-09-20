@@ -18,39 +18,25 @@ import {
 import { useStore } from "@nanostores/react"
 import Decimal from "decimal.js"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
-import { METRICS_MAP, PROTOCOL_MAP } from "protofun"
+import {
+  formatNumber,
+  getMetric,
+  getMetricPrecision,
+  getSignificantDigits,
+  PROTOCOL_MAP,
+} from "protofun"
 import React, { useCallback } from "react"
 
 import { $alerts, Alert, removeAlert } from "../../../api/alerts-api"
 import { METRIC_ICONS_MAP } from "../../../stores/metric-icons"
 import { IconData, PROTOCOL_ICON_MAP } from "../../../stores/protocol-icons"
-import { formatNumber, logError, PopoverToggleProps } from "../../../utils/client-utils"
+import { logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
-
-function formatValue(alert: Alert) {
-  const metric = METRICS_MAP[alert.protocolId][alert.metricId]
-  if (!metric) {
-    throw new Error("Metric should not be undefined")
-  }
-
-  const { precision, significantDigits, priceUnits } = metric
-  const unitLabel = priceUnits[0]
-
-  const value = formatNumber(
-    new Decimal(alert.triggerValue).div(precision).toNumber(),
-    significantDigits[0],
-    "compact"
-  )
-
-  return { metric, unitLabel, value }
-}
 
 export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
   const { enqueueSnackbar } = useSnackbar()
   const alerts = useStore($alerts)
-  const searchParams = useSearchParams()
 
   const handleRemove = useCallback(
     (alert: Alert) => {
@@ -95,16 +81,28 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
         })}
       >
         {alerts.map((alert) => {
-          const { value, unitLabel, metric } = formatValue(alert)
-          const metricIconData = METRIC_ICONS_MAP[metric.protocol]?.[metric.id] as IconData
-          const protocol = PROTOCOL_MAP[metric.protocol]
-          const protocolIconData = PROTOCOL_ICON_MAP[metric.protocol]
+          const metricIconData = METRIC_ICONS_MAP[alert.protocolId]?.[alert.metricId] as IconData
+          const protocol = PROTOCOL_MAP[alert.protocolId]
+          const protocolIconData = PROTOCOL_ICON_MAP[alert.protocolId]
+
           const startDatetime = new Date(parseInt(alert.startTimestamp) * 1000)
           const startDateLabel = new Intl.DateTimeFormat(window.navigator.language, {
             dateStyle: "medium",
             hourCycle: "h23",
             timeStyle: "short",
           }).format(startDatetime)
+
+          const metric = getMetric(alert.protocolId, alert.metricId)
+          const { priceUnits } = metric
+          const unitLabel = priceUnits[alert.priceUnitIndex]
+
+          const value = formatNumber(
+            new Decimal(alert.triggerValue)
+              .div(getMetricPrecision(metric, alert.variantIndex))
+              .toNumber(),
+            getSignificantDigits(metric, alert.priceUnitIndex),
+            "compact"
+          )
 
           return (
             <ListItem
@@ -128,7 +126,8 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
               <ListItemButton
                 dense
                 component={Link}
-                href={`/${metric.protocol}/${metric.id}?${searchParams?.toString()}`}
+                // FIXME
+                href={`/${alert.protocolId}/${alert.metricId}?unit=${alert.priceUnitIndex}&variant=${alert.variantIndex}`}
                 onClick={toggleOpen}
                 disabled={alert.paused}
               >
@@ -146,8 +145,7 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
                           width: 28,
                         }}
                       >
-                        {/* TODO */}
-                        <metricIconData.icon fontSize={"1.25rem" as "small"} />
+                        <metricIconData.icon fontSize={"1.25rem" as "small"} /> {/* TODO */}
                       </Avatar>
                     }
                   >
@@ -175,7 +173,8 @@ export function AlertsPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen
                   }}
                   primary={
                     <>
-                      {protocol.title}&apos;s {metric.title} <br /> to{" "}
+                      {protocol.title}&apos;s {metric.title}{" "}
+                      {metric.variants ? `(${metric.variants[alert.variantIndex].label})` : ""} to{" "}
                       {alert.increase ? "increase" : "decrease"} to{" "}
                       <Typography
                         fontWeight={500}

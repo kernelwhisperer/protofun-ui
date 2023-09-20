@@ -15,39 +15,24 @@ import { useStore } from "@nanostores/react"
 import { formatDistance } from "date-fns"
 import Decimal from "decimal.js"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
 import { useSnackbar } from "notistack"
-import { METRICS_MAP, PROTOCOL_MAP } from "protofun"
+import {
+  formatNumber,
+  getMetric,
+  getMetricPrecision,
+  getSignificantDigits,
+  PROTOCOL_MAP,
+} from "protofun"
 import { Notification } from "protofun-service"
 import React, { useCallback } from "react"
 
-import { Alert } from "../../../api/alerts-api"
 import { $notifications, archiveNotification } from "../../../api/notifications-api"
-import { formatNumber, logError, PopoverToggleProps } from "../../../utils/client-utils"
+import { logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
-
-function formatValue(alert: Alert) {
-  const metric = METRICS_MAP[alert.protocolId][alert.metricId]
-  if (!metric) {
-    throw new Error("Metric should not be undefined")
-  }
-
-  const { precision, significantDigits, priceUnits } = metric
-  const unitLabel = priceUnits[0]
-
-  const value = formatNumber(
-    new Decimal(alert.triggerValue).div(precision).toNumber(),
-    significantDigits[0],
-    "compact"
-  )
-
-  return { metric, unitLabel, value }
-}
 
 export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
   const { enqueueSnackbar } = useSnackbar()
   const notifications = useStore($notifications)
-  const searchParams = useSearchParams()
 
   const handleClick = useCallback(
     (notification: Notification) => {
@@ -139,8 +124,19 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
             )
           }
 
-          const { value, unitLabel, metric } = formatValue(alert as Alert) // TODO
-          const protocol = PROTOCOL_MAP[metric.protocol]
+          const protocol = PROTOCOL_MAP[alert.protocolId]
+          const metric = getMetric(alert.protocolId, alert.metricId)
+
+          const { priceUnits } = metric
+          const unitLabel = priceUnits[alert.priceUnitIndex]
+
+          const value = formatNumber(
+            new Decimal(alert.triggerValue)
+              .div(getMetricPrecision(metric, alert.variantIndex))
+              .toNumber(),
+            getSignificantDigits(metric, alert.priceUnitIndex),
+            "compact"
+          )
 
           return (
             <ListItem
@@ -157,7 +153,8 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
                 disabled={notification.archived}
                 dense
                 component={Link}
-                href={`/${metric.protocol}/${metric.id}?${searchParams?.toString()}`}
+                // FIXME
+                href={`/${alert.protocolId}/${alert.metricId}?unit=${alert.priceUnitIndex}&variant=${alert.variantIndex}`}
                 onClick={() => handleClick(notification)}
               >
                 <ListItemText
@@ -169,6 +166,7 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
                   primary={
                     <>
                       {protocol.title}&apos;s {metric.title}{" "}
+                      {metric.variants ? `(${metric.variants[alert.variantIndex].label})` : ""} to{" "}
                       {alert.increase ? "increased" : "decreased"} to{" "}
                       <Typography
                         fontWeight={500}
@@ -178,7 +176,8 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
                         fontSize="0.825rem"
                       >
                         {value} {unitLabel}
-                      </Typography>{" "}
+                      </Typography>
+                      .
                     </>
                   }
                   secondary={notifDateLabel}

@@ -21,8 +21,19 @@ export async function removeAlert(alert: Alert) {
   })
 }
 
-export function findAlertsForMetric(metricId: MetricId) {
-  return $alerts.get().filter((x) => x.metricId === metricId)
+export function findAlertsForMetric(
+  metricId: MetricId,
+  priceUnitIndex: number,
+  variantIndex: number
+) {
+  return $alerts
+    .get()
+    .filter(
+      (x) =>
+        x.metricId === metricId &&
+        x.priceUnitIndex === priceUnitIndex &&
+        x.variantIndex === variantIndex
+    )
 }
 
 /**

@@ -14,6 +14,7 @@ import {
   $scaleMode,
   $seriesType,
   $timeframe,
+  $variantIndex,
   liveModeDefault,
   scaleModeDefault,
 } from "../../stores/metric-page"
@@ -31,14 +32,14 @@ export interface MetricPageProps {
   data: Candle[]
   metricId: MetricId
   protocolId: ProtocolId
-  searchParams: { timeframe?: string; unit?: string }
+  searchParams: { timeframe?: string; unit?: string; variant?: string }
 }
 
 const MetricChart = dynamic(() => import("./MetricChart"), {
   loading: () => <Progress loading />,
 })
 
-function configureStores(metric: Metric, timeframe: string, unit: string) {
+function configureStores(metric: Metric, timeframe: string, unit: string, variant: string) {
   /**
    * Reset
    */
@@ -83,18 +84,32 @@ function configureStores(metric: Metric, timeframe: string, unit: string) {
   } else {
     $priceUnitIndex.set(0)
   }
+
+  /**
+   * Variant
+   */
+  const variantIndex = parseInt(variant)
+  if (!isNaN(variantIndex)) {
+    if (metric.variants && metric.variants.length > variantIndex) {
+      $variantIndex.set(variantIndex)
+    } else {
+      $variantIndex.set(0)
+    }
+  } else {
+    $variantIndex.set(0)
+  }
 }
 
 export function MetricPage(props: MetricPageProps) {
-  // console.log("📜 LOG > MetricPage render");
   const { metricId, protocolId, searchParams, data } = props
   const protocol = PROTOCOL_MAP[protocolId]
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric
 
-  const { timeframe = "", unit = "" } = searchParams
+  const { timeframe = "", unit = "", variant = "" } = searchParams
   const searchParamsObj = useSearchParams()
 
-  configureStores(metric, timeframe, unit)
+  // console.log("📜 LOG > MetricPage render", metricId, unit, variant, timeframe)
+  configureStores(metric, timeframe, unit, variant)
 
   // TODO
   // if ($entries.get().length === 0) {

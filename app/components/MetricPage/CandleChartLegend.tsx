@@ -1,11 +1,12 @@
 import { Stack } from "@mui/material"
 import { useStore } from "@nanostores/react"
 import Decimal from "decimal.js"
+import { formatNumber } from "protofun"
 import React from "react"
 
 import { $entryMap, $legendTimestamp, $seriesType } from "../../stores/metric-page"
 import { isCandle } from "../../utils/candle-utils"
-import { formatNumber, isMobile } from "../../utils/client-utils"
+import { isMobile } from "../../utils/client-utils"
 import { LegendLabel } from "./LegendLabel"
 import { LegendValue } from "./LegendValue"
 
@@ -78,7 +79,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
                 <LegendLabel>Open</LegendLabel>
                 <LegendValue>
                   {formatNumber(
-                    new Decimal(candle.open || 0).div(precision).toNumber(), // TODO
+                    new Decimal(candle.open).div(precision).toNumber(),
                     significantDigits
                   )}{" "}
                   {unitLabel}
@@ -121,7 +122,8 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
               <LegendValue>
                 {formatNumber(
                   new Decimal(candle.close).div(precision).toNumber(),
-                  significantDigits
+                  significantDigits,
+                  isMobile ? "compact" : undefined
                 )}{" "}
                 {unitLabel}
               </LegendValue>

@@ -2,13 +2,14 @@ import { useStore } from "@nanostores/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
-import { $priceUnitIndex, $timeframe } from "../stores/metric-page"
+import { $priceUnitIndex, $timeframe, $variantIndex } from "../stores/metric-page"
 
 export function useSyncedSearchParams() {
   const router = useRouter()
 
   const timeframe = useStore($timeframe)
   const priceUnitIndex = useStore($priceUnitIndex)
+  const variantIndex = useStore($variantIndex)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -21,9 +22,13 @@ export function useSyncedSearchParams() {
       searchParams.set("unit", String(priceUnitIndex))
     }
 
+    if (String(variantIndex) !== searchParams.get("variant")) {
+      searchParams.set("variant", String(variantIndex))
+    }
+
     if (!window.location.search.includes(searchParams.toString())) {
       router.replace(`${window.location.pathname}?${searchParams.toString()}`)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeframe, priceUnitIndex])
+  }, [timeframe, priceUnitIndex, variantIndex])
 }
