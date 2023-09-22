@@ -16,7 +16,7 @@ export function ConnectionStatus() {
     if (!connectionLost && showing) {
       setTimeout(() => {
         setShowing(false)
-      }, 3000)
+      }, 3_000)
     }
   }, [connectionLost, showing])
 

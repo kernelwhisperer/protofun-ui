@@ -122,6 +122,7 @@ export function MetricPage(props: MetricPageProps) {
   //   $entries.set(data);
   // }
   // console.log("📜 LOG > MetricPage > data:", data.length);
+  const metricDesc = METRIC_DESC_MAP[protocolId]?.[metric.id]
 
   return (
     <StaggeredList>
@@ -139,14 +140,18 @@ export function MetricPage(props: MetricPageProps) {
             marginRight: "12px",
           }}
         />
-        {METRIC_DESC_MAP[protocolId]?.[metric.id]?.description && (
+        {metricDesc?.description && (
           <Tooltip
             title={
               <>
-                {METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}
-                <br />
-                <br />
-                {METRIC_DESC_MAP[protocolId]?.[metric.id]?.descriptionExtra}
+                {metricDesc?.description}
+                {!!metricDesc?.descriptionExtra && (
+                  <>
+                    <br />
+                    <br />
+                    {metricDesc?.descriptionExtra}
+                  </>
+                )}
               </>
             }
             disableInteractive
