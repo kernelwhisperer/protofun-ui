@@ -2,21 +2,14 @@ import { useTheme } from "@mui/material"
 import { useStore } from "@nanostores/react"
 import { animated, useSpring } from "@react-spring/web"
 import Decimal from "decimal.js"
-import {
-  IChartApi,
-  IPriceLine,
-  ISeriesApi,
-  MouseEventHandler,
-  MouseEventParams,
-  Time,
-} from "lightweight-charts"
+import { IPriceLine, MouseEventHandler, MouseEventParams, Time } from "lightweight-charts"
 import dynamic from "next/dynamic"
 import { getMetricPrecision, getSignificantDigits, Metric, wait } from "protofun"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { $alerts, findAlertsForMetric } from "../../api/alerts-api"
 import { useLiveData } from "../../hooks/useLiveData"
-import { $loopsAllowed } from "../../stores/app"
+import { $chartRef, $loopsAllowed, $mainSeries } from "../../stores/app"
 import {
   $entries,
   $entryMap,
@@ -62,9 +55,9 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const theme = useTheme()
   const crosshairSubRef = useRef<MouseEventHandler>()
   const clickSubRef = useRef<MouseEventHandler>()
-  const chartRef = useRef<IChartApi>()
+  const chartRef = $chartRef.get()
+  const mainSeries = $mainSeries.get()
   const alertPriceLinesRef = useRef<IPriceLine[]>([])
-  const mainSeries = useRef<ISeriesApi<"Candlestick" | "Line">>()
   const loading = useStore($loading)
 
   const timeframe = useStore($timeframe)

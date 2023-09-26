@@ -1,17 +1,30 @@
-import { CandlestickChart, ShowChart } from "@mui/icons-material"
-import { Button, ButtonGroup, MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material"
+import { CameraAlt, CandlestickChart, ShowChart } from "@mui/icons-material"
+import {
+  alpha,
+  Button,
+  ButtonGroup,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  useTheme,
+} from "@mui/material"
 import { useStore } from "@nanostores/react"
-import { Metric, TIME_FRAMES, Timeframe } from "protofun"
+import { Metric, PROTOCOL_MAP, TIME_FRAMES, Timeframe } from "protofun"
 import React, { useCallback } from "react"
 
 import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams"
+import { $chartRef } from "../../stores/app"
 import {
   $liveMode,
   $priceUnitIndex,
   $scaleMode,
   $seriesType,
   $timeframe,
+  $variantIndex,
 } from "../../stores/metric-page"
+import { downloadImage } from "../../utils/client-utils"
+import { RobotoSerifFF } from "../Theme/fonts"
 
 export function ChartActionBar({ metric }: { metric: Metric }) {
   const { timeframes, priceUnits } = metric
@@ -20,6 +33,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
   const scaleMode = useStore($scaleMode)
   const liveMode = useStore($liveMode)
   const priceUnitIndex = useStore($priceUnitIndex)
+  const theme = useTheme()
 
   const handlePriceUnitChange = useCallback((event: SelectChangeEvent) => {
     $priceUnitIndex.set(parseInt(event.target.value))
@@ -91,6 +105,48 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             Live data
           </Button>
         )}
+        <Button
+          size="small"
+          sx={{ minWidth: 44 }}
+          variant="outlined"
+          onClick={() => {
+            const protocol = PROTOCOL_MAP[metric.protocol]
+            const chartRef = $chartRef.get().current
+            if (!chartRef) return
+
+            let chartTitle = `${protocol.title}'s ${metric.title}`
+
+            if (metric.variants && metric.variants.length > 0) {
+              chartTitle += ` (${metric.variants[$variantIndex.get()].label})`
+            }
+
+            chartRef.applyOptions({
+              watermark: {
+                color: alpha(theme.palette.primary.main, 0.33),
+                fontFamily: RobotoSerifFF,
+                fontSize: 22,
+                horzAlign: "center",
+                text: chartTitle,
+                // text: `https://protocol.fun/${metric.protocol}/${metric.id}`,
+                vertAlign: "center",
+                visible: true,
+              },
+            })
+
+            downloadImage(
+              chartRef.takeScreenshot(),
+              `${chartTitle} ${new Date().toISOString()}.png`
+            )
+
+            chartRef.applyOptions({
+              watermark: {
+                visible: false,
+              },
+            })
+          }}
+        >
+          <CameraAlt />
+        </Button>
         {priceUnits.length > 1 && (
           <Select
             sx={{

@@ -112,6 +112,7 @@ export const candleStickOptions: CandlestickSeriesPartialOptions = {
   borderDownColor: "rgb(220, 60, 70)",
   borderUpColor: "rgb(0, 150, 108)",
   downColor: "rgb(220, 60, 70)",
+  // title: "hey",
   upColor: "rgb(0, 150, 108)",
   wickDownColor: "rgb(220, 60, 70)",
   wickUpColor: "rgb(0, 150, 108)",
@@ -140,4 +141,15 @@ export async function loadMetricFns(
   const loadedModule = await METRIC_MODULE_MAP[protocolId][metricId]()
   const { default: query, subscribe } = loadedModule
   return { query, subscribe }
+}
+
+export function downloadImage(img?: HTMLCanvasElement, name = "screenshot.png") {
+  img?.toBlob((blob) => {
+    if (!blob) return
+    const link = document.createElement("a")
+    link.href = URL.createObjectURL(blob)
+    link.download = name
+    link.click()
+    URL.revokeObjectURL(link.href) // Free up storage--optional
+  }, "image/png")
 }

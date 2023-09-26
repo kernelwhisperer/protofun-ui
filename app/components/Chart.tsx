@@ -34,6 +34,7 @@ function Chart(props: ChartProps) {
     const primaryColor = theme.palette.primary.main
     const textColor = theme.palette.text.primary
     const borderColor = theme.palette.divider
+    const bgColor = theme.palette.background.default
 
     chartRef.current = createChart(containerRef.current, {
       crosshair: {
@@ -57,7 +58,7 @@ function Chart(props: ChartProps) {
       //   mouseWheel: false,
       // },
       layout: {
-        background: { color: "transparent" },
+        background: { color: bgColor },
         fontFamily: RobotoMonoFF,
         textColor,
       },
@@ -76,6 +77,7 @@ function Chart(props: ChartProps) {
 
     chartRef.current.priceScale("right").applyOptions({
       borderVisible: false,
+      entireTextOnly: true,
     })
 
     window.addEventListener("resize", handleResize)
