@@ -16,6 +16,7 @@ import React, { useCallback } from "react"
 import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams"
 import { $chartRef } from "../../stores/app"
 import {
+  $legendTimestamp,
   $liveMode,
   $priceUnitIndex,
   $scaleMode,
@@ -113,11 +114,12 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             const protocol = PROTOCOL_MAP[metric.protocol]
             const chartRef = $chartRef.get().current
             if (!chartRef) return
+            const variantIndex = $variantIndex.get()
 
             let chartTitle = `${protocol.title}'s ${metric.title}`
 
             if (metric.variants && metric.variants.length > 0) {
-              chartTitle += ` (${metric.variants[$variantIndex.get()].label})`
+              chartTitle += ` (${metric.variants[variantIndex].label})`
             }
 
             chartRef.applyOptions({
@@ -135,7 +137,10 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
 
             downloadImage(
               chartRef.takeScreenshot(),
-              `${chartTitle} ${new Date().toISOString()}.png`
+              // `${chartTitle} ${new Date().toISOString()}.png`
+              `${metric.protocol}-${
+                metric.id
+              }-${variantIndex}-${priceUnitIndex}-${timeframe.toLowerCase()}-${$legendTimestamp.get()}.png`
             )
 
             chartRef.applyOptions({
