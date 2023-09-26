@@ -144,6 +144,8 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
               },
             })
           }}
+          id="screenshot-button"
+          aria-label="Take screenshot"
         >
           <CameraAlt />
         </Button>

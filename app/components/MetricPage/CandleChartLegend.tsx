@@ -31,6 +31,7 @@ export function CandleChartLegend(props: CandleChartLegendProps) {
     <>
       {!!candle && isCandle(candle) && (
         <Stack
+          id="chart-legend"
           sx={{
             alignItems: "flex-start",
             left: 0,
