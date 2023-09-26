@@ -1,4 +1,4 @@
-import { GitHub, Twitter } from "@mui/icons-material"
+import { GitHub, Telegram, Twitter } from "@mui/icons-material"
 import { Link as MuiLink, MenuItem, Typography, TypographyProps } from "@mui/material"
 import React from "react"
 
@@ -66,6 +66,15 @@ export const MenuContents = ({ appVer, gitHash, open, toggleOpen }: MenuContents
         <SectionTitle id="social-links" role="listitem">
           Social
         </SectionTitle>
+        <CustomLink
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://t.me/protofun"
+          role="listitem"
+        >
+          <Telegram fontSize="small" />
+          <span>Telegram</span>
+        </CustomLink>
         <CustomLink
           target="_blank"
           rel="noopener noreferrer"
