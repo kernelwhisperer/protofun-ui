@@ -134,8 +134,7 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
             new Decimal(alert.triggerValue)
               .div(getMetricPrecision(metric, alert.variantIndex))
               .toNumber(),
-            getSignificantDigits(metric, alert.priceUnitIndex),
-            "compact"
+            getSignificantDigits(metric, alert.priceUnitIndex)
           )
 
           return (

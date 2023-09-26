@@ -33,7 +33,7 @@ export const isMobile = isServerSide
 
 export const isProduction = isServerSide
   ? false
-  : Boolean(window.location.toString().includes("https://protocol.fun")) // FIXME
+  : Boolean(window.location.toString().includes("https://protocol.fun"))
 
 export function logError(error: Error) {
   console.error(error)
@@ -137,7 +137,7 @@ export async function loadMetricFns(
   protocolId: ProtocolId,
   metricId: MetricId
 ): Promise<MetricFnsResult> {
-  const module = await METRIC_MODULE_MAP[protocolId][metricId]()
-  const { default: query, subscribe } = module
+  const loadedModule = await METRIC_MODULE_MAP[protocolId][metricId]()
+  const { default: query, subscribe } = loadedModule
   return { query, subscribe }
 }

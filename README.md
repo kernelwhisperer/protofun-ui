@@ -29,6 +29,7 @@ This project is unlicensed.
 
 ## Product features
 
+- Push notifications
 - Data aggregation by different timeframes (block, minute, hour, day, week)
 - Candlestick and line chart types
 - Live data (using polling, at this time)

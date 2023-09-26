@@ -10,10 +10,13 @@ extends:
   - prettier
   - plugin:prettier/recommended
   - "plugin:@typescript-eslint/recommended"
+  - 'plugin:@next/next/recommended'
 ignorePatterns:
+  - .next/**/*
   - build/**/*
   - dist/**/*
   - package-lock.json
+  - yarn.lock
   - public/service-worker.js
 parserOptions:
   ecmaFeatures:

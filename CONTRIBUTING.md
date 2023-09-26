@@ -8,6 +8,7 @@ After commit & push:
 
   ```sh
   # Update sdk if needed
+  # yarn add protofun
   #
   yarn version
   ```
