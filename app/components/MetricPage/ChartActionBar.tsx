@@ -135,13 +135,13 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
               },
             })
 
-            downloadImage(
-              chartRef.takeScreenshot(),
-              // `${chartTitle} ${new Date().toISOString()}.png`
-              `${metric.protocol}-${
-                metric.id
-              }-${variantIndex}-${priceUnitIndex}-${timeframe.toLowerCase()}-${$legendTimestamp.get()}.png`
-            )
+            const fileName = window.location.toString().includes("machine=true")
+              ? `${metric.protocol}-${
+                  metric.id
+                }-${variantIndex}-${priceUnitIndex}-${timeframe.toLowerCase()}-${$legendTimestamp.get()}.png`
+              : `${chartTitle} ${new Date().toISOString()}.png`
+
+            downloadImage(chartRef.takeScreenshot(), fileName)
 
             chartRef.applyOptions({
               watermark: {
