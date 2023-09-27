@@ -18,7 +18,9 @@ import {
   $priceUnitIndex,
   $scaleMode,
   $seriesType,
+  $since,
   $timeframe,
+  $until,
   $variantIndex,
   EntryMap,
 } from "../../stores/metric-page"
@@ -82,7 +84,10 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       $loading.set(true)
       setError("")
 
-      Promise.all([query({ priceUnit, timeframe }), wait($loopsAllowed.get() ? 333 : 100)])
+      Promise.all([
+        query({ priceUnit, since: $since.get(), timeframe, until: $until.get() }),
+        wait($loopsAllowed.get() ? 333 : 100),
+      ])
         .then(([data]) => {
           const map = data.reduce((acc, curr) => {
             acc[curr.timestamp] = curr

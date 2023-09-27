@@ -13,7 +13,9 @@ import {
   $priceUnitIndex,
   $scaleMode,
   $seriesType,
+  $since,
   $timeframe,
+  $until,
   $variantIndex,
   liveModeDefault,
   scaleModeDefault,
@@ -32,14 +34,27 @@ export interface MetricPageProps {
   data: Candle[]
   metricId: MetricId
   protocolId: ProtocolId
-  searchParams: { timeframe?: string; unit?: string; variant?: string }
+  searchParams: {
+    since?: string
+    timeframe?: string
+    unit?: string
+    until?: string
+    variant?: string
+  }
 }
 
 const MetricChart = dynamic(() => import("./MetricChart"), {
   loading: () => <Progress loading />,
 })
 
-function configureStores(metric: Metric, timeframe: string, unit: string, variant: string) {
+function configureStores(
+  metric: Metric,
+  timeframe: string,
+  unit: string,
+  variant: string,
+  since: string,
+  until: string
+) {
   /**
    * Reset
    */
@@ -98,6 +113,16 @@ function configureStores(metric: Metric, timeframe: string, unit: string, varian
   } else {
     $variantIndex.set(0)
   }
+
+  /**
+   * Timestamps
+   */
+  if (since) {
+    $since.set(since)
+  }
+  if (until) {
+    $until.set(until)
+  }
 }
 
 export function MetricPage(props: MetricPageProps) {
@@ -105,11 +130,11 @@ export function MetricPage(props: MetricPageProps) {
   const protocol = PROTOCOL_MAP[protocolId]
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric
 
-  const { timeframe = "", unit = "", variant = "" } = searchParams
+  const { timeframe = "", unit = "", variant = "", since = "", until = "" } = searchParams
   const searchParamsObj = useSearchParams()
 
   // console.log("📜 LOG > MetricPage render", metricId, unit, variant, timeframe)
-  configureStores(metric, timeframe, unit, variant)
+  configureStores(metric, timeframe, unit, variant, since, until)
 
   // TODO
   // if ($entries.get().length === 0) {

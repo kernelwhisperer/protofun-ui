@@ -25,6 +25,8 @@ export const $scaleMode = atom<0 | 1>(scaleModeDefault)
 export const $liveMode = atom<boolean>(liveModeDefault)
 export const $priceUnitIndex = atom<number>(0)
 export const $variantIndex = atom<number>(0)
+export const $since = atom<string>("")
+export const $until = atom<string>("")
 
 export const $legendTimestamp = atom<string>("")
 export const $loading = atom<boolean>(false)
