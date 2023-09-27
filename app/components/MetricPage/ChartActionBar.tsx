@@ -70,7 +70,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             }}
             aria-label="Switch to Line chart"
           >
-            <ShowChart />
+            <ShowChart fontSize="small" />
           </Button>
           <Button
             disabled={timeframe === "Block" || metric.disallowCandleType}
@@ -80,7 +80,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             }}
             aria-label="Switch to Candlestick chart"
           >
-            <CandlestickChart />
+            <CandlestickChart fontSize="small" />
           </Button>
         </ButtonGroup>
         <Button
@@ -152,7 +152,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
           id="screenshot-button"
           aria-label="Take screenshot"
         >
-          <CameraAlt />
+          <CameraAlt fontSize="small" />
         </Button>
         {priceUnits.length > 1 && (
           <Select
