@@ -59,7 +59,7 @@ function configureStores(
    * Reset
    */
   $legendTimestamp.set("")
-  $liveMode.set(metric.disallowLiveMode ? false : liveModeDefault)
+  $liveMode.set(since || until || metric.disallowLiveMode ? false : liveModeDefault)
   $scaleMode.set(metric.preferredLogScale ? 1 : scaleModeDefault)
   // if (timeframe !== "Block") {
   //   $seriesType.set(seriesTypeDefault); FIXME

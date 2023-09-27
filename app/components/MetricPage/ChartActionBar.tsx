@@ -21,7 +21,9 @@ import {
   $priceUnitIndex,
   $scaleMode,
   $seriesType,
+  $since,
   $timeframe,
+  $until,
   $variantIndex,
 } from "../../stores/metric-page"
 import { downloadImage } from "../../utils/client-utils"
@@ -94,7 +96,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
         >
           Log scale
         </Button>
-        {!metric.disallowLiveMode && (
+        {!(metric.disallowLiveMode || $since.get() || $until.get()) && (
           <Button
             size="small"
             className={liveMode ? "active" : undefined}
