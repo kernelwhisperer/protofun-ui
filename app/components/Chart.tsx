@@ -6,6 +6,7 @@ import React, { memo, MutableRefObject, useEffect, useRef } from "react"
 
 import { $timeframe } from "../stores/metric-page"
 import { createPriceFormatter } from "../utils/chart"
+import { isMobile } from "../utils/client-utils"
 import { RobotoMonoFF } from "./Theme/fonts"
 
 export type ChartProps = {
@@ -69,7 +70,7 @@ function Chart(props: ChartProps) {
 
     chartRef.current.timeScale().applyOptions({
       borderVisible: false,
-      rightOffset: 4,
+      rightOffset: isMobile || window.location.toString().includes("machine=true") ? 4 : 8,
       secondsVisible: ["Block"].includes($timeframe.get()),
       timeVisible: ["Hour", "Minute", "Block"].includes($timeframe.get()),
     })

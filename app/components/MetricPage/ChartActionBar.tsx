@@ -124,18 +124,20 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
               chartTitle += ` (${metric.variants[variantIndex].label})`
             }
 
-            chartRef.applyOptions({
-              watermark: {
-                color: alpha(theme.palette.primary.main, 0.33),
-                fontFamily: RobotoSerifFF,
-                fontSize: 22,
-                horzAlign: "center",
-                text: chartTitle,
-                // text: `https://protocol.fun/${metric.protocol}/${metric.id}`,
-                vertAlign: "center",
-                visible: true,
-              },
-            })
+            if (window.location.toString().includes("watermark=true")) {
+              chartRef.applyOptions({
+                watermark: {
+                  color: alpha(theme.palette.primary.main, 0.33),
+                  fontFamily: RobotoSerifFF,
+                  fontSize: 22,
+                  horzAlign: "center",
+                  text: chartTitle,
+                  // text: `https://protocol.fun/${metric.protocol}/${metric.id}`,
+                  vertAlign: "top",
+                  visible: true,
+                },
+              })
+            }
 
             const fileName = window.location.toString().includes("machine=true")
               ? `${metric.protocol}-${
