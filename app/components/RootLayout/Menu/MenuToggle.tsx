@@ -3,6 +3,7 @@ import { animated, AnimatedProps, useSpring } from "@react-spring/web"
 import React, { CSSProperties } from "react"
 
 import { PopoverToggleProps } from "../../../utils/client-utils"
+import { Tooltip } from "../../Tooltip"
 
 const Path = (props: AnimatedProps<{ d: string; style?: CSSProperties }>) => (
   <animated.path
@@ -32,24 +33,26 @@ export const MenuToggle = ({ toggleOpen, open }: PopoverToggleProps) => {
   })
 
   return (
-    <IconButton
-      onClick={toggleOpen}
-      disableTouchRipple
-      style={{
-        zIndex: "var(--mui-zIndex-menuButton)", // open ? "var(--mui-zIndex-menuButton)" : undefined,
-      }}
-      aria-label="Open Menu"
-    >
-      <animated.svg
-        width="24"
-        height="24"
-        viewBox="0 0 26 26"
-        style={{ paddingLeft: 4, paddingTop: 4 }}
+    <Tooltip title="Open Menu">
+      <IconButton
+        onClick={toggleOpen}
+        disableTouchRipple
+        style={{
+          zIndex: "var(--mui-zIndex-menuButton)", // open ? "var(--mui-zIndex-menuButton)" : undefined,
+        }}
+        aria-label="Open Menu"
       >
-        <Path d={d1} />
-        <Path d="M 2 9.423 L 20 9.423" style={{ opacity }} />
-        <Path d={d3} />
-      </animated.svg>
-    </IconButton>
+        <animated.svg
+          width="24"
+          height="24"
+          viewBox="0 0 26 26"
+          style={{ paddingLeft: 4, paddingTop: 4 }}
+        >
+          <Path d={d1} />
+          <Path d="M 2 9.423 L 20 9.423" style={{ opacity }} />
+          <Path d={d3} />
+        </animated.svg>
+      </IconButton>
+    </Tooltip>
   )
 }

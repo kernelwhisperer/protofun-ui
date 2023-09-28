@@ -13,9 +13,9 @@ export function ProPage() {
           elevation={0}
           sx={{
             border: 0,
-            height: "calc(100vh - 372px)",
+            height: "calc(100vh - 104px)",
             maxHeight: "800px",
-            minHeight: "400px",
+            minHeight: "360px",
             position: "relative",
           }}
         >

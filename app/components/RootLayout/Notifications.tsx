@@ -6,6 +6,7 @@ import React, { useState } from "react"
 import { useBoolean } from "usehooks-ts"
 
 import { $unreadNotifications } from "../../api/notifications-api"
+import { Tooltip } from "../Tooltip"
 
 const NotificationsDialog = dynamic(() => import("./Notifications/NotificationsDialog"))
 
@@ -16,21 +17,23 @@ export default function Notifications() {
 
   return (
     <>
-      <IconButton
-        aria-label="Open Notifications"
-        disableTouchRipple
-        color="primary"
-        ref={setAnchorEl}
-        onClick={toggleOpen}
-        id="notifications-button"
-        aria-controls={open ? "notifications-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-      >
-        <Badge badgeContent={unreadNotifications} color="accent" variant="standard">
-          <NotificationsNoneRounded fontSize="medium" />
-        </Badge>
-      </IconButton>
+      <Tooltip title="Open Notifications">
+        <IconButton
+          aria-label="Open Notifications"
+          disableTouchRipple
+          color="primary"
+          ref={setAnchorEl}
+          onClick={toggleOpen}
+          id="notifications-button"
+          aria-controls={open ? "notifications-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+        >
+          <Badge badgeContent={unreadNotifications} color="accent" variant="standard">
+            <NotificationsNoneRounded fontSize="medium" />
+          </Badge>
+        </IconButton>
+      </Tooltip>
       <NotificationsDialog anchorEl={anchorEl} open={open} toggleOpen={toggleOpen} />
     </>
   )

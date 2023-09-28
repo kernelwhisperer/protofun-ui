@@ -1,11 +1,12 @@
 "use client"
 
-import { AppBar, AppBarProps, Button, Container, Stack, Toolbar } from "@mui/material"
+import { AppBar, AppBarProps, Button, Container, IconButton, Stack, Toolbar } from "@mui/material"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import React from "react"
 
 import { AppVerProps } from "../../stores/app"
+import { Tooltip } from "../Tooltip"
 import { Blobs } from "./Blobs"
 import { HamburgerMenu } from "./HamburgerMenu"
 import { Logo } from "./Logo"
@@ -44,20 +45,43 @@ export function Header({ appVer, gitHash }: AppVerProps) {
             marginY={1}
           >
             <Blobs />
-            <Button
-              href={`/?${searchParams?.toString()}`}
-              aria-label="Homepage"
-              LinkComponent={Link}
-              sx={{
-                borderRadius: 8,
-                marginLeft: -1,
-                padding: 1,
-                textTransform: "none",
-              }}
-            >
-              <Logo />
-            </Button>
+            <Tooltip title="Visit Homepage">
+              <Button
+                href={`/?${searchParams?.toString()}`}
+                aria-label="Visit Homepage"
+                LinkComponent={Link}
+                sx={{
+                  borderRadius: 8,
+                  marginLeft: -1,
+                  padding: 1,
+                  textTransform: "none",
+                }}
+              >
+                <Logo />
+              </Button>
+            </Tooltip>
             <Stack direction="row" sx={{ marginRight: -1 }}>
+              <Tooltip title="Open Pro view">
+                <IconButton
+                  href={`/pro?${searchParams?.toString()}`}
+                  LinkComponent={Link}
+                  aria-label="Open Pro view"
+                  color="primary"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 -1 36 28"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14 22H7V11H0V4h14v18zM28 22h-8l7.5-18h8L28 22z"
+                      fill="currentColor"
+                    ></path>
+                    <circle cx="20" cy="8" r="4" fill="currentColor"></circle>
+                  </svg>
+                </IconButton>
+              </Tooltip>
               <Notifications />
               <HamburgerMenu appVer={appVer} gitHash={gitHash} />
             </Stack>
