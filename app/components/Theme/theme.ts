@@ -43,7 +43,8 @@ const RETRO_GREY = "rgb(41, 44, 52)"
 // const RETRO_GREY_AF = "rgb(48, 51, 59)";
 // const RETRO_GREY = "rgb(57, 65, 73)";
 
-export const RETRO_BEIGE_1 = "rgb(200, 187, 155)"
+export const RETRO_BEIGE_1 = "rgb(205, 192, 160)"
+// export const RETRO_BEIGE_1 = "rgb(200, 187, 155)"
 // const RETRO_BEIGE_1_AF = "rgb(209, 200, 178)";
 // const RETRO_YELLOW = "rgb(238, 187, 95)";
 

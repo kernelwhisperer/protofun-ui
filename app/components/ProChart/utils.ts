@@ -58,3 +58,15 @@ export const RESOLUTION_TO_TIMEFRAME: Record<string, Timeframe> = {
   "1W": "Week",
   "60": "Hour",
 }
+
+export const TV_CHART_STATE = "TV_CHART_STATE"
+
+export const saveChartState = (state: object) => {
+  console.log("📜 LOG > saveChartState > state:", state)
+  window.localStorage.setItem(TV_CHART_STATE, JSON.stringify(state))
+}
+
+export const loadChartState = () => {
+  const rawChartData = window.localStorage.getItem(TV_CHART_STATE)
+  return rawChartData ? JSON.parse(rawChartData) : undefined
+}

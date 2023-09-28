@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material"
+import { Box, darken, lighten, useTheme } from "@mui/material"
 import React, { useEffect, useRef } from "react"
 
 import {
@@ -7,6 +7,7 @@ import {
   widget as Widget,
 } from "./charting_library/charting_library"
 import { datafeed } from "./datafeed"
+import { loadChartState, saveChartState } from "./utils"
 
 const containerId = "tv_chart_container"
 
@@ -24,10 +25,18 @@ export function ProChart() {
 
     clearExistingWidget()
 
+    const savedData = loadChartState()
+    console.log("📜 LOG > useEffect > savedData:", savedData)
+
     widgetRef.current = new Widget({
       autosize: true,
       container: containerId,
+      custom_css_url: "/tv.css",
+      custom_font_family: "'Roboto Mono', monospace",
       datafeed,
+      disabled_features: [
+        "use_localstorage_for_settings", // TODO
+      ],
       enabled_features: [
         "show_exchange_logos",
         "show_symbol_logos",
@@ -40,16 +49,21 @@ export function ProChart() {
       },
       interval: "60" as ResolutionString,
       library_path: "/charting_library/",
+      loading_screen: {
+        backgroundColor: theme.palette.background.default,
+        foregroundColor: theme.palette.accent.main,
+      },
       locale: "en",
-
       overrides: {
         // "mainSeriesProperties.style": 2,
         "mainSeriesProperties.priceAxisProperties.log": true,
-        // "chartProperties.background": rgbToHex(theme.palette.background.default),
-        // "chartProperties.backgroundType": "solid",
-        // "paneProperties.background": rgbToHex(theme.palette.background.default),
-        // "paneProperties.backgroundType": "solid",
+        "paneProperties.background":
+          theme.palette.mode === "dark"
+            ? lighten(theme.palette.background.default, 0.01)
+            : darken(theme.palette.background.default, 0.025),
+        "paneProperties.backgroundType": "solid",
       },
+      // saved_data: savedData,
       // timezone: "Europe/Bucharest", //TODO
       symbol: `eth_base_fee`,
       theme: theme.palette.mode,
@@ -64,11 +78,11 @@ export function ProChart() {
           resolution: "60" as ResolutionString,
           text: "1W",
         },
-        {
-          description: "1 month in 1 hour intervals",
-          resolution: "60" as ResolutionString,
-          text: "1M",
-        },
+        // {
+        //   description: "1 month in 1 day intervals",
+        //   resolution: "1D" as ResolutionString,
+        //   text: "1M",
+        // },
         {
           description: "3 months in 1 day intervals",
           resolution: "1D" as ResolutionString,
@@ -94,20 +108,52 @@ export function ProChart() {
           resolution: "1W" as ResolutionString,
           text: "5Y",
         },
-        // {
-        //   description: "All data in 1 week intervals",
-        //   resolution: "1W" as ResolutionString,
-        //   text: "All",
-        // },
+        {
+          description: "10 years in 1 week intervals",
+          resolution: "1W" as ResolutionString,
+          text: "10Y",
+        },
       ],
     })
-    console.log("📜 LOG > useEffect > tvWidget:", widgetRef)
-    // widgetRef.current.activeChart().getPanes()[1].getRightPriceScales()[0].setMode(1)
+    // console.log("📜 LOG > useEffect > tvWidget:", widgetRef)
+
+    const handleAutoSave = () => {
+      widgetRef.current?.save(saveChartState)
+    }
+
+    widgetRef.current?.subscribe("onAutoSaveNeeded", handleAutoSave)
+    // widgetRef.current?.subscribe("onPlusClick", console.log)
 
     return () => {
+      widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
       clearExistingWidget()
     }
-  }, [theme.palette.mode])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  return <Box sx={{ height: "100%", width: "100%" }} id={containerId} />
+  useEffect(() => {
+    if (!widgetRef.current) return
+
+    widgetRef.current.onChartReady(() => {
+      widgetRef.current?.changeTheme(theme.palette.mode)
+      // set timeout because it's broken
+      setTimeout(() => {
+        widgetRef.current?.applyOverrides({
+          "mainSeriesProperties.priceAxisProperties.log": true,
+          "paneProperties.background":
+            theme.palette.mode === "dark"
+              ? lighten(theme.palette.background.default, 0.01)
+              : darken(theme.palette.background.default, 0.025),
+          "paneProperties.backgroundType": "solid",
+        })
+      }, 0)
+    })
+  }, [theme])
+
+  return (
+    <Box
+      sx={{ borderRadius: 1, height: "100%", overflow: "hidden", width: "100%" }}
+      id={containerId}
+    />
+  )
 }
