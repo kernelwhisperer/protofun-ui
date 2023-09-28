@@ -18,6 +18,9 @@ ignorePatterns:
   - package-lock.json
   - yarn.lock
   - public/service-worker.js
+  - public/charting_library
+  - app/components/ProChart/charting_library
+  - analyze*
 parserOptions:
   ecmaFeatures:
     jsx: true

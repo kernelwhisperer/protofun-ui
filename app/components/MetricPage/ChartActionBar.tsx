@@ -14,8 +14,8 @@ import { Metric, PROTOCOL_MAP, TIME_FRAMES, Timeframe } from "protofun"
 import React, { useCallback } from "react"
 
 import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams"
-import { $chartRef } from "../../stores/app"
 import {
+  $chartRef,
   $legendTimestamp,
   $liveMode,
   $priceUnitIndex,

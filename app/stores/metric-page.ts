@@ -1,9 +1,13 @@
+import { logger } from "@nanostores/logger"
 import {
+  IChartApi,
+  ISeriesApi,
   // PriceScaleMode,
   SeriesType,
 } from "lightweight-charts"
 import { atom, map } from "nanostores"
 import { Timeframe } from "protofun"
+import { MutableRefObject } from "react"
 
 import { Candle } from "../utils/candle-utils"
 
@@ -35,3 +39,25 @@ export const $entries = atom<Candle[]>([])
 
 export type EntryMap = Record<string, Candle>
 export const $entryMap = map<EntryMap>({})
+
+export const $chartRef = atom<MutableRefObject<IChartApi | undefined>>({ current: undefined })
+export const $mainSeries = atom<MutableRefObject<ISeriesApi<"Candlestick" | "Line"> | undefined>>({
+  current: undefined,
+})
+
+logger({
+  $chartRef,
+  $entries,
+  $entryMap,
+  $legendTimestamp,
+  $liveMode,
+  $loading,
+  $mainSeries,
+  $priceUnitIndex,
+  $scaleMode,
+  $seriesType,
+  $since,
+  $timeframe,
+  $until,
+  $variantIndex,
+})

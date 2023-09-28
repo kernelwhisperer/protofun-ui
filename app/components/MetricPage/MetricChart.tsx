@@ -9,12 +9,14 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { $alerts, findAlertsForMetric } from "../../api/alerts-api"
 import { useLiveData } from "../../hooks/useLiveData"
-import { $chartRef, $loopsAllowed, $mainSeries } from "../../stores/app"
+import { $loopsAllowed } from "../../stores/app"
 import {
+  $chartRef,
   $entries,
   $entryMap,
   $legendTimestamp,
   $loading,
+  $mainSeries,
   $priceUnitIndex,
   $scaleMode,
   $seriesType,
