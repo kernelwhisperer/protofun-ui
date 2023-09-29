@@ -6,6 +6,20 @@ import {
   SearchSymbolResultItem,
 } from "./charting_library/charting_library"
 
+export const RESOLUTION_TO_TIMEFRAME: Record<string, Timeframe> = {
+  "1": "Minute",
+  "1D": "Day",
+  "1W": "Week",
+  "60": "Hour",
+}
+export const TIMEFRAME_TO_RESOLUTION: Record<Timeframe, string> = {
+  Block: "1",
+  Day: "1D",
+  Hour: "60",
+  Minute: "1",
+  Week: "1W",
+}
+
 type ProSymbol = LibrarySymbolInfo & SearchSymbolResultItem
 
 export function toSymbol(metric: Metric): ProSymbol {
@@ -19,7 +33,7 @@ export function toSymbol(metric: Metric): ProSymbol {
       : "https://protocol.fun/icon-512x512.png"
 
   return {
-    currency_code: "USD",
+    currency_code: metric.priceUnits[0],
     data_status: "streaming",
     description: `${protocol.title} ${metric.title}`,
     exchange,
@@ -33,31 +47,26 @@ export function toSymbol(metric: Metric): ProSymbol {
     minmov: 0.01,
     // TODO
     name,
-
     pricescale: 100,
     // TODO
     // sector: "DeFi",
     session: "24x7",
-    supported_resolutions: ["1", "60", "1D", "1W"] as ResolutionString[],
+    supported_resolutions: metric.timeframes
+      .filter((x) => x !== "Block")
+      .map((x) => TIMEFRAME_TO_RESOLUTION[x]) as ResolutionString[],
     symbol: name,
     timezone: "Etc/UTC",
     type: exchange === "Binance" ? "token price" : "fundamental",
+    // original_currency_code: "USD",
     // intraday_multipliers: [supportedResolutions],
     // supported_resolutions: ["60"] as ResolutionString[],
     // ticker: metric.id,
-    // visible_plots_set: "ohlcv",
+    visible_plots_set: metric.disallowCandleType ? "c" : "ohlc",
     // volume_precision: 8,
   }
 }
 
 export const SYMBOLS = METRICS.map(toSymbol)
-
-export const RESOLUTION_TO_TIMEFRAME: Record<string, Timeframe> = {
-  "1": "Minute",
-  "1D": "Day",
-  "1W": "Week",
-  "60": "Hour",
-}
 
 export const CHART_DATA_KEY = "PRO_CHART_DATA"
 

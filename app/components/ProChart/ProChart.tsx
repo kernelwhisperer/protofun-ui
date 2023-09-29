@@ -18,6 +18,9 @@ export default function ProChart() {
   useEffect(() => {
     const savedData = loadChartData()
 
+    window.localStorage.setItem("tradingview.PriceAxisCurrencyAndUnit.visibility", "alwaysOn")
+    window.localStorage.setItem("tradingview.PriceAxisAutoLogButtons.visibility", "alwaysOff")
+
     widgetRef.current = new Widget({
       autosize: true,
       container: containerId,
@@ -30,6 +33,7 @@ export default function ProChart() {
         "show_symbol_logo_in_legend",
         "show_symbol_logo_for_compare_studies",
         "timeframes_toolbar",
+        "pricescale_currency",
       ],
       favorites: {
         intervals: ["1", "60", "1D", "1W"] as ResolutionString[],
@@ -128,9 +132,11 @@ export default function ProChart() {
     // })
 
     return () => {
-      widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
-      widgetRef.current?.remove()
-      widgetRef.current = null
+      try {
+        widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
+        widgetRef.current?.remove()
+        widgetRef.current = null
+      } catch {}
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

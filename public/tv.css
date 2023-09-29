@@ -21,6 +21,9 @@
   [class^="paneSeparator-"] {
     background: rgba(157, 145, 114, 1) !important;
   }
+  /* [class^="price-axis-currency-label-"] {
+    background: rgba(157, 145, 114, 1) !important;
+  } */
 }
 
 .theme-dark:root {

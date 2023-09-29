@@ -61,10 +61,10 @@ export const datafeed: IBasicDataFeed = {
   onReady: (onReadyCallback) => {
     setTimeout(() => {
       onReadyCallback({
-        currency_codes: [
-          { code: "USD", description: "$", id: "USD" },
-          { code: "EUR", description: "€", id: "EUR" },
-        ],
+        // currency_codes: [
+        //   { code: "USD", description: "$", id: "USD" },
+        //   { code: "EUR", description: "€", id: "EUR" },
+        // ],
         exchanges: [
           {
             desc: "",
@@ -137,9 +137,9 @@ export const datafeed: IBasicDataFeed = {
     subscriberUID,
     onResetCacheNeededCallback
   ) => {
-    // console.log("📜 LOG >[subscribeBars]: Method call with subscriberUID:", subscriberUID)
+    console.log("📜 LOG >[subscribeBars]: Method call with subscriberUID:", subscriberUID)
   },
   unsubscribeBars: (subscriberUID) => {
-    // console.log("📜 LOG >[unsubscribeBars]: Method call with subscriberUID:", subscriberUID)
+    console.log("📜 LOG >[unsubscribeBars]: Method call with subscriberUID:", subscriberUID)
   },
 }
