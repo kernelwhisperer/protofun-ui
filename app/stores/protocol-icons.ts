@@ -26,7 +26,7 @@ export const PROTOCOL_ICON_MAP: Record<ProtocolId, IconData> = {
   },
   eth: {
     icon: EthereumIcon,
-    iconPadding: "16px",
+    iconPadding: "12px",
   },
   mkr: {
     icon: MakerIcon,
