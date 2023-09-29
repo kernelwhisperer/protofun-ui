@@ -1,9 +1,11 @@
+/* Example https://github.com/tradingview/charting_library/blob/master/themed.css */
+
 :root:not(.theme-dark) {
   --tv-color-platform-background: rgba(187, 175, 144, 0.3);
   --tv-color-pane-background: rgba(187, 175, 144, 0.2);
   --tv-color-toolbar-button-text-active: rgb(158, 102, 156);
   --tv-color-toolbar-button-text-active-hover: rgb(168, 108, 166);
-  --tv-color-toolbar-divider-background: rgba(67,70,81,0.5);
+  --tv-color-toolbar-divider-background: rgba(67, 70, 81, 0.5);
   --tv-color-toolbar-button-background-hover: rgba(255, 255, 255, 0.33);
   /*
   --tv-color-popup-background: rgb(192, 180, 149);
@@ -16,6 +18,9 @@
   --tv-color-toolbar-toggle-button-background-active: red;
   --tv-color-toolbar-toggle-button-background-active-hover: magenta;
   */
+  [class^="paneSeparator-"] {
+    background: rgba(157, 145, 114, 1) !important;
+  }
 }
 
 .theme-dark:root {
@@ -23,6 +28,7 @@
   --tv-color-pane-background: rgba(58, 61, 68, 0.2);
   --tv-color-toolbar-button-text-active: #008080;
   --tv-color-toolbar-button-text-active-hover: #008080;
+  --tv-color-toolbar-divider-background: rgba(67, 70, 81, 0.5);
   /* 
   --tv-color-popup-background: rgb(192, 180, 149);
   --tv-color-pane-background-secondary: rgba(58, 61, 68, 0.5);
@@ -36,6 +42,9 @@
   --tv-color-toolbar-toggle-button-background-active: #2F2F48;
   --tv-color-toolbar-toggle-button-background-active-hover: #787878; 
   */
+  [class^="paneSeparator-"] {
+    background: rgba(78, 81, 88, 1) !important;
+  }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@100;200;300;400;500;600;700;800;900;1000&display=swap');

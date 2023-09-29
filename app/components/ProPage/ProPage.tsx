@@ -1,13 +1,11 @@
 "use client"
 import { Box, Paper } from "@mui/material"
 import { animated, useSpring } from "@react-spring/web"
-import dynamic from "next/dynamic"
 import React, { useEffect, useState } from "react"
 
 import { SPRING_CONFIGS } from "../../utils/client-utils"
+import ProChart from "../ProChart/ProChart"
 import { Progress } from "../Progress"
-
-const ProChart = dynamic(() => import("../ProChart/ProChart"))
 
 const AnimatedPaper = animated(Paper)
 
@@ -38,7 +36,7 @@ export function ProPage() {
   useEffect(() => {
     setTimeout(() => {
       setOpen(true)
-    }, 500)
+    }, 1_000)
   }, [])
 
   return (

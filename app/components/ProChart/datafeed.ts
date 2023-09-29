@@ -103,6 +103,8 @@ export const datafeed: IBasicDataFeed = {
   },
   resolveSymbol: (fullName, onResolve, onError) => {
     // console.log("📜 LOG > createDatafeed > resolveSymbol", fullName)
+    fullName = fullName.toLowerCase()
+
     setTimeout(() => {
       const symbolName = fullName.includes(":") ? fullName.split(":")[1] : fullName
 

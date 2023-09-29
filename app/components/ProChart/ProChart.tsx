@@ -7,7 +7,7 @@ import {
   widget as Widget,
 } from "./charting_library/charting_library"
 import { datafeed } from "./datafeed"
-import { saveChartState } from "./utils"
+import { loadChartData, saveChartData } from "./utils"
 
 const containerId = "tv_chart_container"
 
@@ -16,8 +16,7 @@ export default function ProChart() {
   const theme = useTheme()
 
   useEffect(() => {
-    // const savedData = loadChartState()
-    // console.log("📜 LOG > useEffect > savedData:", savedData)
+    const savedData = loadChartData()
 
     widgetRef.current = new Widget({
       autosize: true,
@@ -25,9 +24,6 @@ export default function ProChart() {
       custom_css_url: "/tv.css",
       custom_font_family: "'Roboto Mono', monospace",
       datafeed,
-      disabled_features: [
-        "use_localstorage_for_settings", // TODO
-      ],
       enabled_features: [
         "show_exchange_logos",
         "show_symbol_logos",
@@ -54,7 +50,7 @@ export default function ProChart() {
             : darken(theme.palette.background.default, 0.025),
         "paneProperties.backgroundType": "solid",
       },
-      // saved_data: savedData,
+      saved_data: savedData,
       // timezone: "Europe/Bucharest", //TODO
       symbol: `eth_base_fee`,
       theme: theme.palette.mode,
@@ -106,17 +102,33 @@ export default function ProChart() {
         },
       ],
     })
-    // console.log("📜 LOG > useEffect > tvWidget:", widgetRef)
 
     const handleAutoSave = () => {
-      widgetRef.current?.save(saveChartState)
+      widgetRef.current?.save(saveChartData)
     }
 
     widgetRef.current?.subscribe("onAutoSaveNeeded", handleAutoSave)
     // widgetRef.current?.subscribe("onPlusClick", console.log)
 
+    // widgetRef.current.headerReady().then(function () {
+    //   const button = widgetRef.current?.createButton({
+    //     align: "right",
+    //     onClick: alert,
+    //     text: "bnoo",
+    //     title: "yeee",
+    //     useTradingViewStyle: true,
+    //   })
+    //   // if (button) {
+    //   //   button.setAttribute("title", "My custom button tooltip")
+    //   //   button.addEventListener("click", function () {
+    //   //     alert("My custom button pressed!")
+    //   //   })
+    //   //   button.textContent = "My custom button caption"
+    //   // }
+    // })
+
     return () => {
-      // widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
+      widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
       widgetRef.current?.remove()
       widgetRef.current = null
     }
