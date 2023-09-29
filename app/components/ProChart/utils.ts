@@ -1,4 +1,4 @@
-import { Metric, METRICS, PROTOCOL_MAP, Timeframe } from "protofun"
+import { getSignificantDigits, Metric, METRICS, PROTOCOL_MAP, Timeframe } from "protofun"
 
 import {
   LibrarySymbolInfo,
@@ -32,6 +32,9 @@ export function toSymbol(metric: Metric): ProSymbol {
       ? "https://s3-symbol-logo.tradingview.com/provider/binance.svg"
       : "https://protocol.fun/icon-512x512.png"
 
+  const priceScale = 10 ** getSignificantDigits(metric, 0)
+  const minMove = 1 / priceScale
+
   return {
     currency_code: metric.priceUnits[0],
     data_status: "streaming",
@@ -44,12 +47,10 @@ export function toSymbol(metric: Metric): ProSymbol {
     industry: "Blockchain",
     listed_exchange: exchange,
     logo_urls: [`/assets/${metric.protocol}.svg`],
-    minmov: 0.01,
-    // TODO
+    minmov: minMove,
     name,
-    pricescale: 100,
-    // TODO
-    // sector: "DeFi",
+    pricescale: priceScale,
+    // sector: "DeFi", // TODO
     session: "24x7",
     supported_resolutions: metric.timeframes
       .filter((x) => x !== "Block")

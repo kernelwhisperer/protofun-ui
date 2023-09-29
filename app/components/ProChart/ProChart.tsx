@@ -2,6 +2,7 @@ import { Box, darken, lighten, useTheme } from "@mui/material"
 import React, { useEffect, useRef } from "react"
 
 import {
+  ChartPropertiesOverrides,
   IChartingLibraryWidget,
   ResolutionString,
   widget as Widget,
@@ -14,6 +15,17 @@ const containerId = "tv_chart_container"
 export default function ProChart() {
   const widgetRef = useRef<IChartingLibraryWidget | null>(null)
   const theme = useTheme()
+  const chartOverrides: Partial<ChartPropertiesOverrides> = {
+    "mainSeriesProperties.highLowAvgPrice.highLowPriceLabelsVisible": true,
+    // "mainSeriesProperties.highLowAvgPrice.highLowPriceLinesVisible": true,
+    // "mainSeriesProperties.style": 2,
+    "mainSeriesProperties.priceAxisProperties.log": true,
+    "paneProperties.background":
+      theme.palette.mode === "dark"
+        ? lighten(theme.palette.background.default, 0.01)
+        : darken(theme.palette.background.default, 0.025),
+    "paneProperties.backgroundType": "solid",
+  }
 
   useEffect(() => {
     const savedData = loadChartData()
@@ -45,15 +57,7 @@ export default function ProChart() {
         foregroundColor: theme.palette.accent.main,
       },
       locale: "en",
-      overrides: {
-        // "mainSeriesProperties.style": 2,
-        "mainSeriesProperties.priceAxisProperties.log": true,
-        "paneProperties.background":
-          theme.palette.mode === "dark"
-            ? lighten(theme.palette.background.default, 0.01)
-            : darken(theme.palette.background.default, 0.025),
-        "paneProperties.backgroundType": "solid",
-      },
+      overrides: chartOverrides,
       saved_data: savedData,
       // timezone: "Europe/Bucharest", //TODO
       symbol: `eth_base_fee`,
@@ -146,14 +150,7 @@ export default function ProChart() {
 
     widgetRef.current.onChartReady(async () => {
       await widgetRef.current?.changeTheme(theme.palette.mode)
-      widgetRef.current?.applyOverrides({
-        "mainSeriesProperties.priceAxisProperties.log": true,
-        "paneProperties.background":
-          theme.palette.mode === "dark"
-            ? lighten(theme.palette.background.default, 0.01)
-            : darken(theme.palette.background.default, 0.025),
-        "paneProperties.backgroundType": "solid",
-      })
+      widgetRef.current?.applyOverrides(chartOverrides)
     })
   }, [theme])
 

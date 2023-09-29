@@ -21,9 +21,11 @@
   [class^="paneSeparator-"] {
     background: rgba(157, 145, 114, 1) !important;
   }
-  /* [class^="price-axis-currency-label-"] {
-    background: rgba(157, 145, 114, 1) !important;
-  } */
+  [class^="price-axis-currency-label-wrapper"] > div {
+    background: rgba(187, 175, 144, 1) !important;
+    /* border-color: rgba(67, 70, 81, 0.5); */
+    border: none;
+  }
 }
 
 .theme-dark:root {
