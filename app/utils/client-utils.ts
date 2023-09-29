@@ -1,6 +1,6 @@
 "use client"
 
-import { AnimationConfig, config } from "@react-spring/web"
+import { config } from "@react-spring/web"
 import { CandlestickSeriesPartialOptions } from "lightweight-charts"
 import { atom } from "nanostores"
 import { MetricFnsResult, MetricId, ProtocolId } from "protofun"
@@ -14,12 +14,12 @@ export function noop() {}
 
 export const TZ_OFFSET = new Date().getTimezoneOffset() * 60
 
-export const SPRING_CONFIGS: Record<string, Partial<AnimationConfig>> = {
+export const SPRING_CONFIGS = {
   ...config,
   quick: { friction: 200, mass: 5, tension: 2000 },
+  semiSlow: { friction: 90, tension: 280 },
   veryQuick: { friction: 100, mass: 5, tension: 2000 },
-  // slow: { friction: 20, mass: 5, tension: 200 },
-}
+} as const
 
 export const isServerSide = typeof window === "undefined"
 

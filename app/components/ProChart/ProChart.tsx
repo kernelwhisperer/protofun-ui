@@ -7,26 +7,17 @@ import {
   widget as Widget,
 } from "./charting_library/charting_library"
 import { datafeed } from "./datafeed"
-import { loadChartState, saveChartState } from "./utils"
+import { saveChartState } from "./utils"
 
 const containerId = "tv_chart_container"
 
-export function ProChart() {
+export default function ProChart() {
   const widgetRef = useRef<IChartingLibraryWidget | null>(null)
   const theme = useTheme()
 
   useEffect(() => {
-    const clearExistingWidget = () => {
-      if (widgetRef.current !== null) {
-        widgetRef.current.remove()
-        widgetRef.current = null
-      }
-    }
-
-    clearExistingWidget()
-
-    const savedData = loadChartState()
-    console.log("📜 LOG > useEffect > savedData:", savedData)
+    // const savedData = loadChartState()
+    // console.log("📜 LOG > useEffect > savedData:", savedData)
 
     widgetRef.current = new Widget({
       autosize: true,
@@ -125,8 +116,9 @@ export function ProChart() {
     // widgetRef.current?.subscribe("onPlusClick", console.log)
 
     return () => {
-      widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
-      clearExistingWidget()
+      // widgetRef.current?.unsubscribe("onAutoSaveNeeded", handleAutoSave)
+      widgetRef.current?.remove()
+      widgetRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -134,19 +126,16 @@ export function ProChart() {
   useEffect(() => {
     if (!widgetRef.current) return
 
-    widgetRef.current.onChartReady(() => {
-      widgetRef.current?.changeTheme(theme.palette.mode)
-      // set timeout because it's broken
-      setTimeout(() => {
-        widgetRef.current?.applyOverrides({
-          "mainSeriesProperties.priceAxisProperties.log": true,
-          "paneProperties.background":
-            theme.palette.mode === "dark"
-              ? lighten(theme.palette.background.default, 0.01)
-              : darken(theme.palette.background.default, 0.025),
-          "paneProperties.backgroundType": "solid",
-        })
-      }, 0)
+    widgetRef.current.onChartReady(async () => {
+      await widgetRef.current?.changeTheme(theme.palette.mode)
+      widgetRef.current?.applyOverrides({
+        "mainSeriesProperties.priceAxisProperties.log": true,
+        "paneProperties.background":
+          theme.palette.mode === "dark"
+            ? lighten(theme.palette.background.default, 0.01)
+            : darken(theme.palette.background.default, 0.025),
+        "paneProperties.backgroundType": "solid",
+      })
     })
   }, [theme])
 

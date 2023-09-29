@@ -44,13 +44,18 @@ export const datafeed: IBasicDataFeed = {
 
       const candles = await query({
         // limit: periodParams.countBack, TODO
+        since: String(periodParams.from),
         timeframe: RESOLUTION_TO_TIMEFRAME[resolution],
+        until: String(periodParams.to),
       })
 
       const parsed = candles.map(mapCandleToCandleData)
       onResult(parsed as Bar[])
     } catch (error: unknown) {
-      onError(String(error))
+      console.log("📜 datafeed error")
+      console.error(error)
+      onResult([])
+      // onError(String(error))
     }
   },
   onReady: (onReadyCallback) => {
