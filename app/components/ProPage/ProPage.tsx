@@ -58,7 +58,7 @@ export function ProPage() {
           width: "100%",
         }}
         style={{
-          clipPath: x.to((value) => `circle(${value / 1.5}px at 50% 50%)`),
+          clipPath: x.to((value) => `circle(${value}px at 50% 50%)`),
         }}
       >
         <ProChart />
