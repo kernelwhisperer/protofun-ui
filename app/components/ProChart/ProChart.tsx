@@ -1,6 +1,7 @@
 import { Box, darken, lighten, useTheme } from "@mui/material"
 import React, { useEffect, useRef } from "react"
 
+import { candleStickOptions } from "../../utils/client-utils"
 import {
   ChartPropertiesOverrides,
   IChartingLibraryWidget,
@@ -16,6 +17,13 @@ export default function ProChart() {
   const widgetRef = useRef<IChartingLibraryWidget | null>(null)
   const theme = useTheme()
   const chartOverrides: Partial<ChartPropertiesOverrides> = {
+    "mainSeriesProperties.candleStyle.borderDownColor": candleStickOptions.borderDownColor,
+    "mainSeriesProperties.candleStyle.borderUpColor": candleStickOptions.borderUpColor,
+    "mainSeriesProperties.candleStyle.downColor": candleStickOptions.downColor,
+    "mainSeriesProperties.candleStyle.upColor": candleStickOptions.upColor,
+    "mainSeriesProperties.candleStyle.wickDownColor": candleStickOptions.wickDownColor,
+    "mainSeriesProperties.candleStyle.wickUpColor": candleStickOptions.wickUpColor,
+
     "mainSeriesProperties.highLowAvgPrice.highLowPriceLabelsVisible": true,
     // "mainSeriesProperties.highLowAvgPrice.highLowPriceLinesVisible": true,
     // "mainSeriesProperties.style": 2,
@@ -39,11 +47,14 @@ export default function ProChart() {
       custom_css_url: "/tv.css",
       custom_font_family: "'Roboto Mono', monospace",
       datafeed,
+      disabled_features: ["display_market_status", "show_symbol_logo_in_legend"],
+      // debug: true,
       enabled_features: [
         "show_exchange_logos",
         "show_symbol_logos",
-        "show_symbol_logo_in_legend",
-        "show_symbol_logo_for_compare_studies",
+        "hide_resolution_in_legend",
+        // "show_symbol_logo_in_legend",
+        // "show_symbol_logo_for_compare_studies",
         "timeframes_toolbar",
         "pricescale_currency",
       ],
@@ -60,7 +71,7 @@ export default function ProChart() {
       overrides: chartOverrides,
       saved_data: savedData,
       // timezone: "Europe/Bucharest", //TODO
-      symbol: `eth_base_fee`,
+      symbol: `PROTOFUN:ETH_BASE_FEE`,
       theme: theme.palette.mode,
       time_frames: [
         {
@@ -109,6 +120,10 @@ export default function ProChart() {
           text: "10Y",
         },
       ],
+      // widgetbar: {
+      //   datawindow: true,
+      //   watchlist: true,
+      // },
     })
 
     const handleAutoSave = () => {

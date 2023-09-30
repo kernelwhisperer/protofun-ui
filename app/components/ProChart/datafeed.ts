@@ -32,8 +32,8 @@ export const datafeed: IBasicDataFeed = {
 
     try {
       const delimiter = symbolInfo.name.indexOf("_")
-      const protocolId = symbolInfo.name.substring(0, delimiter) as ProtocolId
-      const metricId = symbolInfo.name.substring(delimiter + 1) as MetricId
+      const protocolId = symbolInfo.name.substring(0, delimiter).toLowerCase() as ProtocolId
+      const metricId = symbolInfo.name.substring(delimiter + 1).toLowerCase() as MetricId
       const metric = getMetric(protocolId, metricId)
 
       // const variantIndex = useStore($variantIndex) TODO
@@ -102,8 +102,8 @@ export const datafeed: IBasicDataFeed = {
     }, 0)
   },
   resolveSymbol: (fullName, onResolve, onError) => {
-    // console.log("📜 LOG > createDatafeed > resolveSymbol", fullName)
-    fullName = fullName.toLowerCase()
+    // console.log("📜 LOG > datafeed > resolveSymbol", fullName)
+    fullName = fullName.toUpperCase()
 
     setTimeout(() => {
       const symbolName = fullName.includes(":") ? fullName.split(":")[1] : fullName
@@ -117,13 +117,13 @@ export const datafeed: IBasicDataFeed = {
     }, 0)
   },
   searchSymbols: (userInput, exchange, symbolType, onResult) => {
-    // console.log("📜 LOG > createDatafeed > searchSymbols:", userInput, exchange, symbolType)
+    // console.log("📜 LOG > datafeed > searchSymbols:", userInput, exchange, symbolType)
     userInput = userInput.toLowerCase()
 
     const symbols = SYMBOLS.filter(
       (x) =>
         (!userInput ||
-          x.name.includes(userInput) ||
+          x.name.toLowerCase().includes(userInput) ||
           x.description.toLowerCase().includes(userInput)) &&
         (!symbolType || symbolType === x.type) &&
         (!exchange || exchange === x.exchange)

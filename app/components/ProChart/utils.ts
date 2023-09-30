@@ -23,26 +23,27 @@ export const TIMEFRAME_TO_RESOLUTION: Record<Timeframe, string> = {
 type ProSymbol = LibrarySymbolInfo & SearchSymbolResultItem
 
 export function toSymbol(metric: Metric): ProSymbol {
-  const name = `${metric.protocol}_${metric.id}`
+  const name = `${metric.protocol}_${metric.id}`.toUpperCase()
   const protocol = PROTOCOL_MAP[metric.protocol]
 
-  const exchange = name.includes("_price") ? "Binance" : "Protofun"
+  const exchange = name.includes("_PRICE") ? "Binance" : "Protofun"
   const exchangeLogo =
     exchange === "Binance"
       ? "https://s3-symbol-logo.tradingview.com/provider/binance.svg"
       : "https://protocol.fun/icon-512x512.png"
 
   const priceScale = 10 ** getSignificantDigits(metric, 0)
-  const minMove = 1 / priceScale
+  const minMove = 100 / priceScale
+  const fullName = `${exchange.toUpperCase()}:${name}`
 
-  return {
+  const result: ProSymbol = {
     currency_code: metric.priceUnits[0],
     data_status: "streaming",
     description: `${protocol.title} ${metric.title}`,
     exchange,
     exchange_logo: exchangeLogo,
     format: "price",
-    full_name: `${exchange.toLowerCase()}:${name}`,
+    full_name: fullName,
     has_intraday: true,
     industry: "Blockchain",
     listed_exchange: exchange,
@@ -56,6 +57,7 @@ export function toSymbol(metric: Metric): ProSymbol {
       .filter((x) => x !== "Block")
       .map((x) => TIMEFRAME_TO_RESOLUTION[x]) as ResolutionString[],
     symbol: name,
+    ticker: fullName,
     timezone: "Etc/UTC",
     type: exchange === "Binance" ? "token price" : "fundamental",
     // original_currency_code: "USD",
@@ -65,6 +67,9 @@ export function toSymbol(metric: Metric): ProSymbol {
     visible_plots_set: metric.disallowCandleType ? "c" : "ohlc",
     // volume_precision: 8,
   }
+
+  // console.log("📜 LOG > toSymbol > result:", Object.assign({}, result))
+  return result
 }
 
 export const SYMBOLS = METRICS.map(toSymbol)
