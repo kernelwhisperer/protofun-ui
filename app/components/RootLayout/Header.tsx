@@ -2,7 +2,7 @@
 
 import { AppBar, AppBarProps, Button, Container, IconButton, Stack, Toolbar } from "@mui/material"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import React from "react"
 
 import { AppVerProps } from "../../stores/app"
@@ -30,7 +30,8 @@ function StyledAppBar(props: AppBarProps) {
 }
 
 export function Header({ appVer, gitHash }: AppVerProps) {
-  const searchParams = useSearchParams()
+  const pathname = usePathname()
+
   return (
     <StyledAppBar>
       <Toolbar disableGutters>
@@ -47,7 +48,7 @@ export function Header({ appVer, gitHash }: AppVerProps) {
             <Blobs />
             <Tooltip title="Visit Homepage">
               <Button
-                href={`/?${searchParams?.toString()}`}
+                href={`/`}
                 aria-label="Visit Homepage"
                 LinkComponent={Link}
                 sx={{
@@ -61,27 +62,29 @@ export function Header({ appVer, gitHash }: AppVerProps) {
               </Button>
             </Tooltip>
             <Stack direction="row" sx={{ marginRight: -1 }}>
-              <Tooltip title="Open Pro view">
-                <IconButton
-                  href={`/pro?${searchParams?.toString()}`}
-                  LinkComponent={Link}
-                  aria-label="Open Pro view"
-                  color="primary"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 -1 36 28"
-                    xmlns="http://www.w3.org/2000/svg"
+              {pathname !== "/pro" && (
+                <Tooltip title="Open Pro view">
+                  <IconButton
+                    href={`/pro`}
+                    LinkComponent={Link}
+                    aria-label="Open Pro view"
+                    color="primary"
                   >
-                    <path
-                      d="M14 22H7V11H0V4h14v18zM28 22h-8l7.5-18h8L28 22z"
-                      fill="currentColor"
-                    ></path>
-                    <circle cx="20" cy="8" r="4" fill="currentColor"></circle>
-                  </svg>
-                </IconButton>
-              </Tooltip>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 -1 36 28"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M14 22H7V11H0V4h14v18zM28 22h-8l7.5-18h8L28 22z"
+                        fill="currentColor"
+                      ></path>
+                      <circle cx="20" cy="8" r="4" fill="currentColor"></circle>
+                    </svg>
+                  </IconButton>
+                </Tooltip>
+              )}
               <Notifications />
               <HamburgerMenu appVer={appVer} gitHash={gitHash} />
             </Stack>
