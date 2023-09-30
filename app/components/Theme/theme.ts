@@ -165,6 +165,27 @@ export const globalStyles = `
   .notistack-MuiContent-warning svg {
     color: #ff9800;
   }
+
+  @keyframes svgStrokeAnim {
+    0% {
+      stroke-dasharray: 230%;
+      stroke-dashoffset: 0%; 
+    }
+    40% {
+      fill-opacity: 0; 
+    }
+    50% {
+      stroke-dashoffset: 230%;
+      fill-opacity: 0; 
+    }
+    60% {
+      fill-opacity: 0; 
+    }
+    100% { 
+      stroke-dasharray: 230%;
+      stroke-dashoffset: 0%; 
+    }
+  }
 `
 
 export const themeOptions: CssVarsThemeOptions = {

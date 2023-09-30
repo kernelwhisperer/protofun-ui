@@ -8,6 +8,9 @@
 
       .cls-2 {
         fill: currentColor;
+        fill-opacity: 0.9;
+        stroke-width: 6px;
+        stroke: currentColor;
       }
     </style>
     <linearGradient id="linear-gradient" x1="300" y1="602" x2="300" y2="2"

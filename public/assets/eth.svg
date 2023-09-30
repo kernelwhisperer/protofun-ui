@@ -11,13 +11,13 @@
                     </g>
                     <g id="Yellow2" transform="matrix(-1.08181,0,0,-1.03277,2769.57,1366.48)">
                         <path d="M1394.74,693.463L1330.36,604.024L1330.36,654.238L1394.74,693.463Z"
-                            style="fill:currentColor;stroke:currentColor;stroke-width:3px;" fill-opacity="0.7" />
+                            style="fill:currentColor;stroke:currentColor;stroke-width:3px;" fill-opacity="0.65" />
                     </g>
                 </g>
                 <g id="Top">
                     <g id="Blue1" transform="matrix(-1,0,0,1,2659.32,-0.0263692)">
                         <path d="M1398.61,639.614L1328.95,608.641L1328.95,679.249L1398.61,639.614Z"
-                            style="fill:currentColor;stroke:currentColor;stroke-width:3px;" fill-opacity="0.7"/>
+                            style="fill:currentColor;stroke:currentColor;stroke-width:3px;" fill-opacity="0.65"/>
                     </g>
                     <g id="Purple1" transform="matrix(1,0,0,1,1.41643,-0.0263692)">
                         <path d="M1398.61,639.614L1328.95,608.641L1328.95,679.249L1398.61,639.614Z"
@@ -29,7 +29,7 @@
                     </g>
                     <g id="Green1" transform="matrix(1.08181,0,0,1.03277,-108.829,-93.5314)">
                         <path d="M1394.74,709.855L1330.36,604.024L1330.36,679.865L1394.74,709.855Z"
-                            style="fill:currentColor;stroke:currentColor;stroke-width:3px;" fill-opacity="0.7"/>
+                            style="fill:currentColor;stroke:currentColor;stroke-width:3px;" fill-opacity="0.65"/>
                     </g>
                 </g>
             </g>

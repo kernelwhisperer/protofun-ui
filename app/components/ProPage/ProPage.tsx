@@ -42,7 +42,7 @@ export function ProPage() {
   return (
     <Box
       style={{
-        height: "calc(100vh - 104px)",
+        height: "calc(100vh - 72px)",
         maxHeight: "800px",
         minHeight: "360px",
         position: "relative",

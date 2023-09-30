@@ -6,13 +6,14 @@ import React, { ForwardedRef, forwardRef, FunctionComponent, SVGProps } from "re
 import { RobotoMonoFF, RobotoSerifFF } from "./Theme/fonts"
 
 interface LinkButtonProps extends LinkProps, Pick<ButtonProps, "disabled"> {
+  fancyAnimation?: boolean
   icon: FunctionComponent<SVGProps<SVGElement>> | SvgIconComponent
   iconPadding?: string | number
   label: string
 }
 
 const LinkButton = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof Button>) => {
-  const { icon: Icon, label, iconPadding, ...rest } = props
+  const { icon: Icon, label, iconPadding, fancyAnimation, ...rest } = props
 
   return (
     <Button
@@ -21,6 +22,16 @@ const LinkButton = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof 
       variant="outlined"
       size="large"
       sx={{
+        ...(fancyAnimation
+          ? {
+              "&:hover svg path": {
+                animation: "svgStrokeAnim 2s infinite",
+                // fillOpacity: "0.5 !important",
+                // strokeDasharray: "200%",
+                // strokeDashoffset: "0%",
+              },
+            }
+          : {}),
         // background: "#c00", /* fallback */
         // background: `
         // -webkit-linear-gradient(45deg,  transparent 10px, gray 10px),
@@ -50,7 +61,6 @@ const LinkButton = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof 
           padding: iconPadding,
           position: "absolute",
           right: "-33%",
-          // transform: "rotate(14deg) scale(1.5)",
           width: "100%",
         }}
       />

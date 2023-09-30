@@ -25,8 +25,9 @@ export function HomePage() {
         gap={2}
         // staggerChildren={0.5 / PROTOCOLS.length}
       >
-        {PROTOCOLS.map((protocol) => (
+        {PROTOCOLS.sort((a) => (a.id === "eth" ? -1 : 0)).map((protocol) => (
           <LinkButton
+            fancyAnimation
             key={protocol.id}
             href={`/${protocol.id}?${searchParams?.toString()}`}
             label={protocol.title}
