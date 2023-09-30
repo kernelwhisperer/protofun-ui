@@ -20,15 +20,15 @@ export function createCandleMapper(precision: number) {
 export const datafeed: IBasicDataFeed = {
   getBars: async (symbolInfo, resolution, periodParams, onResult, onError) => {
     if (!periodParams.firstDataRequest) return onResult([]) // TODO
-    console.log(
-      "📜 LOG > getBars: > symbolInfo, resolution, periodParams:",
-      symbolInfo.name,
-      resolution,
-      new Date(periodParams.from * 1000),
-      new Date(periodParams.to * 1000),
-      periodParams.firstDataRequest,
-      periodParams.countBack
-    )
+    // console.log(
+    //   "📜 LOG > getBars: > symbolInfo, resolution, periodParams:",
+    //   symbolInfo.name,
+    //   resolution,
+    //   new Date(periodParams.from * 1000),
+    //   new Date(periodParams.to * 1000),
+    //   periodParams.firstDataRequest,
+    //   periodParams.countBack
+    // )
 
     try {
       const delimiter = symbolInfo.name.indexOf("_")
@@ -137,9 +137,9 @@ export const datafeed: IBasicDataFeed = {
     subscriberUID,
     onResetCacheNeededCallback
   ) => {
-    console.log("📜 LOG >[subscribeBars]: Method call with subscriberUID:", subscriberUID)
+    // console.log("📜 LOG >[subscribeBars]: Method call with subscriberUID:", subscriberUID)
   },
   unsubscribeBars: (subscriberUID) => {
-    console.log("📜 LOG >[unsubscribeBars]: Method call with subscriberUID:", subscriberUID)
+    // console.log("📜 LOG >[unsubscribeBars]: Method call with subscriberUID:", subscriberUID)
   },
 }
