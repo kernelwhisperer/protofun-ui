@@ -1,11 +1,21 @@
 "use client"
 
-import { AppBar, AppBarProps, Button, Container, IconButton, Stack, Toolbar } from "@mui/material"
+import {
+  AppBar,
+  AppBarProps,
+  Button,
+  Chip,
+  Container,
+  IconButton,
+  Stack,
+  Toolbar,
+} from "@mui/material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React from "react"
 
 import { AppVerProps } from "../../stores/app"
+import { RobotoMonoFF } from "../Theme/fonts"
 import { Tooltip } from "../Tooltip"
 import { Blobs } from "./Blobs"
 import { HamburgerMenu } from "./HamburgerMenu"
@@ -63,7 +73,19 @@ export function Header({ appVer, gitHash }: AppVerProps) {
             </Tooltip>
             <Stack direction="row" sx={{ marginRight: -1 }}>
               {pathname !== "/pro" && (
-                <Tooltip title="Open Pro view">
+                <Tooltip
+                  title={
+                    <Stack direction="row" alignItems="baseline">
+                      <span>Open Pro view</span>
+                      <Chip
+                        label="BETA"
+                        size="small"
+                        color="secondary"
+                        sx={{ fontFamily: RobotoMonoFF, letterSpacing: 1, marginLeft: 1 }}
+                      />
+                    </Stack>
+                  }
+                >
                   <IconButton
                     href={`/pro`}
                     LinkComponent={Link}

@@ -67,11 +67,11 @@ const LinkButton = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof 
       <Typography variant="h6" fontFamily={RobotoSerifFF} component="div">
         {label}
       </Typography>
-      {rest.disabled && (
+      {(rest.disabled || label === "Compound" || label === "Total value locked") && (
         <Chip
           label="WIP"
           size="small"
-          disabled
+          disabled={rest.disabled}
           sx={{ fontFamily: RobotoMonoFF, letterSpacing: 1, marginLeft: 1 }}
         />
       )}
