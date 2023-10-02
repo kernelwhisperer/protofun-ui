@@ -10,10 +10,11 @@ interface LinkButtonProps extends LinkProps, Pick<ButtonProps, "disabled"> {
   icon: FunctionComponent<SVGProps<SVGElement>> | SvgIconComponent
   iconPadding?: string | number
   label: string
+  wip?: boolean
 }
 
-const LinkButton = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof Button>) => {
-  const { icon: Icon, label, iconPadding, fancyAnimation, ...rest } = props
+const LinkButtonMetric = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof Button>) => {
+  const { icon: Icon, label, iconPadding, fancyAnimation, wip, ...rest } = props
 
   return (
     <Button
@@ -67,17 +68,16 @@ const LinkButton = forwardRef((props: LinkButtonProps, ref: ForwardedRef<typeof 
       <Typography variant="h6" fontFamily={RobotoSerifFF} component="div">
         {label}
       </Typography>
-      {(rest.disabled || label === "Compound" || label === "Total value locked") && (
+      {wip && (
         <Chip
           label="WIP"
           size="small"
-          disabled={rest.disabled}
           sx={{ fontFamily: RobotoMonoFF, letterSpacing: 1, marginLeft: 1 }}
         />
       )}
     </Button>
   )
 })
-LinkButton.displayName = "LinkButton"
+LinkButtonMetric.displayName = "LinkButton"
 
-export { LinkButton }
+export { LinkButtonMetric }

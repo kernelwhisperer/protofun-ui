@@ -8,7 +8,7 @@ import { METRIC_DESC_MAP } from "../../stores/metric-descriptions"
 import { METRIC_ICONS_MAP } from "../../stores/metric-icons"
 import { IconData } from "../../stores/protocol-icons"
 import { BackButton } from "../BackButton"
-import { LinkButton } from "../LinkButton"
+import { LinkButtonMetric } from "../LinkButtonMetric"
 import { PageTitle } from "../PageTitle"
 import { StaggeredList } from "../StaggeredList"
 import { Tooltip } from "../Tooltip"
@@ -43,11 +43,12 @@ export function ProtocolPage(props: ProtocolProps) {
             title={METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}
             disableInteractive
           >
-            <LinkButton
+            <LinkButtonMetric
               iconPadding={(METRIC_ICONS_MAP[protocolId]?.[metric.id] as IconData).iconPadding}
               prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well
               href={`/${protocolId}/${metric.id}?${searchParams?.toString()}`}
               label={metric.title}
+              wip={metric.wip}
               icon={(METRIC_ICONS_MAP[protocolId]?.[metric.id] as IconData).icon}
             />
           </Tooltip>

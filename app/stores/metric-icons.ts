@@ -1,13 +1,23 @@
 "use client"
-import { AttachMoney, LocalGasStationOutlined, ReceiptLong } from "@mui/icons-material"
+import { AttachMoney, LocalGasStationOutlined, Lock, ReceiptLong } from "@mui/icons-material"
 import { MetricId, ProtocolId } from "protofun"
 
 import { IconData } from "./protocol-icons"
 
 export const METRIC_ICONS_MAP: Partial<Record<ProtocolId, Partial<Record<MetricId, IconData>>>> = {
-  comp: {
-    tvl: {
+  btc: {
+    btc_price: {
       icon: AttachMoney,
+      iconPadding: "16px",
+    },
+  },
+  comp: {
+    comp_price: {
+      icon: AttachMoney,
+      iconPadding: "16px",
+    },
+    tvl: {
+      icon: Lock,
       iconPadding: "16px",
     },
   },

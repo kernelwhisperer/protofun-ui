@@ -13,6 +13,7 @@ export function createCandleMapper(precision: number) {
       low: parseFloat(candle.low) / precision,
       open: parseFloat(candle.open) / precision,
       time: parseInt(candle.timestamp) * 1000,
+      volume: candle.volume ? parseFloat(candle.volume) : undefined,
     }
   }
 }

@@ -23,11 +23,9 @@ export default function ProChart() {
     "mainSeriesProperties.candleStyle.upColor": candleStickOptions.upColor,
     "mainSeriesProperties.candleStyle.wickDownColor": candleStickOptions.wickDownColor,
     "mainSeriesProperties.candleStyle.wickUpColor": candleStickOptions.wickUpColor,
-
     "mainSeriesProperties.highLowAvgPrice.highLowPriceLabelsVisible": true,
-    // "mainSeriesProperties.highLowAvgPrice.highLowPriceLinesVisible": true,
-    // "mainSeriesProperties.style": 2,
     "mainSeriesProperties.priceAxisProperties.log": true,
+    // "mainSeriesProperties.style": 1,
     "paneProperties.background":
       theme.palette.mode === "dark"
         ? lighten(theme.palette.background.default, 0.01)

@@ -4,7 +4,7 @@ import { animated, useSpring } from "@react-spring/web"
 import Decimal from "decimal.js"
 import { IPriceLine, MouseEventHandler, MouseEventParams, Time } from "lightweight-charts"
 import dynamic from "next/dynamic"
-import { getMetricPrecision, getSignificantDigits, Metric, wait } from "protofun"
+import { Candle, getMetricPrecision, getSignificantDigits, Metric, wait } from "protofun"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { $alerts, findAlertsForMetric } from "../../api/alerts-api"
@@ -28,7 +28,6 @@ import {
 } from "../../stores/metric-page"
 import { AlertDraft } from "../../utils/alert-utils"
 import {
-  Candle,
   createCandleMapper,
   createLineMapper,
   isCandle,
@@ -176,6 +175,24 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     chartRef.current?.priceScale("right").applyOptions({
       mode: $scaleMode.get(),
     })
+
+    // const volumeSeries = chartRef.current?.addHistogramSeries({
+    //   color: "#000",
+    //   priceFormat: {
+    //     type: "volume",
+    //   },
+    //   priceScaleId: "", // set as an overlay by setting a blank priceScaleId
+    // })
+
+    // volumeSeries?.priceScale().applyOptions({
+    //   scaleMargins: {
+    //     bottom: 0,
+    //     top: 0.25,
+    //   },
+    // })
+
+    // volumeSeries?.setData(mainSeriesData.map((x) => ({ time: x.time, value: x.volume })))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainSeriesData, theme, seriesType, significantDigits])
 
   useEffect(() => {

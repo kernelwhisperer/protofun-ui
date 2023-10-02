@@ -121,9 +121,13 @@ export const candleStickOptions: CandlestickSeriesPartialOptions = {
 /**
  * Hack https://github.com/vercel/next.js/discussions/33980
  */
-export const METRIC_MODULE_MAP: any = {
+export const METRIC_MODULE_MAP: Record<ProtocolId, Partial<Record<MetricId, any>>> = {
   aave: {},
+  btc: {
+    btc_price: () => import("protofun/dist/metrics/btc/btc_price"),
+  },
   comp: {
+    comp_price: () => import("protofun/dist/metrics/comp/comp_price"),
     tvl: () => import("protofun/dist/metrics/comp/tvl"),
   },
   eth: {

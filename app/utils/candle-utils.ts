@@ -1,15 +1,21 @@
 import { CandlestickData, LineData, UTCTimestamp } from "lightweight-charts"
+import { Candle } from "protofun"
 
 import { TZ_OFFSET } from "./client-utils"
 
+type CandlestickDataWithVolume = CandlestickData & {
+  volume?: number
+}
+
 export function createCandleMapper(precision: number) {
-  return function customMapper(candle: Candle): CandlestickData {
+  return function customMapper(candle: Candle): CandlestickDataWithVolume {
     return {
       close: parseFloat(candle.close) / precision,
       high: parseFloat(candle.high) / precision,
       low: parseFloat(candle.low) / precision,
       open: parseFloat(candle.open) / precision,
       time: (parseInt(candle.timestamp) - TZ_OFFSET) as UTCTimestamp,
+      volume: candle.volume ? parseFloat(candle.volume) / precision : undefined,
     }
   }
 }
@@ -20,14 +26,6 @@ export function createLineMapper(precision: number) {
       value: parseFloat(candle.close) / precision,
     }
   }
-}
-
-export type Candle = {
-  close: string
-  high: string
-  low: string
-  open: string
-  timestamp: string
 }
 
 export function isCandle(value: unknown): value is Candle {

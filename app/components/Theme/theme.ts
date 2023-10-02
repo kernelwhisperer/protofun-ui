@@ -168,21 +168,21 @@ export const globalStyles = `
 
   @keyframes svgStrokeAnim {
     0% {
-      stroke-dasharray: 230%;
+      stroke-dasharray: var(--svg-dash-array);
       stroke-dashoffset: 0%; 
     }
     40% {
       fill-opacity: 0; 
     }
     50% {
-      stroke-dashoffset: 230%;
+      stroke-dashoffset: var(--svg-dash-array);
       fill-opacity: 0; 
     }
     60% {
       fill-opacity: 0; 
     }
     100% { 
-      stroke-dasharray: 230%;
+      stroke-dasharray: var(--svg-dash-array);
       stroke-dashoffset: 0%; 
     }
   }

@@ -10,6 +10,7 @@ import { Timeframe } from "protofun"
 import { MutableRefObject } from "react"
 
 import { Candle } from "../utils/candle-utils"
+import { isProduction } from "../utils/client-utils"
 
 export const scaleModeDefault = 0
 export const liveModeDefault = true
@@ -45,19 +46,21 @@ export const $mainSeries = atom<MutableRefObject<ISeriesApi<"Candlestick" | "Lin
   current: undefined,
 })
 
-logger({
-  $chartRef,
-  $entries,
-  $entryMap,
-  $legendTimestamp,
-  $liveMode,
-  $loading,
-  $mainSeries,
-  $priceUnitIndex,
-  $scaleMode,
-  $seriesType,
-  $since,
-  $timeframe,
-  $until,
-  $variantIndex,
-})
+if (!isProduction) {
+  logger({
+    $chartRef,
+    $entries,
+    $entryMap,
+    $legendTimestamp,
+    $liveMode,
+    $loading,
+    $mainSeries,
+    $priceUnitIndex,
+    $scaleMode,
+    $seriesType,
+    $since,
+    $timeframe,
+    $until,
+    $variantIndex,
+  })
+}

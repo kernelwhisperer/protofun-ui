@@ -1,5 +1,6 @@
 import { getSignificantDigits, Metric, METRICS, PROTOCOL_MAP, Timeframe } from "protofun"
 
+import { candleStickOptions } from "../../utils/client-utils"
 import {
   LibrarySymbolInfo,
   ResolutionString,
@@ -64,7 +65,7 @@ export function toSymbol(metric: Metric): ProSymbol {
     // intraday_multipliers: [supportedResolutions],
     // supported_resolutions: ["60"] as ResolutionString[],
     // ticker: metric.id,
-    visible_plots_set: metric.disallowCandleType ? "c" : "ohlc",
+    visible_plots_set: metric.disallowCandleType ? "c" : "ohlcv",
     // volume_precision: 8,
   }
 
@@ -82,5 +83,32 @@ export const saveChartData = (state: object) => {
 
 export const loadChartData = () => {
   const rawChartData = window.localStorage.getItem(CHART_DATA_KEY)
-  return rawChartData ? JSON.parse(rawChartData) : undefined
+
+  if (!rawChartData) return
+
+  const chartData = JSON.parse(rawChartData)
+
+  // FIXME first time user
+  chartData.charts.forEach((chart: any) => {
+    chart.panes.forEach((pane: any) => {
+      pane.sources.forEach((source: any) => {
+        if (source.type === "study_Volume") {
+          source.state.palettes.volumePalette.colors = {
+            "0": {
+              color: candleStickOptions.downColor,
+              style: 0,
+              width: 1,
+            },
+            "1": {
+              color: candleStickOptions.upColor,
+              style: 0,
+              width: 1,
+            },
+          }
+        }
+      })
+    })
+  })
+
+  return chartData
 }
