@@ -93,6 +93,7 @@ export function Header({ appVer, gitHash }: AppVerProps) {
                     color="primary"
                   >
                     <svg
+                      pointerEvents="none"
                       width="24"
                       height="24"
                       viewBox="0 -1 36 28"

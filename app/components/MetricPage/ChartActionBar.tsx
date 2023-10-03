@@ -52,6 +52,8 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             key={x}
             disabled={timeframes ? !timeframes.includes(x as Timeframe) : false}
             className={timeframe === x ? "active" : undefined}
+            title={x}
+            aria-label={x}
             onClick={() => {
               if (x === "Block" && seriesType !== "Line") {
                 $seriesType.set("Line")
@@ -70,6 +72,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             onClick={() => {
               $seriesType.set("Line")
             }}
+            title="Switch to Line chart"
             aria-label="Switch to Line chart"
           >
             <ShowChart fontSize="small" />
@@ -80,6 +83,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             onClick={() => {
               $seriesType.set("Candlestick")
             }}
+            title="Switch to Candlestick chart"
             aria-label="Switch to Candlestick chart"
           >
             <CandlestickChart fontSize="small" />
@@ -154,6 +158,7 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
             })
           }}
           id="screenshot-button"
+          title="Take screenshot"
           aria-label="Take screenshot"
         >
           <CameraAlt fontSize="small" />
@@ -183,6 +188,8 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
               elevation: 0,
             }}
             size="small"
+            aria-label="Price unit"
+            title="Price unit"
           >
             {priceUnits.map((priceUnit, index) => (
               <MenuItem key={index} value={index}>

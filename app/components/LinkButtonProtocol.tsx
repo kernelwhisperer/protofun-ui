@@ -27,6 +27,7 @@ const LinkButtonProtocol = forwardRef(
         component={Link}
         variant="outlined"
         size="large"
+        aria-label={protocol.title}
         sx={{
           ...(fancyAnimation
             ? {
@@ -41,7 +42,7 @@ const LinkButtonProtocol = forwardRef(
         }}
         {...(rest as any)}
       >
-        <Stack>
+        <Stack sx={{ pointerEvents: "none" }}>
           <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
             <Stack
               sx={{ height: "100%", marginRight: 2 }}

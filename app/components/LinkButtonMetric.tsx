@@ -1,5 +1,5 @@
 import { SvgIconComponent } from "@mui/icons-material"
-import { Button, ButtonProps, Chip, SvgIcon, Typography } from "@mui/material"
+import { Box, Button, ButtonProps, Chip, SvgIcon, Typography } from "@mui/material"
 import Link, { LinkProps } from "next/link"
 import React, { ForwardedRef, forwardRef, FunctionComponent, SVGProps } from "react"
 
@@ -50,31 +50,39 @@ const LinkButtonMetric = forwardRef((props: LinkButtonProps, ref: ForwardedRef<t
         paddingY: 2,
       }}
       {...(rest as any)}
+      aria-label={label}
     >
-      <SvgIcon
-        inheritViewBox
-        component={Icon}
-        width="100%"
-        height="100%"
-        sx={{
-          fontSize: "50px",
-          height: "100%",
-          padding: iconPadding,
-          position: "absolute",
-          right: "-33%",
-          width: "100%",
-        }}
-      />
-      <Typography variant="h6" fontFamily={RobotoSerifFF} component="div">
-        {label}
-      </Typography>
-      {wip && (
-        <Chip
-          label="WIP"
-          size="small"
-          sx={{ fontFamily: RobotoMonoFF, letterSpacing: 1, marginLeft: 1 }}
+      <Box sx={{ pointerEvents: "none" }}>
+        <SvgIcon
+          inheritViewBox
+          component={Icon}
+          width="100%"
+          height="100%"
+          sx={{
+            fontSize: "50px",
+            height: "100%",
+            padding: iconPadding,
+            position: "absolute",
+            right: "-33%",
+            top: -2,
+            width: "100%",
+          }}
         />
-      )}
+        <Typography variant="h6" fontFamily={RobotoSerifFF} component="div">
+          {label}
+          {wip && (
+            <Chip
+              label="WIP"
+              size="small"
+              sx={{
+                fontFamily: RobotoMonoFF,
+                letterSpacing: 1,
+                marginLeft: 1,
+              }}
+            />
+          )}
+        </Typography>
+      </Box>
     </Button>
   )
 })

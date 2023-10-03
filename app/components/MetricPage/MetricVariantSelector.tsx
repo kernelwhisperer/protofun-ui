@@ -46,6 +46,8 @@ export function MetricVariantSelector({
           zIndex: "var(--mui-zIndex-modal)",
         },
       }}
+      // title="Change metric variant"
+      // aria-label="Change metric variant"
     >
       {variants.map(({ label }, index) => (
         <MenuItem key={index} value={index}>

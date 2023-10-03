@@ -25,11 +25,19 @@ export default function Notifications() {
           ref={setAnchorEl}
           onClick={toggleOpen}
           id="notifications-button"
+          data-ph-capture-attribute-unread-notifications={unreadNotifications}
           aria-controls={open ? "notifications-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          <Badge badgeContent={unreadNotifications} color="accent" variant="standard">
+          {/* Hack for posthog autocapture */}
+          <span style={{ display: "none" }}>Open Notifications</span>
+          <Badge
+            badgeContent={unreadNotifications}
+            color="accent"
+            variant="standard"
+            sx={{ pointerEvents: "none" }}
+          >
             <NotificationsNoneRounded fontSize="medium" />
           </Badge>
         </IconButton>

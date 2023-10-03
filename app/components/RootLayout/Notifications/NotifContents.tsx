@@ -61,7 +61,12 @@ export function NotifContents({ toggleOpen }: any) {
               }
               value="2"
             />
-            <Tab label={<Settings fontSize="small" />} value="3" />
+            <Tab
+              label={<Settings fontSize="small" />}
+              value="3"
+              aria-label="Notifications Settings"
+              title="Notifications Settings"
+            />
           </TabList>
         </Box>
         <TabPanel sx={{ height: "100%", overflow: "auto", padding: 0 }} value="1">

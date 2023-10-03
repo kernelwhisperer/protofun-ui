@@ -46,7 +46,7 @@ export const MenuToggle = ({ toggleOpen, open }: PopoverToggleProps) => {
           width="24"
           height="24"
           viewBox="0 0 26 26"
-          style={{ paddingLeft: 4, paddingTop: 4 }}
+          style={{ paddingLeft: 4, paddingTop: 4, pointerEvents: "none" }}
         >
           <Path d={d1} />
           <Path d="M 2 9.423 L 20 9.423" style={{ opacity }} />
