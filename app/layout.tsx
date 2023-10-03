@@ -2,7 +2,6 @@ import React from "react"
 
 import { AnalyticsProvider } from "./components/RootLayout/AnalyticsProvider"
 import { App } from "./components/RootLayout/App"
-import { PageChangeListener } from "./components/RootLayout/PageChangeListener"
 import { SentryProvider } from "./components/RootLayout/SentryProvider"
 import { ServiceWorkerProvider } from "./components/RootLayout/ServiceWorkerProvider"
 import ThemeProvider from "./components/Theme/ThemeProvider"
@@ -46,7 +45,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </ThemeProvider>
             </ServiceWorkerProvider>
           </SentryProvider>
-          <PageChangeListener />
         </AnalyticsProvider>
       </body>
     </html>

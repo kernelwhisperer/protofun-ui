@@ -1,9 +1,5 @@
-import { Mixpanel } from "mixpanel-browser"
 import { atom } from "nanostores"
 import { User } from "protofun-service"
-
-export const $fullAppVersion = atom<string>("")
-export const $mixpanel = atom<Mixpanel | undefined>()
 
 export type ReducedMotionSetting = "always" | "never" | "user"
 export const $reducedMotion = atom<ReducedMotionSetting>("user")
