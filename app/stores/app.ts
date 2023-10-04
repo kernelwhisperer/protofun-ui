@@ -11,3 +11,5 @@ export interface AppVerProps {
 }
 
 export const $user = atom<User | null>(null)
+
+export const $isFirstPaint = atom<boolean>(true)

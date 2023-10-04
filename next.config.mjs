@@ -6,8 +6,7 @@ const webpack = (config) => {
   /** @type {import('@sentry/nextjs/types/config/types').WebpackConfigObject} */
   const overrides = {
     ignoreWarnings: [
-      // https://github.com/graphprotocol/graph-client/issues/480
-      { module: /graphql-mesh\/utils\/esm\/defaultImportFn.js/ },
+      { module: /__barrel_optimize__/} // FIXME
     ],
     module: {
       rules: [

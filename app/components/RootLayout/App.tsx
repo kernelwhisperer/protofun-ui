@@ -2,9 +2,9 @@
 
 import { Container, Grow, Stack } from "@mui/material"
 import { SnackbarProvider } from "notistack"
-import React from "react"
+import React, { useEffect } from "react"
 
-import { AppVerProps } from "../../stores/app"
+import { $isFirstPaint, AppVerProps } from "../../stores/app"
 import { DismissButton } from "../DismissButton"
 import { ConnectionStatus } from "./ConnectionStatus"
 import { Header } from "./Header"
@@ -14,6 +14,12 @@ interface AppProps extends AppVerProps {
 }
 
 export function App({ children, appVer, gitHash }: AppProps) {
+  useEffect(() => {
+    setTimeout(() => {
+      $isFirstPaint.set(false)
+    }, 10)
+  }, [])
+
   return (
     <SnackbarProvider
       TransitionComponent={Grow}
