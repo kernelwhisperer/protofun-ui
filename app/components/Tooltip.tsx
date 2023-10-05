@@ -8,6 +8,7 @@ export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
     TransitionComponent={Fade}
     classes={{ popper: className }}
     arrow
+    enterDelay={1000}
     // followCursor
     // PopperProps={{
     //   modifiers: [

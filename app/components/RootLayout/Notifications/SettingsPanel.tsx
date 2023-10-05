@@ -19,13 +19,8 @@ import React, { useCallback } from "react"
 import { createNotification } from "../../../api/notifications-api"
 import { patchPushSubscription } from "../../../api/users-api"
 import { $user } from "../../../stores/app"
-import {
-  disableWebPushOnDevice,
-  enableWebPush,
-  getDeviceId,
-  logError,
-  PopoverToggleProps,
-} from "../../../utils/client-utils"
+import { disableWebPushOnDevice, enableWebPush } from "../../../stores/push-notifications"
+import { getDeviceId, logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
 
 export function SettingsPanel({ toggleOpen: _toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {

@@ -2,12 +2,8 @@
 
 import { config } from "@react-spring/web"
 import { CandlestickSeriesPartialOptions } from "lightweight-charts"
-import { atom } from "nanostores"
-import { MetricFnsResult, MetricId, ProtocolId } from "protofun"
+import { MetricFnsResult, MetricId, ProtocolId, wait } from "protofun"
 import { v4 as uuid } from "uuid"
-
-import { patchPushSubscription } from "../api/users-api"
-import { $user } from "../stores/app"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
@@ -35,7 +31,7 @@ export const isProduction = isServerSide
   ? false
   : Boolean(window.location.toString().includes("https://protocol.fun"))
 
-export function logError(error: Error) {
+export function logError(error: unknown) {
   console.error(error)
   import("@sentry/nextjs").then(({ captureException }) => {
     captureException(error)
@@ -45,46 +41,6 @@ export function logError(error: Error) {
 export interface PopoverToggleProps {
   open: boolean
   toggleOpen: () => void
-}
-
-export const $serviceWorker = atom<ServiceWorkerRegistration | undefined>()
-export const $pushPubKey = atom<string>("")
-export const $pushSubscription = atom<PushSubscription | null>(null)
-
-export function urlBase64ToUint8Array(base64String: string) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/")
-
-  const rawData = atob(base64)
-  const outputArray = new Uint8Array(rawData.length)
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i)
-  }
-  return outputArray
-}
-
-export async function enableWebPush() {
-  const serviceWorker = $serviceWorker.get()
-  const user = $user.get()
-  const pushPubKey = $pushPubKey.get()
-
-  if (!serviceWorker || !user) return
-
-  const convertedVapidKey = urlBase64ToUint8Array(pushPubKey)
-  const subscription = await serviceWorker.pushManager.subscribe({
-    applicationServerKey: convertedVapidKey,
-    userVisibleOnly: true,
-  })
-  console.log("ServiceWorker subscription: ", !!subscription)
-  $pushSubscription.set(subscription)
-
-  await patchPushSubscription(getDeviceId(), subscription)
-}
-
-export async function disableWebPushOnDevice() {
-  await $pushSubscription.get()?.unsubscribe()
-  $pushSubscription.set(null)
 }
 
 export function getDeviceId() {
@@ -156,4 +112,59 @@ export function downloadImage(img?: HTMLCanvasElement, name = "screenshot.png") 
     link.click()
     URL.revokeObjectURL(link.href) // Free up storage--optional
   }, "image/png")
+}
+
+export function measurePerformance() {
+  let fcp = -1
+  let dom = -1
+  let pageLoad = -1
+
+  if ("performance" in window && "getEntriesByType" in window.performance) {
+    /**
+     * FCP
+     */
+    const paint = window.performance.getEntriesByType("paint") as PerformancePaintTiming[]
+    paint.forEach((perf) => {
+      if (perf.name === "first-contentful-paint") {
+        fcp = Math.round(perf.startTime)
+      }
+    })
+
+    /**
+     * DOM interactive & Page load
+     */
+    const nav = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[]
+    if (nav.length > 0) {
+      dom = Math.round(nav[0].domInteractive)
+      pageLoad = Math.round(nav[0].loadEventEnd)
+    }
+  }
+
+  return { dom, fcp, pageLoad }
+}
+
+export async function retry<T>(
+  fn: () => Promise<T>,
+  maxRetries = 3,
+  onRetryAttempt: (attempt: number, cooldown: number, error: unknown) => void = noop
+): Promise<T> {
+  let currentAttempt = 0
+  let cooldown = 3_000
+
+  while (currentAttempt <= maxRetries) {
+    try {
+      return await fn()
+    } catch (error) {
+      currentAttempt += 1
+      if (currentAttempt <= maxRetries) {
+        onRetryAttempt(currentAttempt, cooldown, error)
+        await wait(cooldown)
+        cooldown = 3 ** currentAttempt * 1_000
+      } else {
+        throw error
+      }
+    }
+  }
+
+  throw new Error("Maximum retry limit exceeded")
 }

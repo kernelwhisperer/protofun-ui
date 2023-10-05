@@ -31,8 +31,9 @@ import {
   $priceUnitIndex,
   $variantIndex,
 } from "../../stores/metric-page"
+import { enableWebPush } from "../../stores/push-notifications"
 import { AlertDraft } from "../../utils/alert-utils"
-import { enableWebPush, isMobile, logError } from "../../utils/client-utils"
+import { isMobile, logError } from "../../utils/client-utils"
 import { PopoverPaper, PopoverPaperProps } from "../PopoverPaper"
 import { RobotoMonoFF } from "../Theme/fonts"
 
@@ -91,11 +92,6 @@ export default function AlertModal(props: NotificationModalProps) {
           return enableWebPush()
         }
       })
-      // .then((result) => {
-      //   if (result === "denied") {
-      //     enqueueSnackbar("Push notifications not permitted.", { variant: "error" })
-      //   }
-      // })
       .catch((error: Error) => {
         logError(error)
         enqueueSnackbar(`Error: ${error.message}`, {

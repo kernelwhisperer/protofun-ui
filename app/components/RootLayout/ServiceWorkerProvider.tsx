@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 
-import { $pushPubKey, $pushSubscription, $serviceWorker } from "../../utils/client-utils"
+import { $pushPubKey, $pushSubscription, $serviceWorker } from "../../stores/push-notifications"
 
 interface ServiceWorkerProviderProps {
   children: React.ReactNode

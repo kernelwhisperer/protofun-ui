@@ -3,7 +3,15 @@ import { InfoOutlined } from "@mui/icons-material"
 import { Paper, Stack } from "@mui/material"
 import dynamic from "next/dynamic"
 import { useSearchParams } from "next/navigation"
-import { isTimeframe, Metric, MetricId, METRICS_MAP, PROTOCOL_MAP, ProtocolId } from "protofun"
+import {
+  Candle,
+  isTimeframe,
+  Metric,
+  MetricId,
+  METRICS_MAP,
+  PROTOCOL_MAP,
+  ProtocolId,
+} from "protofun"
 import React from "react"
 
 import { METRIC_DESC_MAP } from "../../stores/metric-descriptions"
@@ -20,10 +28,8 @@ import {
   liveModeDefault,
   scaleModeDefault,
 } from "../../stores/metric-page"
-import { Candle } from "../../utils/candle-utils"
 import { BackButton } from "../BackButton"
 import { PageTitle } from "../PageTitle"
-import { Progress } from "../Progress"
 import { StaggeredList } from "../StaggeredList"
 import { Tooltip } from "../Tooltip"
 import { Underline } from "../Underline"
@@ -43,9 +49,7 @@ export interface MetricPageProps {
   }
 }
 
-const MetricChart = dynamic(() => import("./MetricChart"), {
-  loading: () => <Progress loading />,
-})
+const MetricChart = dynamic(() => import("./MetricChart"))
 
 function configureStores(
   metric: Metric,

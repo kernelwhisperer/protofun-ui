@@ -1,5 +1,8 @@
+import { logger } from "@nanostores/logger"
 import { atom } from "nanostores"
 import { User } from "protofun-service"
+
+import { isProduction } from "../utils/client-utils"
 
 export type ReducedMotionSetting = "always" | "never" | "user"
 export const $reducedMotion = atom<ReducedMotionSetting>("user")
@@ -13,3 +16,12 @@ export interface AppVerProps {
 export const $user = atom<User | null>(null)
 
 export const $isFirstPaint = atom<boolean>(true)
+
+if (!isProduction) {
+  logger({
+    $isFirstPaint,
+    $loopsAllowed,
+    $reducedMotion,
+    $user,
+  })
+}

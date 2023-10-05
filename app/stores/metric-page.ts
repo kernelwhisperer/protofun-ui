@@ -6,10 +6,9 @@ import {
   SeriesType,
 } from "lightweight-charts"
 import { atom, map } from "nanostores"
-import { Timeframe } from "protofun"
+import { Candle, Timeframe } from "protofun"
 import { MutableRefObject } from "react"
 
-import { Candle } from "../utils/candle-utils"
 import { isProduction } from "../utils/client-utils"
 
 export const scaleModeDefault = 0

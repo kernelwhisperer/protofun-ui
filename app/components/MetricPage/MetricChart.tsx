@@ -3,6 +3,7 @@ import { useStore } from "@nanostores/react"
 import { animated, useSpring } from "@react-spring/web"
 import Decimal from "decimal.js"
 import { IPriceLine, MouseEventHandler, MouseEventParams, Time } from "lightweight-charts"
+import isEqual from "lodash.isequal"
 import dynamic from "next/dynamic"
 import { Candle, getMetricPrecision, getSignificantDigits, Metric, wait } from "protofun"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -38,12 +39,13 @@ import {
   candleStickOptions,
   loadMetricFns,
   logError,
+  retry,
   SPRING_CONFIGS,
   TZ_OFFSET,
 } from "../../utils/client-utils"
 import { MemoChart } from "../Chart"
-import { ErrorOverlay } from "../ErrorOverlay"
-import { Progress } from "../Progress"
+import { ErrorOverlay, FetchError } from "../ErrorOverlay"
+import { ProtocolProgress } from "../ProtocolProgress"
 import { CandleChartLegend } from "./CandleChartLegend"
 
 const AlertModal = dynamic(() => import("./AlertModal"))
@@ -56,8 +58,8 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const significantDigits = getSignificantDigits(metric, priceUnitIndex)
 
   const theme = useTheme()
-  const crosshairSubRef = useRef<MouseEventHandler>()
-  const clickSubRef = useRef<MouseEventHandler>()
+  const crosshairSubRef = useRef<MouseEventHandler<Time>>()
+  const clickSubRef = useRef<MouseEventHandler<Time>>()
   const chartRef = $chartRef.get()
   const mainSeries = $mainSeries.get()
   const alertPriceLinesRef = useRef<IPriceLine[]>([])
@@ -69,7 +71,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const variantIndex = useStore($variantIndex)
   const precision = getMetricPrecision(metric, variantIndex)
 
-  const [error, setError] = useState<string>("")
+  const [error, setError] = useState<FetchError | string>("")
   const [alertDraft, setAlertDraft] = useState<AlertDraft>()
   const alertPreviewRef = useRef<IPriceLine>()
 
@@ -86,7 +88,19 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       setError("")
 
       Promise.all([
-        query({ priceUnit, since: $since.get(), timeframe, until: $until.get() }),
+        retry(
+          () => query({ priceUnit, since: $since.get(), timeframe, until: $until.get() }),
+          3,
+          (attemptNumber, cooldown, error) => {
+            logError(error)
+            if (error instanceof Error) {
+              setError({
+                attemptNumber,
+                message: `${error.name}: ${error.message}`,
+              })
+            }
+          }
+        ),
         wait($loopsAllowed.get() ? 333 : 100),
       ])
         .then(([data]) => {
@@ -99,14 +113,16 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           $entries.set(data)
           // console.log("📜 LOG > MetricChart > fetching finished");
         })
-        .then(() => {
-          $loading.set(false)
-        })
         .catch((error) => {
-          console.error(error)
-          setError(`${error.name}: ${error.message}`)
-          $loading.set(false)
           logError(error)
+          setError({
+            attemptNumber: 3,
+            finished: true,
+            message: `${error.name}: ${error.message}`,
+          })
+        })
+        .finally(() => {
+          $loading.set(false)
         })
     }
 
@@ -289,8 +305,9 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       }
 
       if (isCandleArray(entries) && isCandle(data)) {
-        // for candles we want to update the last value because high/low/close has likely changed
+        if (isEqual(data, $entryMap.get()[data.timestamp])) return
         if (entries[entries.length - 1].timestamp !== data.timestamp) {
+          // for candles we want to update the last value because high/low/close has likely changed
           entries.push(data)
         } else {
           entries[entries.length - 1] = data
@@ -300,10 +317,14 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
         const mapCandleToCandleData = createCandleMapper(precision)
         const mapCandleToLineData = createLineMapper(precision)
-        if ($seriesType.get() === "Line") {
-          mainSeries.current?.update(mapCandleToLineData(data))
-        } else {
-          mainSeries.current?.update(mapCandleToCandleData(data))
+        try {
+          if ($seriesType.get() === "Line") {
+            mainSeries.current?.update(mapCandleToLineData(data))
+          } else {
+            mainSeries.current?.update(mapCandleToCandleData(data))
+          }
+        } catch {
+          // Suppress error, the page was probably changed
         }
       }
     },
@@ -406,8 +427,8 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   return (
     <>
-      <Progress loading={loading} />
-      <ErrorOverlay errorMessage={error} />
+      <ProtocolProgress loading={loading} protocolId={metric.protocol} />
+      <ErrorOverlay error={error} />
       <animated.div
         style={{
           height: "100%",

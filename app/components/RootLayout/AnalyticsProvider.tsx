@@ -2,13 +2,20 @@
 import React, { useEffect } from "react"
 
 import { AppVerProps } from "../../stores/app"
-import { getDeviceId, isProduction } from "../../utils/client-utils"
+import { getDeviceId, isProduction, measurePerformance } from "../../utils/client-utils"
 
 interface AnalyticsProviderProps extends AppVerProps {
   children: React.ReactNode
 }
 
 export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProviderProps) {
+  useEffect(() => {
+    const { dom, pageLoad, fcp } = measurePerformance()
+    console.log("FCP time: ", fcp, "ms")
+    console.log("DOM Interactive time: ", dom, "ms")
+    console.log("Page Load time: ", pageLoad, "ms")
+  }, [])
+
   useEffect(() => {
     if (!isProduction) {
       return
@@ -41,6 +48,13 @@ export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProvid
           posthog.identify(userId, {
             appVer,
             gitHash,
+          })
+
+          const { dom, pageLoad, fcp } = measurePerformance()
+          posthog.capture("PagePerf", {
+            dom,
+            fcp,
+            pageLoad,
           })
         })
       })

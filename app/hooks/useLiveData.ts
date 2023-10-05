@@ -1,9 +1,8 @@
 import { useStore } from "@nanostores/react"
-import { Metric, PriceUnit, SubscribeResult } from "protofun"
+import { Candle, Metric, PriceUnit, SubscribeResult } from "protofun"
 import { useCallback, useEffect, useRef } from "react"
 
 import { $liveMode, $timeframe } from "../stores/metric-page"
-import { Candle } from "../utils/candle-utils"
 import { loadMetricFns } from "../utils/client-utils"
 
 export function useLiveData(
