@@ -165,7 +165,7 @@ export function NotifPanel({ toggleOpen }: Pick<PopoverToggleProps, "toggleOpen"
                   primary={
                     <>
                       {protocol.title}&apos;s {metric.title}{" "}
-                      {metric.variants ? `(${metric.variants[alert.variantIndex].label})` : ""} to{" "}
+                      {metric.variants ? `(${metric.variants[alert.variantIndex].label})` : ""}{" "}
                       {alert.increase ? "increased" : "decreased"} to{" "}
                       <Typography
                         fontWeight={500}

@@ -92,12 +92,15 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           () => query({ priceUnit, since: $since.get(), timeframe, until: $until.get() }),
           3,
           (attemptNumber, cooldown, error) => {
-            logError(error)
             if (error instanceof Error) {
               setError({
                 attemptNumber,
                 message: `${error.name}: ${error.message}`,
               })
+              error.message = `${error.message} attempt #${attemptNumber}`
+              logError(error)
+            } else {
+              logError(error)
             }
           }
         ),

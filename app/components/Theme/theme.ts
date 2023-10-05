@@ -310,6 +310,14 @@ export const themeOptions: CssVarsThemeOptions = {
         },
       },
     },
+    // TODO
+    // MuiButtonGroup: {
+    //   styleOverrides: {
+    //     grouped: {
+    //       borderRightColor: "unset !important",
+    //     },
+    //   },
+    // },
     MuiDialog: {
       styleOverrides: {
         paper: {
