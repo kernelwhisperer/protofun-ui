@@ -18,10 +18,18 @@ export const $user = atom<User | null>(null)
 export const $isFirstPaint = atom<boolean>(true)
 
 if (!isProduction) {
-  logger({
-    $isFirstPaint,
-    $loopsAllowed,
-    $reducedMotion,
-    $user,
-  })
+  logger(
+    {
+      $isFirstPaint,
+      $loopsAllowed,
+      $reducedMotion,
+      $user,
+    },
+    {
+      messages: {
+        mount: false,
+        unmount: false,
+      },
+    }
+  )
 }

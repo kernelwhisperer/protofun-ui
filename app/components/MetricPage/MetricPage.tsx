@@ -2,32 +2,13 @@
 import { InfoOutlined } from "@mui/icons-material"
 import { Paper, Stack } from "@mui/material"
 import dynamic from "next/dynamic"
-import { useSearchParams } from "next/navigation"
-import {
-  Candle,
-  isTimeframe,
-  Metric,
-  MetricId,
-  METRICS_MAP,
-  PROTOCOL_MAP,
-  ProtocolId,
-} from "protofun"
+import { Candle, Metric, MetricId, METRICS_MAP, PROTOCOL_MAP, ProtocolId } from "protofun"
 import React from "react"
 
+import { DocumentTitleSideEffect } from "../../side-effects/DocumentTitleSideEffect"
+import { SearchParamSideEffect } from "../../side-effects/SearchParamSideEffect"
 import { METRIC_DESC_MAP } from "../../stores/metric-descriptions"
-import {
-  $legendTimestamp,
-  $liveMode,
-  $priceUnitIndex,
-  $scaleMode,
-  $seriesType,
-  $since,
-  $timeframe,
-  $until,
-  $variantIndex,
-  liveModeDefault,
-  scaleModeDefault,
-} from "../../stores/metric-page"
+import { computeInitialState, setInitialState } from "../../stores/metric-page"
 import { BackButton } from "../BackButton"
 import { PageTitle } from "../PageTitle"
 import { StaggeredList } from "../StaggeredList"
@@ -51,94 +32,12 @@ export interface MetricPageProps {
 
 const MetricChart = dynamic(() => import("./MetricChart"))
 
-function configureStores(
-  metric: Metric,
-  timeframe: string,
-  unit: string,
-  variant: string,
-  since: string,
-  until: string
-) {
-  /**
-   * Reset
-   */
-  $legendTimestamp.set("")
-  $liveMode.set(since || until || metric.disallowLiveMode ? false : liveModeDefault)
-  $scaleMode.set(metric.preferredLogScale ? 1 : scaleModeDefault)
-  // if (timeframe !== "Block") {
-  //   $seriesType.set(seriesTypeDefault); FIXME
-  // }
-
-  /**
-   * Timeframe
-   */
-  if (isTimeframe(timeframe)) {
-    $timeframe.set(timeframe)
-    if (metric.timeframes && !metric.timeframes.includes(timeframe)) {
-      $timeframe.set(metric.timeframes[0])
-    } else if (timeframe === "Block") {
-      $seriesType.set("Line")
-    }
-  } else if (metric.timeframes && !metric.timeframes.includes($timeframe.get())) {
-    $timeframe.set(metric.timeframes[0])
-  }
-
-  /**
-   * Series type
-   */
-  if (metric.disallowCandleType && $seriesType.get() === "Candlestick") {
-    $seriesType.set("Line")
-  }
-
-  /**
-   * Price unit
-   */
-  const priceUnit = parseInt(unit)
-  if (!isNaN(priceUnit)) {
-    if (metric.priceUnits.length > priceUnit) {
-      $priceUnitIndex.set(priceUnit)
-    } else {
-      $priceUnitIndex.set(0)
-    }
-  } else {
-    $priceUnitIndex.set(0)
-  }
-
-  /**
-   * Variant
-   */
-  const variantIndex = parseInt(variant)
-  if (!isNaN(variantIndex)) {
-    if (metric.variants && metric.variants.length > variantIndex) {
-      $variantIndex.set(variantIndex)
-    } else {
-      $variantIndex.set(0)
-    }
-  } else {
-    $variantIndex.set(0)
-  }
-
-  /**
-   * Timestamps
-   */
-  if (since) {
-    $since.set(since)
-  }
-  if (until) {
-    $until.set(until)
-  }
-}
-
 export function MetricPage(props: MetricPageProps) {
-  const { metricId, protocolId, searchParams, data } = props
+  // console.log("📜 LOG > MetricPage > render:", isServerSide, props)
+  const { metricId, protocolId, searchParams } = props
   const protocol = PROTOCOL_MAP[protocolId]
   const metric = METRICS_MAP[protocolId]?.[metricId] as Metric
-
-  const { timeframe = "", unit = "", variant = "", since = "", until = "" } = searchParams
-  const searchParamsObj = useSearchParams()
-
-  // console.log("📜 LOG > MetricPage render", metricId, unit, variant, timeframe)
-  configureStores(metric, timeframe, unit, variant, since, until)
+  const metricDesc = METRIC_DESC_MAP[protocolId]?.[metric.id]
 
   // TODO
   // if ($entries.get().length === 0) {
@@ -151,13 +50,16 @@ export function MetricPage(props: MetricPageProps) {
   //   $entries.set(data);
   // }
   // console.log("📜 LOG > MetricPage > data:", data.length);
-  const metricDesc = METRIC_DESC_MAP[protocolId]?.[metric.id]
+
+  const state = computeInitialState(metric, searchParams)
+  // console.log("📜 LOG > MetricPage > state:", state)
+  setInitialState(state)
 
   return (
     <StaggeredList>
-      <BackButton href={`/${PROTOCOL_MAP[protocolId].id}?${searchParamsObj?.toString()}`}>
-        {protocol.title}
-      </BackButton>
+      <DocumentTitleSideEffect metric={metric} />
+      <SearchParamSideEffect />
+      <BackButton href={`/${PROTOCOL_MAP[protocolId].id}`}>{protocol.title}</BackButton>
       <PageTitle>
         <span style={{ marginRight: 12, position: "relative" }}>
           {metric.title}
@@ -183,13 +85,13 @@ export function MetricPage(props: MetricPageProps) {
                 )}
               </>
             }
-            disableInteractive
           >
             <InfoOutlined
               sx={{
                 "&:not(:hover)": {
                   color: "var(--mui-palette-action-focus)",
                 },
+                cursor: "help",
               }}
             />
           </Tooltip>

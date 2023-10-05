@@ -75,14 +75,14 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const [alertDraft, setAlertDraft] = useState<AlertDraft>()
   const alertPreviewRef = useRef<IPriceLine>()
 
-  // console.log("📜 LOG > MetricChart render", data.length, loading);
   useEffect(() => {
+    let isCancelled = false
+
     async function setup() {
       const { query } = await loadMetricFns(metric.protocol, metric.id)
 
       if (!metric.timeframes.includes(timeframe)) return
-      if ($loading.get()) return
-      // console.log("📜 LOG > MetricChart > fetching");
+      // console.log("📜 LOG > MetricChart > fetching")
 
       $loading.set(true)
       setError("")
@@ -107,6 +107,9 @@ export default function MetricChart({ metric }: { metric: Metric }) {
         wait($loopsAllowed.get() ? 333 : 100),
       ])
         .then(([data]) => {
+          if (isCancelled) {
+            return
+          }
           const map = data.reduce((acc, curr) => {
             acc[curr.timestamp] = curr
             return acc
@@ -114,6 +117,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
           $entryMap.set(map)
           $entries.set(data)
+          $loading.set(false)
           // console.log("📜 LOG > MetricChart > fetching finished");
         })
         .catch((error) => {
@@ -123,13 +127,14 @@ export default function MetricChart({ metric }: { metric: Metric }) {
             finished: true,
             message: `${error.name}: ${error.message}`,
           })
-        })
-        .finally(() => {
           $loading.set(false)
         })
     }
 
     setup()
+    return function cleanup() {
+      isCancelled = true
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe, priceUnit])
 
@@ -158,7 +163,9 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   }, [])
 
   useEffect(() => {
-    $legendTimestamp.set(data[data.length - 1]?.timestamp)
+    if (data.length) {
+      $legendTimestamp.set(data[data.length - 1]?.timestamp)
+    }
   }, [data])
 
   useEffect(() => {

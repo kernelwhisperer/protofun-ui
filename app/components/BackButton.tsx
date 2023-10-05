@@ -11,7 +11,7 @@ export function BackButton(
       component={Link}
       size="small"
       sx={{ borderRadius: 16, height: 31, paddingLeft: 1, paddingRight: 2 }}
-      startIcon={<KeyboardBackspace />}
+      startIcon={<KeyboardBackspace sx={{ pointerEvents: "none" }} />}
       {...props}
     />
   )

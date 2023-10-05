@@ -26,10 +26,11 @@ export function ServiceWorkerProvider({ children, pushPubKey }: ServiceWorkerPro
           $pushSubscription.set(subscription)
         })
         .catch((registrationError) => {
-          console.log("ServiceWorker registration failed: ", registrationError)
+          console.log("ServiceWorker registration failed")
+          console.error(registrationError)
         })
     } else {
-      console.log("ServiceWorker skipped")
+      console.warn("ServiceWorker skipped")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

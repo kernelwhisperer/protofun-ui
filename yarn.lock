@@ -8550,15 +8550,15 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     web-push "^3.6.6"
     winston "^3.10.0"
 
+protofun@^0.2.10:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.2.10.tgz#0b93992e1597a67fd26c45c2cc8b42b379d946e6"
+  integrity sha512-QWbp0YEw7tDRd9m7lzkxwqA9WQaVJnbXqwubSmy4BhVmnuXpJM3OmQqXILkjRFm6EXbIuwcrKTZHkl1dg+BLRw==
+
 protofun@^0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.2.5.tgz#94a00478527efc497e2bfb3f70fa0fb2dca24d06"
   integrity sha512-5LNEIC8HtzJuKc+WxmaRqIdsHUUqSNFPrfRDIozhgPWQymwpLWkZdaQefMhdH/MSumJi5mHRWAVTjauW3ziMLw==
-
-protofun@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.2.8.tgz#86a048d66999752206763c8a4a33e0332079280b"
-  integrity sha512-ekiXkJ5GqB2+36ep7wtaO6Jl+/if5ImLJV32aNmCZUACgE244Hsicl/oNrgfacqFk8JLzLGONWyxVRi73vY+1A==
 
 proxy-addr@~2.0.7:
   version "2.0.7"

@@ -1,11 +1,10 @@
 import { useStore } from "@nanostores/react"
-import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 import { $priceUnitIndex, $timeframe, $variantIndex } from "../stores/metric-page"
 
-export function useSyncedSearchParams() {
-  const router = useRouter()
+export function SearchParamSideEffect() {
+  // console.log("📜 LOG > SearchParamSideEffect > render")
 
   const timeframe = useStore($timeframe)
   const priceUnitIndex = useStore($priceUnitIndex)
@@ -13,6 +12,9 @@ export function useSyncedSearchParams() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
+    const shouldPatch = !searchParams.get("timeframe")
+
+    // console.log("📜 LOG > useSyncedSearchParams > useEffect", shouldPatch)
 
     if (timeframe !== searchParams.get("timeframe")) {
       searchParams.set("timeframe", timeframe)
@@ -27,8 +29,16 @@ export function useSyncedSearchParams() {
     }
 
     if (!window.location.search.includes(searchParams.toString())) {
-      router.replace(`${window.location.pathname}?${searchParams.toString()}`)
+      const newParams = `${window.location.pathname}?${searchParams.toString()}`
+
+      if (shouldPatch) {
+        window.history.replaceState({}, "", newParams)
+      } else {
+        window.history.pushState({}, "", newParams)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe, priceUnitIndex, variantIndex])
+
+  return null
 }

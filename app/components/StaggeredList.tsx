@@ -3,6 +3,7 @@ import { Stack, StackProps } from "@mui/material"
 import { animated, AnimationConfig, useTrail } from "@react-spring/web"
 import React, { Children } from "react"
 
+import { $isFirstPaint } from "../stores/app"
 import { isServerSide, SPRING_CONFIGS } from "../utils/client-utils"
 
 export type StaggeredListProps = StackProps & {
@@ -22,7 +23,7 @@ export function StaggeredList({
   const items = Children.toArray(children)
   const trails = useTrail(items.length, {
     config,
-    from: isServerSide ? SHOW_STATE : HIDE_STATE,
+    from: isServerSide || $isFirstPaint.get() ? SHOW_STATE : HIDE_STATE,
     reverse: !show,
     to: show ? SHOW_STATE : HIDE_STATE,
   })

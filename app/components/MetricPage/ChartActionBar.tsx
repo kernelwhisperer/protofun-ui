@@ -13,7 +13,6 @@ import { useStore } from "@nanostores/react"
 import { Metric, PROTOCOL_MAP, TIME_FRAMES, Timeframe } from "protofun"
 import React, { useCallback } from "react"
 
-import { useSyncedSearchParams } from "../../hooks/useSyncedSearchParams"
 import {
   $chartRef,
   $legendTimestamp,
@@ -41,8 +40,6 @@ export function ChartActionBar({ metric }: { metric: Metric }) {
   const handlePriceUnitChange = useCallback((event: SelectChangeEvent) => {
     $priceUnitIndex.set(parseInt(event.target.value))
   }, [])
-
-  useSyncedSearchParams()
 
   return (
     <Stack direction="row" gap={1} justifyContent="space-between" flexWrap="wrap">
