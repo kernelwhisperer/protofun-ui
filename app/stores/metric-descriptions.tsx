@@ -36,7 +36,7 @@ export const METRIC_DESC_MAP: Partial<Record<ProtocolId, Partial<Record<MetricId
             network. This metric plots the its price data over time.
             <br />
             <br />
-            Source: Binance.com
+            Notice: Binance APIs are restricted in the US.
           </>
         ),
         descriptionExtra: null,

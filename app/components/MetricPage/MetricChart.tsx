@@ -90,7 +90,14 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
       Promise.all([
         retry(
-          () => query({ priceUnit, since: $since.get(), timeframe, until: $until.get() }),
+          () =>
+            query({
+              priceUnit,
+              since: $since.get(),
+              timeframe,
+              until: $until.get(),
+              variant: variantIndex,
+            }),
           3,
           (attemptNumber, cooldown, error) => {
             if (error instanceof Error) {
@@ -137,7 +144,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
       isCancelled = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeframe, priceUnit])
+  }, [timeframe, priceUnit, variantIndex])
 
   const mainSeriesData = useMemo(() => {
     if (data.length === 0) return []
