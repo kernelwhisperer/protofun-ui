@@ -12,7 +12,7 @@ export type StaggeredListProps = StackProps & {
 }
 
 const SHOW_STATE = { opacity: 1, y: 0 }
-const HIDE_STATE = { opacity: 0, y: 60 }
+const HIDE_STATE = { opacity: 0, y: 55 }
 
 export function StaggeredList({
   children,

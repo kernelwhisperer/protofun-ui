@@ -130,7 +130,7 @@ if (!isProduction) {
       $chartRef,
       $entries,
       $entryMap,
-      $legendTimestamp,
+      // $legendTimestamp,
       $liveMode,
       $loading,
       $mainSeries,

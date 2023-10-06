@@ -34,7 +34,7 @@ import {
   isCandle,
   isCandleArray,
 } from "../../utils/candle-utils"
-import { createPriceFormatter } from "../../utils/chart"
+import { createPriceFormatter, lineChartOptions } from "../../utils/chart"
 import {
   candleStickOptions,
   loadMetricFns,
@@ -71,6 +71,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   const variantIndex = useStore($variantIndex)
   const precision = getMetricPrecision(metric, variantIndex)
 
+  const [chartReady, setChartReady] = useState<boolean>(false)
   const [error, setError] = useState<FetchError | string>("")
   const [alertDraft, setAlertDraft] = useState<AlertDraft>()
   const alertPreviewRef = useRef<IPriceLine>()
@@ -175,6 +176,7 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     //   !!chartRef.current,
     //   mainSeriesData.length
     // );
+    setChartReady(false)
     if (mainSeriesData.length === 0) return
     if (mainSeries.current) {
       try {
@@ -201,6 +203,9 @@ export default function MetricChart({ metric }: { metric: Metric }) {
     chartRef.current?.priceScale("right").applyOptions({
       mode: $scaleMode.get(),
     })
+    setTimeout(() => {
+      setChartReady(true)
+    }, 0)
 
     // const volumeSeries = chartRef.current?.addHistogramSeries({
     //   color: "#000",
@@ -379,33 +384,30 @@ export default function MetricChart({ metric }: { metric: Metric }) {
 
   useEffect(() => {
     const cleanup = $alerts.subscribe(() => {
+      // console.log("📜 LOG > alerts > subscribe", !!mainSeries.current)
+      if (!mainSeries.current) {
+        return
+      }
       // delete existing
       alertPriceLinesRef.current.forEach((line) => {
         mainSeries.current?.removePriceLine(line)
       })
       alertPriceLinesRef.current = []
       // re-create all
-      if (!mainSeries.current) {
-        return
-      }
       const primaryColor = theme.palette.primary.main
-      findAlertsForMetric(metric.id, $priceUnitIndex.get(), $variantIndex.get()).forEach(
-        (alert) => {
-          if (alert.paused) return
-          const line = mainSeries.current?.createPriceLine({
-            // LightweightCharts.LineStyle.Dotted,
-            axisLabelVisible: true,
-            color: primaryColor,
-            lineStyle: 3,
-            lineWidth: 1,
-            price: new Decimal(alert.triggerValue).div(precision).toNumber(),
-            title: "🕒",
-          })
-          if (line) {
-            alertPriceLinesRef.current.push(line)
-          }
+      const alerts = findAlertsForMetric(metric.id, $priceUnitIndex.get(), $variantIndex.get())
+      // console.log("📜 LOG > alerts > subscribe > alerts:", alerts)
+      alerts.forEach((alert) => {
+        if (alert.paused) return
+        const line = mainSeries.current?.createPriceLine({
+          color: primaryColor,
+          price: new Decimal(alert.triggerValue).div(precision).toNumber(),
+          ...lineChartOptions,
+        })
+        if (line) {
+          alertPriceLinesRef.current.push(line)
         }
-      )
+      })
     })
 
     return cleanup
@@ -413,27 +415,39 @@ export default function MetricChart({ metric }: { metric: Metric }) {
   }, [])
 
   useEffect(() => {
-    if (!mainSeries.current) {
+    // console.log("📜 LOG > alerts > initial", !!mainSeries.current, chartReady)
+    if (!mainSeries.current || !chartReady) {
       return
     }
+    // delete existing
+    alertPriceLinesRef.current.forEach((line) => {
+      mainSeries.current?.removePriceLine(line)
+    })
+    alertPriceLinesRef.current = []
+    // re-create all
     const primaryColor = theme.palette.primary.main
-    findAlertsForMetric(metric.id, $priceUnitIndex.get(), $variantIndex.get()).forEach((alert) => {
+    const alerts = findAlertsForMetric(metric.id, $priceUnitIndex.get(), $variantIndex.get())
+    // console.log(
+    //   "📜 LOG > alerts > initial > alerts:",
+    //   alerts,
+    //   metric.id,
+    //   $priceUnitIndex.get(),
+    //   $variantIndex.get()
+    // )
+    alerts.forEach((alert) => {
       if (alert.paused) return
       const line = mainSeries.current?.createPriceLine({
-        // LightweightCharts.LineStyle.Dotted,
-        axisLabelVisible: true,
         color: primaryColor,
-        lineStyle: 3,
-        lineWidth: 1,
         price: new Decimal(alert.triggerValue).div(precision).toNumber(),
-        title: "🕒",
+        ...lineChartOptions,
       })
+      // console.log("📜 LOG > alerts.forEach > line:", line)
       if (line) {
         alertPriceLinesRef.current.push(line)
       }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mainSeries.current])
+  }, [chartReady])
 
   return (
     <>

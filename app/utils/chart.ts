@@ -12,3 +12,11 @@ export function createPriceFormatter(
       isMobile ? "" : unitLabel
     }`
 }
+
+export const lineChartOptions = {
+  // LightweightCharts.LineStyle.Dotted,
+  axisLabelVisible: true,
+  lineStyle: 3,
+  lineWidth: 1,
+  title: "🕒",
+} as const

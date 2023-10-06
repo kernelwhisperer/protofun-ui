@@ -56,19 +56,6 @@ export const globalStyles = `
   //   overflow-y: scroll; TODO
   // }
 
-  body::before {
-    // filter: url(#noiseFilter);
-    position: fixed;
-    left: 0;
-    top: 0;
-    content: '';
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background-color: var(--mui-palette-background-default);
-    opacity: 66%;
-  }
-
   html[data-mui-color-scheme="dark"] body::before {
     opacity: 15%;
   }
