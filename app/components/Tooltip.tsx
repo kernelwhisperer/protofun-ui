@@ -9,6 +9,7 @@ export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
     classes={{ popper: className }}
     arrow
     enterDelay={800}
+    disableInteractive
     // followCursor
     // PopperProps={{
     //   modifiers: [
@@ -23,6 +24,7 @@ export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
     {...props}
   />
 ))(({ theme }) => ({
+  zIndex: 3000,
   [`& .${tooltipClasses.tooltip}`]: {
     borderRadius: 0,
     color: "var(--mui-palette-text-secondary)",

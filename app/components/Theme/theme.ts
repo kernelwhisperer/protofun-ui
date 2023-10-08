@@ -117,7 +117,7 @@ export const globalStyles = `
   }
 
   .notistack-SnackbarContainer {
-    z-index: 1999;
+    z-index: 3000;
   }
 
   .notistack-MuiContent {

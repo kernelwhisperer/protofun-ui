@@ -22,6 +22,7 @@ import { $user } from "../../../stores/app"
 import { disableWebPushOnDevice, enableWebPush } from "../../../stores/push-notifications"
 import { getDeviceId, logError, PopoverToggleProps } from "../../../utils/client-utils"
 import { RobotoMonoFF } from "../../Theme/fonts"
+import { Tooltip } from "../../Tooltip"
 
 export function SettingsPanel({ toggleOpen: _toggleOpen }: Pick<PopoverToggleProps, "toggleOpen">) {
   const { enqueueSnackbar } = useSnackbar()
@@ -144,14 +145,24 @@ export function SettingsPanel({ toggleOpen: _toggleOpen }: Pick<PopoverTogglePro
             </>
           )}
           {!user?.pushDevices?.find((x) => x.label === deviceId) && (
-            <Button
-              size="small"
-              sx={{ transform: "none !important" }}
-              variant="outlined"
-              onClick={handleEnablePush}
+            <Tooltip
+              title={
+                <>
+                  <i>Note:</i> Chrome users on Android are required to hit <b>Install app</b> before
+                  they can use this feature.
+                </>
+              }
+              enterDelay={100}
             >
-              <span>Enable push on the current device</span>
-            </Button>
+              <Button
+                size="small"
+                sx={{ transform: "none !important" }}
+                variant="outlined"
+                onClick={handleEnablePush}
+              >
+                <span>Enable push on the current device</span>
+              </Button>
+            </Tooltip>
           )}
           <Button
             size="small"

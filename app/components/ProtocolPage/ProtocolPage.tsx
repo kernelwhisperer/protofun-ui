@@ -38,11 +38,7 @@ export function ProtocolPage(props: ProtocolProps) {
         // staggerChildren={0.5 / metrics.length}
       >
         {metrics.map((metric) => (
-          <Tooltip
-            key={metric.id}
-            title={METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}
-            disableInteractive
-          >
+          <Tooltip key={metric.id} title={METRIC_DESC_MAP[protocolId]?.[metric.id]?.description}>
             <LinkButtonMetric
               iconPadding={(METRIC_ICONS_MAP[protocolId]?.[metric.id] as IconData).iconPadding}
               prefetch={false} // TODO this doesn't work. Homepage fetches the metric page as well

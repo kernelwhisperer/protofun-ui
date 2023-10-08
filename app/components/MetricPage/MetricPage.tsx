@@ -86,6 +86,8 @@ export function MetricPage(props: MetricPageProps) {
               </>
             }
             enterDelay={100}
+            leaveDelay={800}
+            disableInteractive={false}
           >
             <InfoOutlined
               sx={{
