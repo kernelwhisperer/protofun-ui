@@ -66,39 +66,19 @@ export const MenuContents = ({ appVer, gitHash, open, toggleOpen }: MenuContents
         <SectionTitle id="social-links" role="listitem">
           Social
         </SectionTitle>
-        <CustomLink
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://t.me/protofun"
-          role="listitem"
-        >
+        <CustomLink target="_blank" href="https://t.me/protofun" role="listitem">
           <Telegram fontSize="small" />
           <span>Telegram</span>
         </CustomLink>
-        <CustomLink
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://discord.gg/J52KU8k4Bd"
-          role="listitem"
-        >
+        <CustomLink target="_blank" href="https://discord.gg/J52KU8k4Bd" role="listitem">
           <DiscordIcon width="20px" height="20px" />
           <span>Discord</span>
         </CustomLink>
-        <CustomLink
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://twitter.com/kernelwhisperer"
-          role="listitem"
-        >
+        <CustomLink target="_blank" href="https://twitter.com/kernelwhisperer" role="listitem">
           <Twitter fontSize="small" />
           <span>Twitter</span>
         </CustomLink>
-        <CustomLink
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/kernelwhisperer/"
-          role="listitem"
-        >
+        <CustomLink target="_blank" href="https://github.com/kernelwhisperer/" role="listitem">
           <GitHub fontSize="small" />
           <span>GitHub</span>
         </CustomLink>

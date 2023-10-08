@@ -27,10 +27,10 @@ export function toSymbol(metric: Metric): ProSymbol {
   const name = `${metric.protocol}_${metric.id}`.toUpperCase()
   const protocol = PROTOCOL_MAP[metric.protocol]
 
-  const exchange = name.includes("_PRICE") ? "Binance" : "Protofun"
+  const exchange = name.includes("_PRICE") ? "Coinbase" : "Protofun"
   const exchangeLogo =
-    exchange === "Binance"
-      ? "https://s3-symbol-logo.tradingview.com/provider/binance.svg"
+    exchange === "Coinbase"
+      ? "https://s3-symbol-logo.tradingview.com/provider/coinbase.svg"
       : "https://protocol.fun/icon-512x512.png"
 
   const priceScale = 10 ** getSignificantDigits(metric, 0)
@@ -60,7 +60,7 @@ export function toSymbol(metric: Metric): ProSymbol {
     symbol: name,
     ticker: fullName,
     timezone: "Etc/UTC",
-    type: exchange === "Binance" ? "token price" : "fundamental",
+    type: exchange === "Coinbase" ? "token price" : "fundamental",
     // original_currency_code: "USD",
     // intraday_multipliers: [supportedResolutions],
     // supported_resolutions: ["60"] as ResolutionString[],

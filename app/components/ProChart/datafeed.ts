@@ -77,10 +77,15 @@ export const datafeed: IBasicDataFeed = {
             name: "Protofun",
             value: "Protofun",
           },
+          // {
+          //   desc: "https://binance.com",
+          //   name: "Binance",
+          //   value: "Binance",
+          // },
           {
-            desc: "https://binance.com",
-            name: "Binance",
-            value: "Binance",
+            desc: "https://coinbase.com",
+            name: "Coinbase",
+            value: "Coinbase",
           },
         ],
         supported_resolutions: ["1", "60", "1D", "1W"] as ResolutionString[],

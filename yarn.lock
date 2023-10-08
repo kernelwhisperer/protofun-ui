@@ -8555,10 +8555,10 @@ protofun@^0.2.5:
   resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.2.5.tgz#94a00478527efc497e2bfb3f70fa0fb2dca24d06"
   integrity sha512-5LNEIC8HtzJuKc+WxmaRqIdsHUUqSNFPrfRDIozhgPWQymwpLWkZdaQefMhdH/MSumJi5mHRWAVTjauW3ziMLw==
 
-protofun@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.3.2.tgz#ed696f610a128e4a772bc3e7f724b5280b70f6f3"
-  integrity sha512-QqTpP+CGlWdrz8k8LxgV80lF4ufeI0KOpnyhEMM/W7Ea9KP3kj83m7AS3L+sh36c393AfcvWdebx2Yn07mBxgQ==
+protofun@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/protofun/-/protofun-0.3.4.tgz#da1894892ee4ec9922f0186280e1fe1520bf0278"
+  integrity sha512-ERcgW9eE2l9U2xP+Sz4LXRga/zPmHyK3BPA4nK+4ijgpZX0aBwe9JG6WwlOojBmFqXqx5SWAFCQuOaIdUguDBg==
 
 proxy-addr@~2.0.7:
   version "2.0.7"
