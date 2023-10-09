@@ -20,7 +20,6 @@ export function createCandleMapper(precision: number) {
 
 export const datafeed: IBasicDataFeed = {
   getBars: async (symbolInfo, resolution, periodParams, onResult, onError) => {
-    if (!periodParams.firstDataRequest) return onResult([]) // TODO
     // console.log(
     //   "📜 LOG > getBars: > symbolInfo, resolution, periodParams:",
     //   symbolInfo.name,
@@ -44,7 +43,6 @@ export const datafeed: IBasicDataFeed = {
       const { query } = await loadMetricFns(metric.protocol, metric.id)
 
       const candles = await query({
-        // limit: periodParams.countBack, TODO
         since: String(periodParams.from),
         timeframe: RESOLUTION_TO_TIMEFRAME[resolution],
         until: String(periodParams.to),
@@ -56,7 +54,6 @@ export const datafeed: IBasicDataFeed = {
       console.log("📜 datafeed error")
       console.error(error)
       onResult([])
-      // onError(String(error))
     }
   },
   onReady: (onReadyCallback) => {

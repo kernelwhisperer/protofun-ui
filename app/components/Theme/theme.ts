@@ -122,18 +122,18 @@ export const globalStyles = `
 
   .notistack-MuiContent {
     border-radius: 0;
-    box-shadow: 3px 3px 0px 0px ${alpha(RETRO_GREY, 0.33)};
-    background-color: ${alpha(RETRO_GREY, 0.9)};
+    // box-shadow: 3px 3px 0px 0px ${alpha(RETRO_GREY, 0.33)};
+    background-color: ${alpha(RETRO_GREY, 1)};
     color: ${RETRO_BEIGE_2};
   }
 
   .notistack-CollapseWrapper {
-    padding: 4px 0px !important;
+    padding: 2px 0px !important;
   }
 
   html[data-mui-color-scheme="dark"] .notistack-MuiContent {
-    box-shadow: 3px 3px 0px 0px ${alpha(RETRO_BEIGE_2, 0.33)};
-    background-color: ${alpha(RETRO_BEIGE_2, 0.9)};
+    // box-shadow: 3px 3px 0px 0px ${alpha(RETRO_BEIGE_2, 0.33)};
+    background-color: ${alpha(RETRO_BEIGE_2, 1)};
     color: ${RETRO_GREY};
   }
 

@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect } from "react"
 
-import { AppVerProps } from "../../stores/app"
+import { $posthog, AppVerProps } from "../../stores/app"
 import { getDeviceId, isProduction, measurePerformance } from "../../utils/client-utils"
 
 interface AnalyticsProviderProps extends AppVerProps {
@@ -49,6 +49,8 @@ export function AnalyticsProvider({ children, appVer, gitHash }: AnalyticsProvid
             appVer,
             gitHash,
           })
+
+          $posthog.set(posthog)
 
           const { dom, pageLoad, fcp } = measurePerformance()
           posthog.capture("PagePerf", {

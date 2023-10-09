@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	y="0px" viewBox="0 0 273.6 360" enable-background="new 0 0 273.6 360" xml:space="preserve" fill="currentColor">
+	y="0px" viewBox="0 0 273.6 360" enable-background="new 0 0 273.6 360" xml:space="preserve">
+	<style type="text/css">
+		path {
+			fill: currentColor;
+			fill-opacity: 0.9;
+			stroke: currentColor;
+			stroke: currentColor;
+			stroke-width: 6px;
+		}
+	</style>
 	<g transform="translate(34.2, 45) scale(0.75)">
 		<g>
 			<path d="M217.021,167.042c18.631-9.483,30.288-26.184,27.565-54.007c-3.667-38.023-36.526-50.773-78.006-54.404l-0.008-52.741
@@ -11,7 +20,7 @@
 			l-0.009-52.779c8.832,0.18,17.357,0.258,25.684,0.247l-0.009,52.532h32.138l0.018-53.249c54.022-3.1,91.842-16.697,96.544-67.385
 			C266.916,192.612,247.692,174.396,217.021,167.042z M109.535,95.321c18.126,0,75.132-5.767,75.14,32.064
 			c-0.008,36.269-56.996,32.032-75.14,32.032V95.321z M109.521,262.447l0.014-70.672c21.778-0.006,90.085-6.261,90.094,35.32
-			C199.638,266.971,131.313,262.431,109.521,262.447z" stroke="currentColor" stroke-width="6px" />
+			C199.638,266.971,131.313,262.431,109.521,262.447z" stroke="currentColor"  />
 		</g>
 	</g>
 </svg>

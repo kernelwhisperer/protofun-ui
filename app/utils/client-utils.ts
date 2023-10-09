@@ -65,8 +65,8 @@ export const candleStickOptions: CandlestickSeriesPartialOptions = {
   // rgb(242, 54, 69)
   // rgb(8, 153, 129)
   //
-  borderDownColor: "rgb(220, 60, 70)",
-  borderUpColor: "rgb(0, 150, 108)",
+  borderDownColor: "rgb(220, 60, 70)", // #dc3c46
+  borderUpColor: "rgb(0, 150, 108)", // #00966c
   downColor: "rgb(220, 60, 70)",
   // title: "hey",
   upColor: "rgb(0, 150, 108)",

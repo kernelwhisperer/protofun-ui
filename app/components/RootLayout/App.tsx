@@ -8,6 +8,7 @@ import { $isFirstPaint, AppVerProps } from "../../stores/app"
 import { DismissButton } from "../DismissButton"
 import { ConnectionStatus } from "./ConnectionStatus"
 import { Header } from "./Header"
+import { PWA } from "./PWA"
 
 interface AppProps extends AppVerProps {
   children: React.ReactNode
@@ -61,6 +62,7 @@ export function App({ children, appVer, gitHash }: AppProps) {
             <feBlend in="SourceGraphic" in2="monoNoise" mode="screen" />
           </filter>
         </svg> */}
+        <PWA />
       </Container>
     </SnackbarProvider>
   )

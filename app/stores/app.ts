@@ -1,6 +1,7 @@
 import { logger } from "@nanostores/logger"
 import { atom } from "nanostores"
-import { User } from "protofun-service"
+import type { PostHog } from "posthog-js"
+import type { User } from "protofun-service"
 
 import { isProduction } from "../utils/client-utils"
 
@@ -16,6 +17,8 @@ export interface AppVerProps {
 export const $user = atom<User | null>(null)
 
 export const $isFirstPaint = atom<boolean>(true)
+
+export const $posthog = atom<PostHog | null>(null)
 
 if (!isProduction) {
   logger(
