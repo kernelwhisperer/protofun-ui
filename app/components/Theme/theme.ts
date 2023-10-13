@@ -56,9 +56,9 @@ export const globalStyles = `
   //   overflow-y: scroll; TODO
   // }
 
-  html[data-mui-color-scheme="dark"] body::before {
-    opacity: 15%;
-  }
+  // html[data-mui-color-scheme="dark"] body::before {
+  //   opacity: 15%;
+  // }
   
   ::selection {
     color: white;

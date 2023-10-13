@@ -105,7 +105,9 @@ export default function MetricChart({ metric }: { metric: Metric }) {
                 attemptNumber,
                 message: `${error.name}: ${error.message}`,
               })
+              const oldMessage = error.message
               error.message = `${error.message} attempt #${attemptNumber}`
+              error.stack = error.stack?.replaceAll(oldMessage, error.message)
               logError(error)
             } else {
               logError(error)
@@ -129,12 +131,18 @@ export default function MetricChart({ metric }: { metric: Metric }) {
           // console.log("📜 LOG > MetricChart > fetching finished");
         })
         .catch((error) => {
-          logError(error)
+          if (error instanceof Error) {
+            const oldMessage = error.message
+            error.message = `${error.message} attempt #3 (final)`
+            error.stack = error.stack?.replaceAll(oldMessage, error.message)
+          }
+
           setError({
             attemptNumber: 3,
             finished: true,
             message: `${error.name}: ${error.message}`,
           })
+          logError(error)
           $loading.set(false)
         })
     }
